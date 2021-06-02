@@ -1,16 +1,21 @@
 package ru.peytob.mineville.controller;
 
-import static org.lwjgl.opengl.GL11.*;
+import ru.peytob.mineville.controller.loader.ShadersLoader;
+import ru.peytob.mineville.model.graphic.shader.ShadersPack;
+
+import java.io.IOException;
 
 public class ApplicationController {
     WindowController windowController;
+    ShadersPack pack;
 
     public ApplicationController() {
         windowController = new WindowController("Mineville", 800, 600);
-        System.out.println("GL_RENDERER = " + glGetString(GL_RENDERER));
-        System.out.println("GL_VENDOR = " + glGetString(GL_VENDOR));
-        System.out.println("GL_VERSION = " + glGetString(GL_VERSION));
-        System.out.println("GL_EXTENSIONS = " + glGetString(GL_EXTENSIONS));
+        try {
+            pack = new ShadersLoader().loadShaderPack("src/main/resources/shaders");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void run() {
