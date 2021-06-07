@@ -8,13 +8,11 @@ uniform mat4 u_projection;
 uniform mat4 u_view;
 uniform mat4 u_model;
 
-out VS_OUT
-{
+out VS_OUT {
     vec3 texture;
 } VSO;
 
-void main()
-{
-    gl_Position = vec4(l_position, 1.0);
-    VSO.texture = vec3(0, 0, 0);
+void main() {
+    gl_Position = u_projection * u_view * u_model * vec4(l_position, 1.0);
+    VSO.texture = vec3(l_texture, 0.0);
 }

@@ -17,9 +17,9 @@ public class WorldDrawer {
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
-    public void draw(Mesh mesh, int type) {
+    public void draw(Mesh mesh, int mode) {
         glBindVertexArray(mesh.getVao());
-        glDrawArrays(type, 0, mesh.getVertexesCount());
+        glDrawArrays(mode, 0, mesh.getVertexesCount());
     }
 
     public void display() {
