@@ -24,6 +24,8 @@ public class ShadersLoader {
         worldShader.attachShader(worldFragment);
         worldShader.link();
         pack.setWorldShader(worldShader);
+        worldVertex.destroy();
+        worldFragment.destroy();
 
         return pack;
     }

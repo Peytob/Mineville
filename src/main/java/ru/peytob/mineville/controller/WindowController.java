@@ -24,4 +24,12 @@ public class WindowController {
     public void destroy() {
         window.destroy();
     }
+
+    public void display() {
+        window.display();
+    }
+
+    public void show() {
+        window.show();
+    }
 }

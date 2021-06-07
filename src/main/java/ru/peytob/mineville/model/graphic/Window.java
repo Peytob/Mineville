@@ -33,7 +33,6 @@ public class Window {
         }
 
         glfwMakeContextCurrent(pointer);
-        glfwShowWindow(pointer);
 
 //        glfwSetInputMode(pointer, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -77,6 +76,20 @@ public class Window {
      */
     public void pollEvents() {
         glfwPollEvents();
+    }
+
+    /**
+     * Swaps screen buffers and display some stuff.
+     */
+    public void display() {
+        glfwSwapBuffers(pointer);
+    }
+
+    /**
+     * Show window.
+     */
+    public void show() {
+        glfwShowWindow(pointer);
     }
 
     /**
