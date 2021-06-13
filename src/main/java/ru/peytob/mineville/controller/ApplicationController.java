@@ -4,6 +4,7 @@ import ru.peytob.mineville.controller.loader.ResourcesLoader;
 import ru.peytob.mineville.controller.loader.ShadersLoader;
 import ru.peytob.mineville.math.Mat4;
 import ru.peytob.mineville.model.game.Resources;
+import ru.peytob.mineville.model.game.world.Octree;
 import ru.peytob.mineville.model.graphic.shader.ShadersPack;
 import ru.peytob.mineville.view.WorldDrawer;
 
@@ -15,6 +16,7 @@ public class ApplicationController {
     ShadersPack pack;
     Resources resources;
     WorldDrawer worldDrawer;
+    Octree octree;
 
     public ApplicationController() {
         windowController = new WindowController("Mineville", 800, 600);
@@ -33,6 +35,12 @@ public class ApplicationController {
 
         ResourcesLoader loader = new ResourcesLoader();
         this.resources = loader.loadResources();
+        octree = new Octree();
+
+        octree.setBlock(0, 0, 0, resources.getBlockRepository().getBlock("grass"));
+        octree.setBlock(1, 1, 1, resources.getBlockRepository().getBlock("grass"));
+        octree.setBlock(2, 2, 2, resources.getBlockRepository().getBlock("grass"));
+        octree.setBlock(2, 5, 2, resources.getBlockRepository().getBlock("grass"));
 
         resources.getBlockRepository().getBlocksStream().forEach(block -> System.out.println(block.getTextId()));
 
@@ -45,6 +53,7 @@ public class ApplicationController {
 
             worldDrawer.clear();
             pack.getWorldShader().use();
+            worldDrawer.draw(octree);
             worldDrawer.display();
         }
     }
