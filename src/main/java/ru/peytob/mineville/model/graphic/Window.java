@@ -34,7 +34,7 @@ public class Window {
 
         glfwMakeContextCurrent(pointer);
 
-//        glfwSetInputMode(pointer, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetInputMode(pointer, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         createCapabilities();
 
