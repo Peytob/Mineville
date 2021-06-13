@@ -3,22 +3,31 @@ package ru.peytob.mineville.model.game.object;
 import ru.peytob.mineville.model.graphic.BlockModel;
 
 public class BlockBuilder {
-    private int id;
-    private BlockModel blockModel;
+    private Integer id;
+    private BlockModel model;
+    private String textId;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
     public BlockModel getModel() {
-        return blockModel;
+        return model;
     }
 
     public void setModel(BlockModel blockModel) {
-        this.blockModel = blockModel;
+        this.model = blockModel;
+    }
+
+    public String getTextId() {
+        return textId;
+    }
+
+    public void setTextId(String textId) {
+        this.textId = textId;
     }
 }
