@@ -7,6 +7,7 @@ import ru.peytob.mineville.controller.loader.ShadersLoader;
 import ru.peytob.mineville.math.Mat4;
 import ru.peytob.mineville.math.Vec3;
 import ru.peytob.mineville.model.game.Resources;
+import ru.peytob.mineville.model.game.world.Chunk;
 import ru.peytob.mineville.model.game.world.Octree;
 import ru.peytob.mineville.model.graphic.Camera;
 import ru.peytob.mineville.model.graphic.shader.ShadersPack;
@@ -23,7 +24,7 @@ public class ApplicationController {
     ShadersPack pack;
     Resources resources;
     WorldDrawer worldDrawer;
-    Octree octree;
+    Chunk chunk;
     Vec3 cursorPosition;
 
     public ApplicationController() {
@@ -46,12 +47,16 @@ public class ApplicationController {
 
         ResourcesLoader loader = new ResourcesLoader();
         this.resources = loader.loadResources();
-        octree = new Octree();
+        chunk = new Chunk();
 
-        octree.setBlock(0, 0, 0, resources.getBlockRepository().getBlock("grass"));
-        octree.setBlock(1, 1, 1, resources.getBlockRepository().getBlock("grass"));
-        octree.setBlock(2, 2, 2, resources.getBlockRepository().getBlock("grass"));
-        octree.setBlock(2, 5, 2, resources.getBlockRepository().getBlock("grass"));
+        for (int j = 0; j < 16 * chunk.getOctrees().length; j += 16) {
+            for (int i = 0; i < 16; ++i) {
+                chunk.setBlock(i, i + j, i, resources.getBlockRepository().getBlock("grass"));
+                chunk.setBlock(i, i + j, 15 - i, resources.getBlockRepository().getBlock("grass"));
+                chunk.setBlock(15 - i, i + j, i, resources.getBlockRepository().getBlock("grass"));
+                chunk.setBlock(15 - i, i + j, 15 - i, resources.getBlockRepository().getBlock("grass"));
+            }
+        }
 
         resources.getBlockRepository().getBlocksStream().forEach(block -> System.out.println(block.getTextId()));
 
@@ -96,7 +101,7 @@ public class ApplicationController {
 
             worldDrawer.clear();
             pack.getWorldShader().use();
-            worldDrawer.draw(octree);
+            worldDrawer.draw(chunk, pack.getWorldShader());
             worldDrawer.display();
         }
     }

@@ -2,10 +2,13 @@ package ru.peytob.mineville.view;
 
 import ru.peytob.mineville.controller.WindowController;
 import ru.peytob.mineville.controller.draw.OctreeMeshBuilder;
+import ru.peytob.mineville.math.Mat4;
 import ru.peytob.mineville.math.Vec3i;
 import ru.peytob.mineville.model.game.object.Block;
+import ru.peytob.mineville.model.game.world.Chunk;
 import ru.peytob.mineville.model.game.world.Octree;
 import ru.peytob.mineville.model.graphic.Mesh;
+import ru.peytob.mineville.model.graphic.shader.WorldShader;
 
 import static org.lwjgl.opengl.GL33.*;
 
@@ -14,11 +17,13 @@ public class WorldDrawer {
 
     public WorldDrawer(WindowController windowController) {
         this.windowController = windowController;
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LESS);
     }
 
     public void clear() {
         glClearColor(0.5f, 0.25f, 0.25f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     public void draw(Mesh mesh, int mode) {
@@ -53,6 +58,13 @@ public class WorldDrawer {
         }
 
         draw(octree.getMesh(), GL_TRIANGLES);
+    }
+
+    public void draw(Chunk chunk, WorldShader shader) {
+        for (int i = 0; i < 8; ++i) {
+            shader.setModelMatrix(Mat4.computeTranslation(0, 16 * i, 0));
+            draw(chunk.getOctrees()[i]);
+        }
     }
 
     public void display() {
