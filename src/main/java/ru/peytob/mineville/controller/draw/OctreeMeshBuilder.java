@@ -16,7 +16,7 @@ public class OctreeMeshBuilder {
     }
 
     public void addTop(Block _block, Vec3i _position) {
-        Float[] target = _block.getModel().getTopSide();
+        Float[] target = _block.getModel().getTopFace();
         Float[] top = Arrays.copyOf(target, target.length);
 
         for (int i = 0; i < top.length; i += 8) {
@@ -29,7 +29,7 @@ public class OctreeMeshBuilder {
     }
 
     public void addBottom(Block _block, Vec3i _position) {
-        Float[] target = _block.getModel().getBottomSide();
+        Float[] target = _block.getModel().getBottomFace();
         Float[] top = Arrays.copyOf(target, target.length);
 
         for (int i = 0; i < top.length; i += 8) {
@@ -42,7 +42,7 @@ public class OctreeMeshBuilder {
     }
 
     public void addWest(Block _block, Vec3i _position) {
-        Float[] target = _block.getModel().getWestSide();
+        Float[] target = _block.getModel().getWestFace();
         Float[] top = Arrays.copyOf(target, target.length);
 
         for (int i = 0; i < top.length; i += 8) {
@@ -55,7 +55,7 @@ public class OctreeMeshBuilder {
     }
 
     public void addEast(Block _block, Vec3i _position) {
-        Float[] target = _block.getModel().getEastSide();
+        Float[] target = _block.getModel().getEastFace();
         Float[] top = Arrays.copyOf(target, target.length);
 
         for (int i = 0; i < top.length; i += 8) {
@@ -68,7 +68,7 @@ public class OctreeMeshBuilder {
     }
 
     public void addSouth(Block _block, Vec3i _position) {
-        Float[] target = _block.getModel().getSouthSide();
+        Float[] target = _block.getModel().getSouthFace();
         Float[] top = Arrays.copyOf(target, target.length);
 
         for (int i = 0; i < top.length; i += 8) {
@@ -81,7 +81,7 @@ public class OctreeMeshBuilder {
     }
 
     public void addNorth(Block _block, Vec3i _position) {
-        Float[] target = _block.getModel().getNorthSide();
+        Float[] target = _block.getModel().getNorthFace();
         Float[] top = Arrays.copyOf(target, target.length);
 
         for (int i = 0; i < top.length; i += 8) {

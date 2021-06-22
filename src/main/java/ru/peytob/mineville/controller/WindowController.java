@@ -4,7 +4,7 @@ import ru.peytob.mineville.math.Vec2;
 import ru.peytob.mineville.model.graphic.Window;
 
 public class WindowController {
-    final Window window;
+    private final Window window;
 
     public WindowController(String title, int width, int height) {
         window = new Window(title, width, height);

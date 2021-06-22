@@ -4,7 +4,7 @@ import ru.peytob.mineville.math.Vec3i;
 import ru.peytob.mineville.model.game.object.Block;
 
 public class Chunk implements IBlockly {
-    Octree[] octrees;
+    private final Octree[] octrees;
 
     public Chunk() {
         this.octrees = new Octree[8];

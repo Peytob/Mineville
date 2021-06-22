@@ -22,17 +22,21 @@ public class Mesh {
      */
     private final int vertexesSizes;
 
-    public Mesh(float[] _vertices) {
-        vertexesSizes = _vertices.length;
+    /**
+     * Creates new mesh object.
+     * @param vertices Vertices array
+     */
+    public Mesh(float[] vertices) {
+        this.vertexesSizes = vertices.length;
 
         FloatBuffer vertexData = BufferUtils.createFloatBuffer(vertexesSizes);
-        vertexData.put(_vertices);
+        vertexData.put(vertices);
         vertexData.flip();
 
-        vao = glGenVertexArrays();
+        this.vao = glGenVertexArrays();
         glBindVertexArray(vao);
 
-        vbo = glGenBuffers();
+        this.vbo = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glBufferData(GL_ARRAY_BUFFER, vertexData, GL_STATIC_DRAW);
 

@@ -13,7 +13,7 @@ import ru.peytob.mineville.model.graphic.shader.WorldShader;
 import static org.lwjgl.opengl.GL33.*;
 
 public class WorldDrawer {
-    WindowController windowController;
+    private final WindowController windowController;
 
     public WorldDrawer(WindowController windowController) {
         this.windowController = windowController;

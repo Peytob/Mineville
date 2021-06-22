@@ -1,44 +1,47 @@
 package ru.peytob.mineville.model.graphic;
 
+/**
+ * Contains all block model faces.
+ */
 public class BlockModel {
-    protected final Float[] northSide;
-    protected final Float[] southSide;
-    protected final Float[] westSide;
-    protected final Float[] eastSide;
-    protected final Float[] topSide;
-    protected final Float[] bottomSide;
+    private final Float[] northFace;
+    private final Float[] southFace;
+    private final Float[] westFace;
+    private final Float[] eastFace;
+    private final Float[] topFace;
+    private final Float[] bottomFace;
 
-    public BlockModel(Float[] northSide, Float[] southSide, Float[] westSide, Float[] eastSide,
-                      Float[] topSide, Float[] bottomSide) {
-        this.northSide = northSide;
-        this.southSide = southSide;
-        this.westSide = westSide;
-        this.eastSide = eastSide;
-        this.topSide = topSide;
-        this.bottomSide = bottomSide;
+    public BlockModel(Float[] northFace, Float[] southFace, Float[] westFace, Float[] eastFace,
+                      Float[] topFace, Float[] bottomFace) {
+        this.northFace = northFace;
+        this.southFace = southFace;
+        this.westFace = westFace;
+        this.eastFace = eastFace;
+        this.topFace = topFace;
+        this.bottomFace = bottomFace;
     }
 
-    public Float[] getNorthSide() {
-        return northSide;
+    public Float[] getNorthFace() {
+        return northFace;
     }
 
-    public Float[] getSouthSide() {
-        return southSide;
+    public Float[] getSouthFace() {
+        return southFace;
     }
 
-    public Float[] getWestSide() {
-        return westSide;
+    public Float[] getWestFace() {
+        return westFace;
     }
 
-    public Float[] getEastSide() {
-        return eastSide;
+    public Float[] getEastFace() {
+        return eastFace;
     }
 
-    public Float[] getTopSide() {
-        return topSide;
+    public Float[] getTopFace() {
+        return topFace;
     }
 
-    public Float[] getBottomSide() {
-        return bottomSide;
+    public Float[] getBottomFace() {
+        return bottomFace;
     }
 }

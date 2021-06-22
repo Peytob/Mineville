@@ -2,6 +2,8 @@ package ru.peytob.mineville;
 
 import ru.peytob.mineville.controller.ApplicationController;
 
+import java.io.IOException;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 /**
@@ -15,7 +17,13 @@ public class Mineville {
             return;
         }
 
-        ApplicationController controller = new ApplicationController();
+        ApplicationController controller;
+        try {
+            controller = new ApplicationController();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
         controller.run();
         controller.destroy();
     }
