@@ -1,5 +1,6 @@
 package ru.peytob.mineville.controller;
 
+import ru.peytob.mineville.math.Vec2;
 import ru.peytob.mineville.model.graphic.Window;
 
 public class WindowController {
@@ -31,5 +32,9 @@ public class WindowController {
 
     public void show() {
         window.show();
+    }
+
+    public Vec2 getCursorPosition() {
+        return window.getCursorPosition();
     }
 }
