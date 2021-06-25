@@ -1,7 +1,8 @@
 package ru.peytob.mineville.controller;
 
 import ru.peytob.mineville.math.Vec2;
-import ru.peytob.mineville.model.graphic.Window;
+import ru.peytob.mineville.view.Window;
+import ru.peytob.mineville.view.input.KeyboardInput;
 
 public class WindowController {
     private final Window window;
@@ -36,5 +37,9 @@ public class WindowController {
 
     public Vec2 getCursorPosition() {
         return window.getCursorPosition();
+    }
+
+    public KeyboardInput getKeyboardInput() {
+        return window.getKeyboardInput();
     }
 }

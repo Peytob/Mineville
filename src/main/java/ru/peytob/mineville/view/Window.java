@@ -1,9 +1,10 @@
-package ru.peytob.mineville.model.graphic;
+package ru.peytob.mineville.view;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.opengl.GL.*;
 import org.lwjgl.system.MemoryStack;
 import ru.peytob.mineville.math.Vec2;
+import ru.peytob.mineville.view.input.KeyboardInput;
 
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
@@ -20,6 +21,8 @@ public class Window {
      * Pointer to window object in memory.
      */
     private final long pointer;
+
+    private final KeyboardInput keyboardInput;
 
     public Window(String title, int width, int height) {
         glfwDefaultWindowHints();
@@ -48,6 +51,8 @@ public class Window {
             int contentHeight = h.get();
             glViewport(0, 0, contentWidth, contentHeight);
         }
+
+        this.keyboardInput = new KeyboardInput(this);
     }
 
     /**
@@ -114,5 +119,9 @@ public class Window {
             glfwGetCursorPos(pointer, width, height);
             return new Vec2((float) width.get(0), (float) height.get(0));
         }
+    }
+
+    public KeyboardInput getKeyboardInput() {
+        return this.keyboardInput;
     }
 }
