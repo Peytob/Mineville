@@ -17,7 +17,7 @@ public class Game {
         this.resources = resources;
         this.worldDrawer = new WorldDrawer(windowController);
         this.keyboardInput = windowController.getKeyboardInput();
-        this.state = new RunningGameState(this);
+        setState(new RunningGameState(this));
     }
 
     public void tick() {
@@ -37,7 +37,12 @@ public class Game {
     }
 
     public void setState(IGameState state) {
+        if (this.state != null) {
+            this.state.onChange();
+        }
+
         this.state = state;
+        this.state.onSet();
     }
 
     public Resources getResources() {
@@ -54,5 +59,21 @@ public class Game {
 
     public KeyboardInput getKeyboardInput() {
         return keyboardInput;
+    }
+
+    public void onMouseClick(int button, int action, int mods) {
+        state.onMouseClick(button, action, mods);
+    }
+
+    public void onMouseMove(double newX, double newY) {
+        state.onMouseMove(newX, newY);
+    }
+
+    public void onKeyPress(int key, int scancode, int action, int mods) {
+        state.onKeyPress(key, scancode, action, mods);
+    }
+
+    public void onScroll(double xOffset, double yOffset) {
+        state.onScroll(xOffset, yOffset);
     }
 }

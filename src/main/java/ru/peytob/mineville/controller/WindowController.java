@@ -1,5 +1,9 @@
 package ru.peytob.mineville.controller;
 
+import org.lwjgl.glfw.GLFWCursorPosCallbackI;
+import org.lwjgl.glfw.GLFWKeyCallbackI;
+import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
+import org.lwjgl.glfw.GLFWScrollCallbackI;
 import ru.peytob.mineville.math.Vec2;
 import ru.peytob.mineville.view.Window;
 import ru.peytob.mineville.view.input.KeyboardInput;
@@ -41,5 +45,21 @@ public class WindowController {
 
     public KeyboardInput getKeyboardInput() {
         return window.getKeyboardInput();
+    }
+
+    public void setMouseButtonCallback(GLFWMouseButtonCallbackI callback) {
+        window.setMouseButtonCallback(callback);
+    }
+
+    public void setCursorPositionCallback(GLFWCursorPosCallbackI callback) {
+        window.setCursorPositionCallback(callback);
+    }
+
+    public void setKeyCallback(GLFWKeyCallbackI callback) {
+        window.setKeyCallback(callback);
+    }
+
+    public void setScrollCallback(GLFWScrollCallbackI callback) {
+        window.setScrollCallback(callback);
     }
 }

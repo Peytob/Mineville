@@ -1,5 +1,8 @@
 package ru.peytob.mineville.controller;
 
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWKeyCallbackI;
+
 import ru.peytob.mineville.controller.game.Game;
 import ru.peytob.mineville.controller.loader.ResourcesLoader;
 import ru.peytob.mineville.model.game.Resources;
@@ -16,6 +19,20 @@ public class ApplicationController {
         windowController.show();
         resources = new ResourcesLoader().loadResources();
         game = new Game(resources, windowController);
+    }
+
+    public void setWindowCallbacks() {
+        windowController.setMouseButtonCallback((window, button, action, mods) ->
+                game.onMouseClick(button, action, mods));
+
+        windowController.setCursorPositionCallback((window, newX, newY) ->
+                game.onMouseMove(newX, newY));
+
+        windowController.setKeyCallback((window, key, scancode, action, mods) ->
+                game.onKeyPress(key, scancode, action, mods));
+
+        windowController.setScrollCallback((window, xOffset, yOffset) ->
+                game.onScroll(xOffset, yOffset));
     }
 
     public void run() {

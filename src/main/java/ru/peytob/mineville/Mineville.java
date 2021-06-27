@@ -24,6 +24,7 @@ public class Mineville {
             e.printStackTrace();
             return;
         }
+        controller.setWindowCallbacks();
         controller.run();
         controller.destroy();
     }

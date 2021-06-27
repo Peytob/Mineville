@@ -1,7 +1,9 @@
 package ru.peytob.mineville.view;
 
-import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
-import static org.lwjgl.opengl.GL.*;
+import org.lwjgl.glfw.GLFWCursorPosCallbackI;
+import org.lwjgl.glfw.GLFWKeyCallbackI;
+import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
+import org.lwjgl.glfw.GLFWScrollCallbackI;
 import org.lwjgl.system.MemoryStack;
 import ru.peytob.mineville.math.Vec2;
 import ru.peytob.mineville.view.input.KeyboardInput;
@@ -9,7 +11,9 @@ import ru.peytob.mineville.view.input.KeyboardInput;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 
+import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL33.glViewport;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -65,6 +69,7 @@ public class Window {
 
     /**
      * Checks window is open.
+     *
      * @return True, if window should close.
      */
     public boolean isShouldClose() {
@@ -101,6 +106,7 @@ public class Window {
 
     /**
      * Returns pointer to window.
+     *
      * @return Pointer to window
      */
     public long getPointer() {
@@ -109,11 +115,11 @@ public class Window {
 
     /**
      * Returns cursor position relative to the content area.
+     *
      * @return Cursor position relative to the content area.
      */
     public Vec2 getCursorPosition() {
-        try (MemoryStack stack = MemoryStack.stackPush())
-        {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
             final DoubleBuffer width = stack.mallocDouble(1);
             final DoubleBuffer height = stack.mallocDouble(1);
             glfwGetCursorPos(pointer, width, height);
@@ -123,5 +129,21 @@ public class Window {
 
     public KeyboardInput getKeyboardInput() {
         return this.keyboardInput;
+    }
+
+    public void setMouseButtonCallback(GLFWMouseButtonCallbackI callback) {
+        glfwSetMouseButtonCallback(pointer, callback);
+    }
+
+    public void setCursorPositionCallback(GLFWCursorPosCallbackI callback) {
+        glfwSetCursorPosCallback(pointer, callback);
+    }
+
+    public void setKeyCallback(GLFWKeyCallbackI callback) {
+        glfwSetKeyCallback(pointer, callback);
+    }
+
+    public void setScrollCallback(GLFWScrollCallbackI callback) {
+        glfwSetScrollCallback(pointer, callback);
     }
 }
