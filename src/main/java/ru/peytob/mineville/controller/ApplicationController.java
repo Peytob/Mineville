@@ -36,7 +36,7 @@ public class ApplicationController {
     }
 
     public void run() {
-        while (!windowController.isShouldClose()) {
+        while (game.isRunning()) {
             windowController.pullEvents();
             game.handleInput();
             game.tick();
@@ -47,6 +47,7 @@ public class ApplicationController {
     }
 
     public void destroy() {
+        windowController.close();
         windowController.destroy();
     }
 }

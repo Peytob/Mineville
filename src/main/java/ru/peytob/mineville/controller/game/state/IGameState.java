@@ -13,7 +13,7 @@ public interface IGameState {
 
     void onChange();
 
-    void onDestroy();
+    void onClose();
 
     void onMouseClick(int button, int action, int mods);
 

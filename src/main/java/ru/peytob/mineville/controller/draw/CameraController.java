@@ -12,6 +12,7 @@ public class CameraController {
     public CameraController(Vec3 position, float pith, float yaw, float fov, float aspect) {
         this.camera = new Camera(position, pith, yaw, fov);
         this.aspect = aspect;
+        updateVectors();
     }
 
     public Mat4 computeProjection() {

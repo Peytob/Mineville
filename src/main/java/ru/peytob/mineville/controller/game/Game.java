@@ -4,19 +4,28 @@ import ru.peytob.mineville.controller.WindowController;
 import ru.peytob.mineville.controller.game.state.IGameState;
 import ru.peytob.mineville.controller.game.state.RunningGameState;
 import ru.peytob.mineville.model.game.Resources;
+import ru.peytob.mineville.model.game.world.Chunk;
 import ru.peytob.mineville.view.WorldDrawer;
-import ru.peytob.mineville.view.input.KeyboardInput;
+import ru.peytob.mineville.view.input.KeyboardMouseInput;
 
 public class Game {
     private IGameState state;
+
     private final Resources resources;
+    private Chunk world;
+
     private final WorldDrawer worldDrawer;
-    private final KeyboardInput keyboardInput;
+    private final KeyboardMouseInput keyboardMouseInput;
+
+    private boolean isRunning;
 
     public Game(Resources resources, WindowController windowController) {
+        this.isRunning = true;
         this.resources = resources;
         this.worldDrawer = new WorldDrawer(windowController);
-        this.keyboardInput = windowController.getKeyboardInput();
+        this.keyboardMouseInput = windowController.getKeyboardMouseInput();
+        this.world = new Chunk();
+        world.setBlock(0, 0, 0, resources.getBlockRepository().getBlock(1));
         setState(new RunningGameState(this));
     }
 
@@ -57,8 +66,8 @@ public class Game {
         state.handleInput();
     }
 
-    public KeyboardInput getKeyboardInput() {
-        return keyboardInput;
+    public KeyboardMouseInput getKeyboardMouseInput() {
+        return keyboardMouseInput;
     }
 
     public void onMouseClick(int button, int action, int mods) {
@@ -75,5 +84,18 @@ public class Game {
 
     public void onScroll(double xOffset, double yOffset) {
         state.onScroll(xOffset, yOffset);
+    }
+
+    public void close() {
+        this.isRunning = false;
+        this.state.onClose();
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public Chunk getWorld() {
+        return world;
     }
 }

@@ -1,14 +1,26 @@
 package ru.peytob.mineville.controller.game.state;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL33;
+import ru.peytob.mineville.controller.draw.CameraController;
 import ru.peytob.mineville.controller.game.Game;
-import ru.peytob.mineville.view.input.KeyboardInput;
+import ru.peytob.mineville.math.Mat4;
+import ru.peytob.mineville.math.Vec2;
+import ru.peytob.mineville.math.Vec3;
+import ru.peytob.mineville.model.graphic.Mesh;
+import ru.peytob.mineville.view.WorldDrawer;
+import ru.peytob.mineville.view.input.KeyboardMouseInput;
 
 public class RunningGameState implements IGameState {
     private final Game game;
+    private final Vec2 cursorPosition;
+    private final CameraController cameraController;
 
     public RunningGameState(Game game) {
         this.game = game;
+        this.cursorPosition = game.getKeyboardMouseInput().getCursorPosition();
+        this.cameraController = new CameraController(new Vec3(0, 0, -10 ), 0, (float) Math.toRadians(90),
+                (float) Math.toRadians(75), 800.0f / 600.0f);
     }
 
     @Override
@@ -17,17 +29,28 @@ public class RunningGameState implements IGameState {
 
     @Override
     public void handleInput() {
-        KeyboardInput input = game.getKeyboardInput();
+        KeyboardMouseInput input = game.getKeyboardMouseInput();
+
+        Vec3 cameraOffset = new Vec3(0 ,0, 0);
+        float speed = 0.15f;
 
         if (input.isKeyPressed(GLFW.GLFW_KEY_W)) {
-            System.out.println("Move forward");
-        } else if (input.isKeyPressed(GLFW.GLFW_KEY_A)) {
-            System.out.println("Move left");
-        } else if (input.isKeyPressed(GLFW.GLFW_KEY_D)) {
-            System.out.println("Move right");
-        } else if (input.isKeyPressed(GLFW.GLFW_KEY_S)) {
-            System.out.println("Move back");
+            cameraOffset = cameraOffset.plus(cameraController.getFrontVector().multiplication(speed));
         }
+
+        if (input.isKeyPressed(GLFW.GLFW_KEY_A)) {
+            cameraOffset = cameraOffset.minus(cameraController.getRightVector().multiplication(speed));
+        }
+
+        if (input.isKeyPressed(GLFW.GLFW_KEY_D)) {
+            cameraOffset = cameraOffset.plus(cameraController.getRightVector().multiplication(speed));
+        }
+
+        if (input.isKeyPressed(GLFW.GLFW_KEY_S)) {
+            cameraOffset = cameraOffset.minus(cameraController.getFrontVector().multiplication(speed));
+        }
+
+        cameraController.move(cameraOffset);
     }
 
     @Override
@@ -42,7 +65,13 @@ public class RunningGameState implements IGameState {
 
     @Override
     public void draw() {
+        game.getResources().getShadersPack().getWorldShader().use();
+        game.getResources().getShadersPack().getWorldShader().setModelMatrix(Mat4.computeIdentity());
+        game.getResources().getShadersPack().getWorldShader().setProjectionMatrix(cameraController.computeProjection());
+        game.getResources().getShadersPack().getWorldShader().setViewMatrix(cameraController.computeView());
 
+        final WorldDrawer drawer = game.getWorldDrawer();
+        drawer.draw(game.getWorld(), game.getResources().getShadersPack().getWorldShader());
     }
 
     @Override
@@ -50,79 +79,33 @@ public class RunningGameState implements IGameState {
     }
 
     @Override
-    public void onDestroy() {
+    public void onClose() {
     }
 
     @Override
     public void onMouseClick(int button, int action, int mods) {
-        String actionStr;
-
-        switch (action) {
-            case GLFW.GLFW_RELEASE:
-                actionStr = "Release";
-                break;
-
-            case GLFW.GLFW_PRESS:
-                actionStr = "Press";
-                break;
-
-            case GLFW.GLFW_REPEAT:
-                actionStr = "Repeat";
-                break;
-
-            default:
-                actionStr = "Undef";
-        }
-
-        String buttonStr;
-
-        switch (button) {
-            case GLFW.GLFW_MOUSE_BUTTON_LEFT:
-                buttonStr = "left";
-                break;
-
-            case GLFW.GLFW_MOUSE_BUTTON_RIGHT:
-                buttonStr = "right";
-                break;
-
-            case GLFW.GLFW_MOUSE_BUTTON_MIDDLE:
-                buttonStr = "middle";
-                break;
-
-            default:
-                buttonStr = "Undef";
-        }
-
-        System.out.println("Mouse " + buttonStr + " button: " + actionStr);
     }
 
     @Override
     public void onMouseMove(double newX, double newY) {
-        System.out.println("Mouse move to " + newX + "; " + newY);
+        float dx = (float) newX - cursorPosition.x;
+        float dy = (float) newY - cursorPosition.y;
+        cursorPosition.x = (float) newX;
+        cursorPosition.y = (float) newY;
+
+        cameraController.lookAround(dx * 0.1f, -dy * 0.1f);
     }
 
     @Override
     public void onKeyPress(int key, int scancode, int action, int mods) {
-        String actionStr;
-
-        switch (action) {
-            case GLFW.GLFW_RELEASE:
-                actionStr = "Release";
-                break;
-
-            case GLFW.GLFW_PRESS:
-                actionStr = "Press";
-                break;
-
-            case GLFW.GLFW_REPEAT:
-                actionStr = "Repeat";
+        switch (key) {
+            case GLFW.GLFW_KEY_Q:
+                game.close();
                 break;
 
             default:
-                actionStr = "Undef";
+                break;
         }
-
-        System.out.println("Key" + actionStr + ": " + GLFW.glfwGetKeyName(key,scancode));
     }
 
     @Override

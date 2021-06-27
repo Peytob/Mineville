@@ -6,7 +6,7 @@ import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWScrollCallbackI;
 import org.lwjgl.system.MemoryStack;
 import ru.peytob.mineville.math.Vec2;
-import ru.peytob.mineville.view.input.KeyboardInput;
+import ru.peytob.mineville.view.input.KeyboardMouseInput;
 
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
@@ -26,7 +26,7 @@ public class Window {
      */
     private final long pointer;
 
-    private final KeyboardInput keyboardInput;
+    private final KeyboardMouseInput keyboardMouseInput;
 
     public Window(String title, int width, int height) {
         glfwDefaultWindowHints();
@@ -56,7 +56,7 @@ public class Window {
             glViewport(0, 0, contentWidth, contentHeight);
         }
 
-        this.keyboardInput = new KeyboardInput(this);
+        this.keyboardMouseInput = new KeyboardMouseInput(this);
     }
 
     /**
@@ -127,8 +127,8 @@ public class Window {
         }
     }
 
-    public KeyboardInput getKeyboardInput() {
-        return this.keyboardInput;
+    public KeyboardMouseInput getKeyboardMouseInput() {
+        return this.keyboardMouseInput;
     }
 
     public void setMouseButtonCallback(GLFWMouseButtonCallbackI callback) {
