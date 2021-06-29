@@ -5,6 +5,7 @@ import org.lwjgl.glfw.GLFWKeyCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWScrollCallbackI;
 import ru.peytob.mineville.math.Vec2;
+import ru.peytob.mineville.math.Vec2i;
 import ru.peytob.mineville.view.Window;
 import ru.peytob.mineville.view.input.KeyboardMouseInput;
 
@@ -41,6 +42,10 @@ public class WindowController {
 
     public Vec2 getCursorPosition() {
         return window.getCursorPosition();
+    }
+
+    public Vec2i getWindowSizes() {
+        return window.getWindowSizes();
     }
 
     public KeyboardMouseInput getKeyboardMouseInput() {

@@ -7,6 +7,7 @@ import ru.peytob.mineville.math.Vec3i;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.game.world.Chunk;
 import ru.peytob.mineville.model.game.world.Octree;
+import ru.peytob.mineville.model.game.world.World;
 import ru.peytob.mineville.model.graphic.Mesh;
 import ru.peytob.mineville.model.graphic.shader.WorldShader;
 
@@ -31,7 +32,7 @@ public class WorldDrawer {
         glDrawArrays(mode, 0, mesh.getVertexesCount());
     }
 
-    public void draw(Octree octree) {
+    public void draw(Octree octree, Mat4 transform) {
         // TODO move it to controller!!!
         if (octree.getMesh() == null) {
             OctreeMeshBuilder builder = new OctreeMeshBuilder();
@@ -60,14 +61,31 @@ public class WorldDrawer {
         draw(octree.getMesh(), GL_TRIANGLES);
     }
 
-    public void draw(Chunk chunk, WorldShader shader) {
+    public void draw(Chunk chunk, WorldShader shader, Mat4 transform) {
+        Octree[] octrees = chunk.getOctrees();
+
         for (int i = 0; i < 8; ++i) {
-            shader.setModelMatrix(Mat4.computeTranslation(0, 16 * i, 0));
-            draw(chunk.getOctrees()[i]);
+            shader.setModelMatrix(Mat4.computeTranslation(0, 16 * i, 0).multiplication(transform));
+            draw(octrees[i], null);
+        }
+    }
+
+    public void draw(World world, WorldShader worldShader, Mat4 transform) {
+        Chunk[][] chunks = world.getChunks();
+
+        for (int x = 0; x < chunks.length; x++) {
+            for (int z = 0; z < chunks.length; z++) {
+                Mat4 position = Mat4.computeTranslation(x * Chunk.SIDE_SIZE_X, 0, z * Chunk.SIDE_SIZE_Z);
+                draw(chunks[x][z], worldShader, position.multiplication(transform));
+            }
         }
     }
 
     public void display() {
         windowController.display();
+    }
+
+    public WindowController getWindowController() {
+        return windowController;
     }
 }

@@ -6,11 +6,13 @@ import ru.peytob.mineville.model.graphic.Mesh;
 
 public class Octree implements IBlockly {
     // TODO: Make octrees!
+    public static final int ROOT_SIDE_SIZE = 16;
+
     Block[][][] blocks;
     Mesh mesh;
 
     public Octree() {
-        this.blocks = new Block[16][16][16];
+        this.blocks = new Block[ROOT_SIDE_SIZE][ROOT_SIDE_SIZE][ROOT_SIDE_SIZE];
         this.mesh = null;
     }
 
@@ -39,12 +41,12 @@ public class Octree implements IBlockly {
 
     @Override
     public Vec3i getSizes() {
-        return new Vec3i(blocks.length, blocks.length, blocks.length);
+        return new Vec3i(ROOT_SIDE_SIZE, ROOT_SIDE_SIZE, ROOT_SIDE_SIZE);
     }
 
     @Override
     public boolean isPointIn(int x, int y, int z) {
-        return x >= 0 && x < 16 && y >= 0 && y < 16 && z >= 0 && z < 16;
+        return x >= 0 && x < ROOT_SIDE_SIZE && y >= 0 && y < ROOT_SIDE_SIZE && z >= 0 && z < ROOT_SIDE_SIZE;
     }
 
     public Mesh getMesh() {

@@ -5,6 +5,7 @@ import ru.peytob.mineville.controller.game.state.IGameState;
 import ru.peytob.mineville.controller.game.state.RunningGameState;
 import ru.peytob.mineville.model.game.Resources;
 import ru.peytob.mineville.model.game.world.Chunk;
+import ru.peytob.mineville.model.game.world.World;
 import ru.peytob.mineville.view.WorldDrawer;
 import ru.peytob.mineville.view.input.KeyboardMouseInput;
 
@@ -12,10 +13,9 @@ public class Game {
     private IGameState state;
 
     private final Resources resources;
-    private Chunk world;
+    private final World world;
 
     private final WorldDrawer worldDrawer;
-    private final KeyboardMouseInput keyboardMouseInput;
 
     private boolean isRunning;
 
@@ -23,9 +23,7 @@ public class Game {
         this.isRunning = true;
         this.resources = resources;
         this.worldDrawer = new WorldDrawer(windowController);
-        this.keyboardMouseInput = windowController.getKeyboardMouseInput();
-        this.world = new Chunk();
-        world.setBlock(0, 0, 0, resources.getBlockRepository().getBlock(1));
+        this.world = new World(4);
         setState(new RunningGameState(this));
     }
 
@@ -66,10 +64,6 @@ public class Game {
         state.handleInput();
     }
 
-    public KeyboardMouseInput getKeyboardMouseInput() {
-        return keyboardMouseInput;
-    }
-
     public void onMouseClick(int button, int action, int mods) {
         state.onMouseClick(button, action, mods);
     }
@@ -95,7 +89,7 @@ public class Game {
         return isRunning;
     }
 
-    public Chunk getWorld() {
+    public World getWorld() {
         return world;
     }
 }

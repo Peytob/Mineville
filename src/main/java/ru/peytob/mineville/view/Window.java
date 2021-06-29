@@ -6,6 +6,7 @@ import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWScrollCallbackI;
 import org.lwjgl.system.MemoryStack;
 import ru.peytob.mineville.math.Vec2;
+import ru.peytob.mineville.math.Vec2i;
 import ru.peytob.mineville.view.input.KeyboardMouseInput;
 
 import java.nio.DoubleBuffer;
@@ -124,6 +125,15 @@ public class Window {
             final DoubleBuffer height = stack.mallocDouble(1);
             glfwGetCursorPos(pointer, width, height);
             return new Vec2((float) width.get(0), (float) height.get(0));
+        }
+    }
+
+    public Vec2i getWindowSizes() {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            final IntBuffer width = stack.mallocInt(1);
+            final IntBuffer height = stack.mallocInt(1);
+            glfwGetWindowSize(pointer, width, height);
+            return new Vec2i(width.get(0), height.get(0));
         }
     }
 

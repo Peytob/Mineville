@@ -4,9 +4,8 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL33;
 import ru.peytob.mineville.controller.draw.CameraController;
 import ru.peytob.mineville.controller.game.Game;
-import ru.peytob.mineville.math.Mat4;
-import ru.peytob.mineville.math.Vec2;
-import ru.peytob.mineville.math.Vec3;
+import ru.peytob.mineville.math.*;
+import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.graphic.Mesh;
 import ru.peytob.mineville.view.WorldDrawer;
 import ru.peytob.mineville.view.input.KeyboardMouseInput;
@@ -18,18 +17,32 @@ public class RunningGameState implements IGameState {
 
     public RunningGameState(Game game) {
         this.game = game;
-        this.cursorPosition = game.getKeyboardMouseInput().getCursorPosition();
+        this.cursorPosition = game.getWorldDrawer().getWindowController().getCursorPosition();
+
+        Vec2i windowSizes = game.getWorldDrawer().getWindowController().getWindowSizes();
         this.cameraController = new CameraController(new Vec3(0, 0, -10 ), 0, (float) Math.toRadians(90),
-                (float) Math.toRadians(75), 800.0f / 600.0f);
+                (float) Math.toRadians(75), (float) windowSizes.x / (float) windowSizes.y);
     }
 
     @Override
     public void onSet() {
+        Vec3i sizes = game.getWorld().getSizes();
+        Block block = game.getResources().getBlockRepository().getBlock(1);
+
+        for (int y = 8; y < sizes.y; y += 8) {
+            for (int x = 0; x < sizes.x; x++) {
+                for (int z = 0; z < sizes.z; z++) {
+                    game.getWorld().setBlock(x, y, z, block);
+                }
+            }
+        }
+
+        game.getWorld().setBlock(0, 0, 0, block);
     }
 
     @Override
     public void handleInput() {
-        KeyboardMouseInput input = game.getKeyboardMouseInput();
+        KeyboardMouseInput input = game.getWorldDrawer().getWindowController().getKeyboardMouseInput();
 
         Vec3 cameraOffset = new Vec3(0 ,0, 0);
         float speed = 0.15f;
@@ -55,7 +68,6 @@ public class RunningGameState implements IGameState {
 
     @Override
     public void tick() {
-
     }
 
     @Override
@@ -66,12 +78,11 @@ public class RunningGameState implements IGameState {
     @Override
     public void draw() {
         game.getResources().getShadersPack().getWorldShader().use();
-        game.getResources().getShadersPack().getWorldShader().setModelMatrix(Mat4.computeIdentity());
         game.getResources().getShadersPack().getWorldShader().setProjectionMatrix(cameraController.computeProjection());
         game.getResources().getShadersPack().getWorldShader().setViewMatrix(cameraController.computeView());
 
         final WorldDrawer drawer = game.getWorldDrawer();
-        drawer.draw(game.getWorld(), game.getResources().getShadersPack().getWorldShader());
+        drawer.draw(game.getWorld(), game.getResources().getShadersPack().getWorldShader(), Mat4.computeIdentity());
     }
 
     @Override
@@ -110,6 +121,5 @@ public class RunningGameState implements IGameState {
 
     @Override
     public void onScroll(double xOffset, double yOffset) {
-        System.out.println("Scroll: " + xOffset + "; " + yOffset);
     }
 }
