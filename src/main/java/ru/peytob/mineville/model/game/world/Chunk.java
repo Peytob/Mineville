@@ -7,7 +7,7 @@ public class Chunk implements IBlockly {
 
     public static final int SIDE_SIZE_X = Octree.ROOT_SIDE_SIZE;
     public static final int SIDE_SIZE_Z = Octree.ROOT_SIDE_SIZE;
-    private static final int OCTREES_COUNT = 8;
+    public static final int OCTREES_COUNT = 8;
     public static final int SIDE_SIZE_Y = OCTREES_COUNT * Octree.ROOT_SIDE_SIZE;
 
     private final Octree[] octrees;
@@ -52,7 +52,7 @@ public class Chunk implements IBlockly {
         return x >= 0 && x < SIDE_SIZE_X && y >= 0 && y < SIDE_SIZE_Y && z >= 0 && z < SIDE_SIZE_Z;
     }
 
-    public Octree[] getOctrees() {
-        return octrees;
+    public Octree getOctree(int y) {
+        return octrees[y];
     }
 }

@@ -29,15 +29,25 @@ public class RunningGameState implements IGameState {
         Vec3i sizes = game.getWorld().getSizes();
         Block block = game.getResources().getBlockRepository().getBlock(1);
 
-        for (int y = 8; y < sizes.y; y += 8) {
-            for (int x = 0; x < sizes.x; x++) {
-                for (int z = 0; z < sizes.z; z++) {
-                    game.getWorld().setBlock(x, y, z, block);
+//        for (int y = 8; y < sizes.y; y += 8) {
+//            for (int x = 0; x < sizes.x; x++) {
+//                for (int z = 0; z < sizes.z; z++) {
+//                    game.getWorld().setBlock(x, y, z, block);
+//                }
+//            }
+//        }
+
+        game.getWorld().setBlock(0, 0, 0, block);
+
+        for (int i = 0; i < sizes.x; ++i) {
+            for (int j = 0; j < sizes.y; ++j) {
+                for (int k = 0; k < sizes.z; ++k) {
+                    if (game.getWorld().getBlock(i, j, k) != null) {
+                        System.out.println("Block at " + i + ", " + j + ", " + k);
+                    }
                 }
             }
         }
-
-        game.getWorld().setBlock(0, 0, 0, block);
     }
 
     @Override

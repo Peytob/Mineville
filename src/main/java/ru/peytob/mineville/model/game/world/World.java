@@ -4,6 +4,7 @@ import ru.peytob.mineville.math.Vec3i;
 import ru.peytob.mineville.model.game.object.Block;
 
 public class World implements IBlockly {
+    // Is Chunk[size * size] faster?
     private final Chunk[][] chunks;
 
     public World(int sizes) {
@@ -44,7 +45,7 @@ public class World implements IBlockly {
             int innerZ = z % Chunk.SIDE_SIZE_Z;
             int outerX = x / Chunk.SIDE_SIZE_X;
             int outerZ = z / Chunk.SIDE_SIZE_Z;
-            chunks[outerX][outerZ].removeBlock(innerX, y, innerZ);
+            return chunks[outerX][outerZ].getBlock(innerX, y, innerZ);
         }
 
         return null;
@@ -63,7 +64,11 @@ public class World implements IBlockly {
                 z >= 0 && z < Chunk.SIDE_SIZE_Z * chunks.length;
     }
 
-    public Chunk[][] getChunks() {
-        return chunks;
+    public Chunk getChunk(int x, int z) {
+        return chunks[x][z];
+    }
+
+    public int getWorldSide() {
+        return chunks.length;
     }
 }

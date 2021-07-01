@@ -32,7 +32,7 @@ public class WorldDrawer {
         glDrawArrays(mode, 0, mesh.getVertexesCount());
     }
 
-    public void draw(Octree octree, Mat4 transform) {
+    public void draw(Octree octree, WorldShader shader, Mat4 transform) {
         // TODO move it to controller!!!
         if (octree.getMesh() == null) {
             OctreeMeshBuilder builder = new OctreeMeshBuilder();
@@ -58,31 +58,24 @@ public class WorldDrawer {
             octree.setMesh(builder.buildMesh());
         }
 
+        shader.setModelMatrix(transform);
         draw(octree.getMesh(), GL_TRIANGLES);
     }
 
     public void draw(Chunk chunk, WorldShader shader, Mat4 transform) {
-        Octree[] octrees = chunk.getOctrees();
-
-        for (int i = 0; i < 8; ++i) {
-            shader.setModelMatrix(Mat4.computeTranslation(0, 16 * i, 0).multiplication(transform));
-            draw(octrees[i], null);
+        for (int y = 0; y < Chunk.OCTREES_COUNT; ++y) {
+            Mat4 localTrans = Mat4.computeTranslation(0, Octree.ROOT_SIDE_SIZE * y, 0);
+            draw(chunk.getOctree(y), shader, localTrans.multiplication(transform));
         }
     }
 
     public void draw(World world, WorldShader worldShader, Mat4 transform) {
-        Chunk[][] chunks = world.getChunks();
-
-        for (int x = 0; x < chunks.length; x++) {
-            for (int z = 0; z < chunks.length; z++) {
+        for (int x = 0; x < world.getWorldSide(); x++) {
+            for (int z = 0; z < world.getWorldSide(); z++) {
                 Mat4 position = Mat4.computeTranslation(x * Chunk.SIDE_SIZE_X, 0, z * Chunk.SIDE_SIZE_Z);
-                draw(chunks[x][z], worldShader, position.multiplication(transform));
+                draw(world.getChunk(x, z), worldShader, position.multiplication(transform));
             }
         }
-    }
-
-    public void display() {
-        windowController.display();
     }
 
     public WindowController getWindowController() {
