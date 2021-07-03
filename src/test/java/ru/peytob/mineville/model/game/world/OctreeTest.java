@@ -28,17 +28,30 @@ class OctreeTest {
     void setAndGetBlock() {
         Octree octree = new Octree();
 
-        octree.setBlock(0, 0, 0, block1);
-        assertEquals(1, octree.getBlock(0, 0, 0).getId());
+        octree.setBlock(0, 0, 0, block1); // 1 block inside
+        assertEquals(block1.getId(), octree.getBlock(0, 0, 0).getId());
 
-        octree.setBlock(5, 9, 10, block2);
-        assertEquals(2, octree.getBlock(5, 9, 10).getId());
+        octree.setBlock(5, 9, 10, block1); // 2 blocks inside
+        assertEquals(block1.getId(), octree.getBlock(5, 9, 10).getId());
 
-        octree.setBlock(5, 9, 10, block2);
-        assertEquals(2, octree.getBlock(5, 9, 10).getId());
+        octree.setBlock(5, 9, 10, block2); // 2 blocks inside
+        assertEquals(block2.getId(), octree.getBlock(5, 9, 10).getId());
 
-        octree.setBlock(5, 9, 10, block1);
-        assertEquals(1, octree.getBlock(5, 9, 10).getId());
+        octree.setBlock(20, 20, 20, block1); // 2 blocks inside
+        assertNull(octree.getBlock(20, 20, 20));
+
+        int blocksInsideCount = 0;
+        for (int x = 0; x < octree.getSizes().x; x++) {
+            for (int y = 0; y < octree.getSizes().y; y++) {
+                for (int z = 0; z < octree.getSizes().z; z++) {
+                    if (octree.getBlock(x, y, z) != null) {
+                        blocksInsideCount++;
+                    }
+                }
+            }
+        }
+
+        assertEquals(2, blocksInsideCount);
     }
 
     @Test
@@ -47,6 +60,9 @@ class OctreeTest {
 
         octree.setBlock(0, 0, 0, block1);
         assertNotNull(octree.getBlock(0, 0, 0));
+        octree.removeBlock(0, 0, 0);
+        assertNull(octree.getBlock(0, 0, 0));
+
         octree.removeBlock(0, 0, 0);
         assertNull(octree.getBlock(0, 0, 0));
 
