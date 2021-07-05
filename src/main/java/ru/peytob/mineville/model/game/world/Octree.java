@@ -4,37 +4,40 @@ import ru.peytob.mineville.math.Vec3i;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.graphic.Mesh;
 
+import static ru.peytob.mineville.math.CoordinatesUtils.toFlat3D;
+
 public class Octree implements IBlockly {
     // TODO: Make octrees!
-    public static final int ROOT_SIDE_SIZE = 16;
+    protected static final int ROOT_SIDE_SIZE_POWER_2 = 4;
+    public static final int ROOT_SIDE_SIZE = 1 << ROOT_SIDE_SIZE_POWER_2;
 
-    private final Block[][][] blocks;
+    private final Block[] blocks;
     private Mesh mesh;
     private static final Vec3i sizes = new Vec3i(ROOT_SIDE_SIZE, ROOT_SIDE_SIZE, ROOT_SIDE_SIZE);
 
     public Octree() {
-        this.blocks = new Block[ROOT_SIDE_SIZE][ROOT_SIDE_SIZE][ROOT_SIDE_SIZE];
+        this.blocks = new Block[ROOT_SIDE_SIZE * ROOT_SIDE_SIZE * ROOT_SIDE_SIZE];
         this.mesh = null;
     }
 
     @Override
     public void setBlock(int x, int y, int z, Block block) {
         if (isPointIn(x, y, z)) {
-            blocks[x][y][z] = block;
+            blocks[toFlat3D(x, y, z, ROOT_SIDE_SIZE, ROOT_SIDE_SIZE)] = block;
         }
     }
 
     @Override
     public void removeBlock(int x, int y, int z) {
         if (isPointIn(x, y, z)) {
-            blocks[x][y][z] = null;
+            blocks[toFlat3D(x, y, z, ROOT_SIDE_SIZE, ROOT_SIDE_SIZE)] = null;
         }
     }
 
     @Override
     public Block getBlock(int x, int y, int z) {
         if (isPointIn(x, y, z)) {
-            return blocks[x][y][z];
+            return blocks[toFlat3D(x, y, z, ROOT_SIDE_SIZE, ROOT_SIDE_SIZE)];
         }
 
         return null;

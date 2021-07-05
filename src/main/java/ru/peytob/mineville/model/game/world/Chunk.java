@@ -5,8 +5,11 @@ import ru.peytob.mineville.model.game.object.Block;
 
 public class Chunk implements IBlockly {
 
-    public static final int SIDE_SIZE_X = Octree.ROOT_SIDE_SIZE;
-    public static final int SIDE_SIZE_Z = Octree.ROOT_SIDE_SIZE;
+    protected static final int SIDE_SIZE_X_POWER_2 = Octree.ROOT_SIDE_SIZE_POWER_2;
+    public static final int SIDE_SIZE_X = 1 << SIDE_SIZE_X_POWER_2;
+    protected static final int SIDE_SIZE_Z_POWER_2 = Octree.ROOT_SIDE_SIZE_POWER_2;
+    public static final int SIDE_SIZE_Z = 1 << SIDE_SIZE_Z_POWER_2;
+
     public static final int OCTREES_COUNT = 8;
     public static final int SIDE_SIZE_Y = OCTREES_COUNT * Octree.ROOT_SIDE_SIZE;
     private static final Vec3i sizes = new Vec3i(SIDE_SIZE_X, SIDE_SIZE_Y, SIDE_SIZE_Z);
@@ -23,21 +26,21 @@ public class Chunk implements IBlockly {
     @Override
     public void setBlock(int x, int y, int z, Block block) {
         if (isPointIn(x, y, z)) {
-            octrees[y / Octree.ROOT_SIDE_SIZE].setBlock(x, y % Octree.ROOT_SIDE_SIZE, z, block);
+            octrees[y >> Octree.ROOT_SIDE_SIZE_POWER_2].setBlock(x, y & (Octree.ROOT_SIDE_SIZE - 1), z, block);
         }
     }
 
     @Override
     public void removeBlock(int x, int y, int z) {
         if (isPointIn(x, y, z)) {
-            octrees[y / Octree.ROOT_SIDE_SIZE].removeBlock(x, y % Octree.ROOT_SIDE_SIZE, z);
+            octrees[y >> Octree.ROOT_SIDE_SIZE_POWER_2].removeBlock(x, y & (Octree.ROOT_SIDE_SIZE - 1), z);
         }
     }
 
     @Override
     public Block getBlock(int x, int y, int z) {
         if (isPointIn(x, y, z)) {
-            return octrees[y / Octree.ROOT_SIDE_SIZE].getBlock(x, y % Octree.ROOT_SIDE_SIZE, z);
+            return octrees[y >> Octree.ROOT_SIDE_SIZE_POWER_2].getBlock(x, y & (Octree.ROOT_SIDE_SIZE - 1), z);
         }
 
         return null;
