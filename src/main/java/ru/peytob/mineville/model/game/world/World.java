@@ -27,8 +27,8 @@ public class World implements IBlockly {
         if (isPointIn(x, y, z)) {
             int innerX = x & (Chunk.SIDE_SIZE_X - 1);
             int innerZ = z & (Chunk.SIDE_SIZE_Z - 1);
-            int outerX = x >> 4;
-            int outerZ = z >> 4;
+            int outerX = x >> Chunk.SIDE_SIZE_X_POWER_2;
+            int outerZ = z >> Chunk.SIDE_SIZE_Z_POWER_2;
             getChunk(outerX, outerZ).setBlock(innerX, y, innerZ, block);
         }
     }
@@ -38,8 +38,8 @@ public class World implements IBlockly {
         if (isPointIn(x, y, z)) {
             int innerX = x & (Chunk.SIDE_SIZE_X - 1);
             int innerZ = z & (Chunk.SIDE_SIZE_Z - 1);
-            int outerX = x >> 4;
-            int outerZ = z >> 4;
+            int outerX = x >> Chunk.SIDE_SIZE_X_POWER_2;
+            int outerZ = z >> Chunk.SIDE_SIZE_Z_POWER_2;
             getChunk(outerX, outerZ).removeBlock(innerX, y, innerZ);
         }
     }
@@ -49,8 +49,8 @@ public class World implements IBlockly {
         if (isPointIn(x, y, z)) {
             int innerX = x & (Chunk.SIDE_SIZE_X - 1);
             int innerZ = z & (Chunk.SIDE_SIZE_Z - 1);
-            int outerX = x >> 4;
-            int outerZ = z >> 4;
+            int outerX = x >> Chunk.SIDE_SIZE_X_POWER_2;
+            int outerZ = z >> Chunk.SIDE_SIZE_Z_POWER_2;
             return getChunk(outerX, outerZ).getBlock(innerX, y, innerZ);
         }
 
@@ -79,6 +79,6 @@ public class World implements IBlockly {
     }
 
     public int getWorldSide() {
-        return chunks.length;
+        return worldSide;
     }
 }
