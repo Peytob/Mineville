@@ -9,6 +9,7 @@ public class Chunk implements IBlockly {
     public static final int SIDE_SIZE_Z = Octree.ROOT_SIDE_SIZE;
     public static final int OCTREES_COUNT = 8;
     public static final int SIDE_SIZE_Y = OCTREES_COUNT * Octree.ROOT_SIDE_SIZE;
+    private static final Vec3i sizes = new Vec3i(SIDE_SIZE_X, SIDE_SIZE_Y, SIDE_SIZE_Z);
 
     private final Octree[] octrees;
 
@@ -44,7 +45,7 @@ public class Chunk implements IBlockly {
 
     @Override
     public Vec3i getSizes() {
-        return new Vec3i(SIDE_SIZE_X, SIDE_SIZE_Y, SIDE_SIZE_Z);
+        return sizes;
     }
 
     @Override

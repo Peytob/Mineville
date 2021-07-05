@@ -8,8 +8,9 @@ public class Octree implements IBlockly {
     // TODO: Make octrees!
     public static final int ROOT_SIDE_SIZE = 16;
 
-    Block[][][] blocks;
-    Mesh mesh;
+    private final Block[][][] blocks;
+    private Mesh mesh;
+    private static final Vec3i sizes = new Vec3i(ROOT_SIDE_SIZE, ROOT_SIDE_SIZE, ROOT_SIDE_SIZE);
 
     public Octree() {
         this.blocks = new Block[ROOT_SIDE_SIZE][ROOT_SIDE_SIZE][ROOT_SIDE_SIZE];
@@ -41,7 +42,7 @@ public class Octree implements IBlockly {
 
     @Override
     public Vec3i getSizes() {
-        return new Vec3i(ROOT_SIDE_SIZE, ROOT_SIDE_SIZE, ROOT_SIDE_SIZE);
+        return sizes;
     }
 
     @Override

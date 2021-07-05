@@ -6,6 +6,7 @@ import ru.peytob.mineville.model.game.object.Block;
 public class World implements IBlockly {
     // Is Chunk[size * size] faster?
     private final Chunk[][] chunks;
+    private final Vec3i sizes;
 
     public World(int sizes) {
         this.chunks = new Chunk[sizes][sizes];
@@ -14,6 +15,7 @@ public class World implements IBlockly {
                 chunks[x][z] = new Chunk();
             }
         }
+        this.sizes = new Vec3i(Chunk.SIDE_SIZE_X * chunks.length, Chunk.SIDE_SIZE_Y, Chunk.SIDE_SIZE_Z * chunks.length);
     }
 
     @Override
@@ -53,7 +55,7 @@ public class World implements IBlockly {
 
     @Override
     public Vec3i getSizes() {
-        return new Vec3i(Chunk.SIDE_SIZE_X * chunks.length, Chunk.SIDE_SIZE_Y, Chunk.SIDE_SIZE_Z * chunks.length);
+        return sizes;
     }
 
     @Override
