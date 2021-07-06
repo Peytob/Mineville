@@ -41,16 +41,34 @@ public class WorldDrawer {
                 for (int y = 0; y < 16; y++) {
                     for (int z = 0; z < 16; z++) {
                         Block block = octree.getBlock(x, y, z);
+
                         if (block == null) {
                             continue;
                         }
-                        Vec3i position = new Vec3i(x, y, z);
-                        builder.addBottom(block, position);
-                        builder.addEast(block, position);
-                        builder.addNorth(block, position);
-                        builder.addSouth(block, position);
-                        builder.addWest(block, position);
-                        builder.addTop(block, position);
+
+                        if (octree.getBlock(x, y - 1, z) == null) {
+                            builder.addBottom(block, x, y, z);
+                        }
+
+                        if (octree.getBlock(x + 1, y, z)  == null) {
+                            builder.addEast(block, x, y, z);
+                        }
+
+                        if (octree.getBlock(x, y, z + 1)  == null) {
+                            builder.addNorth(block, x, y, z);
+                        }
+
+                        if (octree.getBlock(x, y, z - 1) == null) {
+                            builder.addSouth(block, x, y, z);
+                        }
+
+                        if (octree.getBlock(x - 1, y, z)  == null) {
+                            builder.addWest(block, x, y, z);
+                        }
+
+                        if (octree.getBlock(x, y + 1, z)  == null) {
+                            builder.addTop(block, x, y, z);
+                        }
                     }
                 }
             }

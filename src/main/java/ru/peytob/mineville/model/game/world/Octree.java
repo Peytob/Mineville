@@ -4,12 +4,16 @@ import ru.peytob.mineville.math.Vec3i;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.graphic.Mesh;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 import static ru.peytob.mineville.math.CoordinatesUtils.toFlat3D;
 
 public class Octree implements IBlockly {
     // TODO: Make octrees!
     protected static final int ROOT_SIDE_SIZE_POWER_2 = 4;
     public static final int ROOT_SIDE_SIZE = 1 << ROOT_SIDE_SIZE_POWER_2;
+    static final Vec3i SIZES = new Vec3i(ROOT_SIDE_SIZE, ROOT_SIDE_SIZE, ROOT_SIDE_SIZE);
 
     private final AbstractNode root;
     private Mesh mesh;
@@ -21,22 +25,30 @@ public class Octree implements IBlockly {
 
     @Override
     public void setBlock(int x, int y, int z, Block block) {
-        root.setBlock(x, y, z, block);
+        if (root.isPointIn(x, y, z)) {
+            root.setBlock(x, y, z, block);
+        }
     }
 
     @Override
     public void removeBlock(int x, int y, int z) {
-        root.removeBlock(x, y, z);
+        if (root.isPointIn(x, y, z)) {
+            root.removeBlock(x, y, z);
+        }
     }
 
     @Override
     public Block getBlock(int x, int y, int z) {
-        return root.getBlock(x, y, z);
+        if (root.isPointIn(x, y, z)) {
+            return root.getBlock(x, y, z);
+        }
+
+        return null;
     }
 
     @Override
     public Vec3i getSizes() {
-        return root.getSizes();
+        return SIZES;
     }
 
     @Override
@@ -53,109 +65,119 @@ public class Octree implements IBlockly {
     }
 
     static abstract class AbstractNode implements IBlockly {
-
+        public abstract boolean isEmpty();
     }
 
     static class InnerNode extends AbstractNode {
         private final int size;
         private final AbstractNode[] childrens;
-        private final Vec3i sizes;
 
         public InnerNode(int size) {
             this.size = size;
             this.childrens = (size == 2) ? new LeafNode[8] : new InnerNode[8];
-            this.sizes = new Vec3i(size, size, size);
-
-            for (int i = 0; i < childrens.length; i++) {
-                childrens[i] = (size == 2) ? new LeafNode() : new InnerNode(size / 2);
-            }
         }
 
         @Override
         public void setBlock(int x, int y, int z, Block block) {
-            if (isPointIn(x, y, z)) {
-                int half = size / 2;
+            int half = size >> 1;
 
-                int innerX = x % half;
-                int innerY = y % half;
-                int innerZ = z % half;
+            int innerX = x & (half - 1);
+            int innerY = y & (half - 1);
+            int innerZ = z & (half - 1);
 
-                int arrayIndex = toFlat3D(x / half, y / half, z / half, 2, 2);
+            int arrayIndex = toFlat3D(x / half, y / half, z / half, 2, 2);
 
-                childrens[arrayIndex].setBlock(innerX, innerY, innerZ, block);
+            if (childrens[arrayIndex] == null) {
+                childrens[arrayIndex] = (size == 2) ? new LeafNode() : new InnerNode(size / 2);
             }
+
+            childrens[arrayIndex].setBlock(innerX, innerY, innerZ, block);
         }
 
         @Override
         public void removeBlock(int x, int y, int z) {
-            if (isPointIn(x, y, z)) {
-                childrens[toFlat3D(x, y, z, 2, 2)].removeBlock(x % 2, y % 2, z % 2);
+            int half = size >> 1;
+
+            int innerX = x & (half - 1);
+            int innerY = y & (half - 1);
+            int innerZ = z & (half - 1);
+
+            int arrayIndex = toFlat3D(x / half, y / half, z / half, 2, 2);
+
+            if (childrens[arrayIndex] != null) {
+
+                childrens[arrayIndex].removeBlock(innerX, innerY, innerZ);
+
+                if (childrens[arrayIndex].isEmpty()) {
+                    childrens[arrayIndex] = null;
+                }
             }
         }
 
         @Override
         public Block getBlock(int x, int y, int z) {
-            if (isPointIn(x, y, z)) {
-                int half = size / 2;
+            int half = size >> 1;
 
-                int innerX = x % half;
-                int innerY = y % half;
-                int innerZ = z % half;
+            int innerX = x & (half - 1);
+            int innerY = y & (half - 1);
+            int innerZ = z & (half - 1);
 
-                int arrayIndex = toFlat3D(x / half, y / half, z / half, 2, 2);
+            int arrayIndex = toFlat3D(x / half, y / half, z / half, 2, 2);
 
-                return childrens[arrayIndex].getBlock(innerX, innerY, innerZ);
+            if (childrens[arrayIndex] == null) {
+                return null;
             }
 
-            return null;
+            return childrens[arrayIndex].getBlock(innerX, innerY, innerZ);
         }
 
         @Override
         public Vec3i getSizes() {
-            return sizes;
+            return null;
         }
 
         @Override
         public boolean isPointIn(int x, int y, int z) {
             return x >= 0 && x < size && y >= 0 && y < size && z >= 0 && z < size;
         }
+
+        @Override
+        public boolean isEmpty() {
+            return Arrays.stream(childrens).allMatch(Objects::isNull);
+        }
     }
 
     static class LeafNode extends AbstractNode {
-        static final Vec3i sizes = new Vec3i(1, 1, 1);
-        Block block;
+        private Block block;
 
         @Override
         public void setBlock(int x, int y, int z, Block block) {
-            if (isPointIn(x, y, z)) {
-                this.block = block;
-            }
+            this.block = block;
         }
 
         @Override
         public void removeBlock(int x, int y, int z) {
-            if (isPointIn(x, y, z)) {
-                this.block = null;
-            }
+            this.block = null;
         }
 
         @Override
         public Block getBlock(int x, int y, int z) {
-            if (isPointIn(x, y, z)) {
-                return block;
-            }
-
-            return null;
+            return block;
         }
 
         @Override
         public Vec3i getSizes() {
-            return sizes;
+            return null;
         }
 
         @Override
         public boolean isPointIn(int x, int y, int z) {
             return x == 0 && y == 0 && z == 0;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return block == null;
         }
     }
 }

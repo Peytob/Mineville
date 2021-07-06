@@ -44,6 +44,8 @@ public class Window {
 
         glfwMakeContextCurrent(pointer);
 
+        glfwSwapInterval(1);
+
         glfwSetInputMode(pointer, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         createCapabilities();
