@@ -9,10 +9,10 @@ uniform mat4 u_view;
 uniform mat4 u_model;
 
 out VS_OUT {
-    vec3 texture;
+    vec2 texture;
 } VSO;
 
 void main() {
     gl_Position = u_projection * u_view * u_model * vec4(l_position, 1.0);
-    VSO.texture = vec3(l_position);
+    VSO.texture = l_texture;
 }

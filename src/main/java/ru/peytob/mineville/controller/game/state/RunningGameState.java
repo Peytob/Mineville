@@ -1,17 +1,24 @@
 package ru.peytob.mineville.controller.game.state;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL33;
 import ru.peytob.mineville.controller.draw.CameraController;
 import ru.peytob.mineville.controller.game.Game;
+import ru.peytob.mineville.controller.loader.ImageLoader;
 import ru.peytob.mineville.math.*;
 import ru.peytob.mineville.model.game.object.Block;
+import ru.peytob.mineville.model.graphic.Image;
+import ru.peytob.mineville.model.opengl.Texture;
 import ru.peytob.mineville.view.input.KeyboardMouseInput;
 import ru.peytob.mineville.view.render.world.WorldDrawer;
+
+import java.io.IOException;
 
 public class RunningGameState implements IGameState {
     private final Game game;
     private final Vec2 cursorPosition;
     private final CameraController cameraController;
+    private Texture texture;
 
     public RunningGameState(Game game) {
         this.game = game;
@@ -36,6 +43,13 @@ public class RunningGameState implements IGameState {
         }
 
         game.getWorld().setBlock(0, 0, 0, block);
+
+        ImageLoader loader = new ImageLoader();
+        try {
+            Image image = loader.loadFromFile("src/main/resources/images/blocks/grass_side.png");
+            this.texture = new Texture(image);
+        } catch (IOException ignored) {
+        }
     }
 
     @Override
@@ -75,6 +89,8 @@ public class RunningGameState implements IGameState {
 
     @Override
     public void draw() {
+        GL33.glActiveTexture(texture.getId());
+
         game.getResources().getShadersPack().getWorldShader().use();
         game.getResources().getShadersPack().getWorldShader().setProjectionMatrix(cameraController.computeProjection());
         game.getResources().getShadersPack().getWorldShader().setViewMatrix(cameraController.computeView());
@@ -85,10 +101,12 @@ public class RunningGameState implements IGameState {
 
     @Override
     public void onChange() {
+        texture.destroy();
     }
 
     @Override
     public void onClose() {
+        texture.destroy();
     }
 
     @Override

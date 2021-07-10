@@ -37,7 +37,7 @@ class BlockLoader {
         Float[] northSide = new Float[]{
                 0.5f, 0.5f, 0.5f, // position
                 0.0f, 0.0f, 1.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 0.0f, // texture
 
                 -0.5f, 0.5f, 0.5f, // position
                 0.0f, 0.0f, 1.0f, // normal
@@ -45,25 +45,25 @@ class BlockLoader {
 
                 -0.5f, -0.5f, 0.5f, // position
                 0.0f, 0.0f, 1.0f, // normal
-                0.0f, 0.0f, // texture
+                0.0f, 1.0f, // texture
 
                 0.5f, 0.5f, 0.5f, // position
                 0.0f, 0.0f, 1.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 0.0f, // texture
 
                 -0.5f, -0.5f, 0.5f, // position
                 0.0f, 0.0f, 1.0f, // normal
-                0.0f, 0.0f, // texture
+                0.0f, 1.0f, // texture
 
                 0.5f, -0.5f, 0.5f, // position
                 0.0f, 0.0f, 1.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 1.0f, // texture
         };
 
         Float[] southSide = new Float[]{
                 -0.5f, 0.5f, -0.5f, // position
                 0.0f, 0.0f, -1.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 0.0f, // texture
 
                 0.5f, 0.5f, -0.5f, // position
                 0.0f, 0.0f, -1.0f, // normal
@@ -71,19 +71,19 @@ class BlockLoader {
 
                 0.5f, -0.5f, -0.5f, // position
                 0.0f, 0.0f, -1.0f, // normal
-                0.0f, 0.0f, // texture
+                0.0f, 1.0f, // texture
 
                 -0.5f, 0.5f, -0.5f, // position
                 0.0f, 0.0f, -1.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 0.0f, // texture
 
                 0.5f, -0.5f, -0.5f, // position
                 0.0f, 0.0f, -1.0f, // normal
-                0.0f, 0.0f, // texture
+                0.0f, 1.0f, // texture
 
                 -0.5f, -0.5f, -0.5f, // position
                 0.0f, 0.0f, -1.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 1.0f, // texture
         };
 
         Float[] westSide = new Float[]{
@@ -93,11 +93,11 @@ class BlockLoader {
 
                 -0.5f, 0.5f, -0.5f, // position
                 -1.0f, 0.0f, 0.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 0.0f, // texture
 
                 -0.5f, -0.5f, -0.5f, // position
                 -1.0f, 0.0f, 0.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 1.0f, // texture
 
                 -0.5f, 0.5f, 0.5f, // position
                 -1.0f, 0.0f, 0.0f, // normal
@@ -105,11 +105,11 @@ class BlockLoader {
 
                 -0.5f, -0.5f, -0.5f, // position
                 -1.0f, 0.0f, 0.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 1.0f, // texture
 
                 -0.5f, -0.5f, 0.5f, // position
                 -1.0f, 0.0f, 0.0f, // normal
-                0.0f, 0.0f, // texture
+                0.0f, 1.0f, // texture
         };
 
         Float[] eastSide = new Float[]{
@@ -119,11 +119,11 @@ class BlockLoader {
 
                 0.5f, 0.5f, 0.5f, // position
                 1.0f, 0.0f, 0.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 0.0f, // texture
 
                 0.5f, -0.5f, 0.5f, // position
                 1.0f, 0.0f, 0.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 1.0f, // texture
 
                 0.5f, 0.5f, -0.5f, // position
                 1.0f, 0.0f, 0.0f, // normal
@@ -131,21 +131,21 @@ class BlockLoader {
 
                 0.5f, -0.5f, 0.5f, // position
                 1.0f, 0.0f, 0.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 1.0f, // texture
 
                 0.5f, -0.5f, -0.5f, // position
                 1.0f, 0.0f, 0.0f, // normal
-                0.0f, 0.0f, // texture
+                0.0f, 1.0f, // texture
         };
 
         Float[] topSide = new Float[]{
                 -0.5f, 0.5f, -0.5f, // position
                 0.0f, 1.0f, 0.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 1.0f, // texture
 
                 -0.5f, 0.5f, 0.5f, // position
                 0.0f, 1.0f, 0.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 0.0f, // texture
 
                 0.5f, 0.5f, 0.5f, // position
                 0.0f, 1.0f, 0.0f, // normal
@@ -153,7 +153,7 @@ class BlockLoader {
 
                 -0.5f, 0.5f, -0.5f, // position
                 0.0f, 1.0f, 0.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 1.0f, // texture
 
                 0.5f, 0.5f, 0.5f, // position
                 0.0f, 1.0f, 0.0f, // normal
@@ -161,17 +161,17 @@ class BlockLoader {
 
                 0.5f, 0.5f, -0.5f, // position
                 0.0f, 1.0f, 0.0f, // normal
-                0.0f, 0.0f, // texture
+                0.0f, 1.0f, // texture
         };
 
         Float[] bottomSide = new Float[]{
                 0.5f, -0.5f, -0.5f, // position
                 0.0f, -1.0f, 0.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 1.0f, // texture
 
                 0.5f, -0.5f, 0.5f, // position
                 0.0f, -1.0f, 0.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 0.0f, // texture
 
                 -0.5f, -0.5f, 0.5f, // position
                 0.0f, -1.0f, 0.0f, // normal
@@ -179,7 +179,7 @@ class BlockLoader {
 
                 0.5f, -0.5f, -0.5f, // position
                 0.0f, -1.0f, 0.0f, // normal
-                0.0f, 0.0f, // texture
+                1.0f, 1.0f, // texture
 
                 -0.5f, -0.5f, 0.5f, // position
                 0.0f, -1.0f, 0.0f, // normal
@@ -187,7 +187,7 @@ class BlockLoader {
 
                 -0.5f, -0.5f, -0.5f, // position
                 0.0f, -1.0f, 0.0f, // normal
-                0.0f, 0.0f, // texture
+                0.0f, 1.0f, // texture
         };
 
         BlockModel cubeModel = new BlockModel(northSide, southSide, westSide, eastSide, topSide, bottomSide);
