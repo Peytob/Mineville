@@ -31,7 +31,7 @@ public class CameraController {
     public void lookAround(float xOffset, float yOffset) {
         float yaw = camera.getYaw() + (float) Math.toRadians(xOffset);
         float pitch = camera.getPitch() + (float) Math.toRadians(yOffset);
-        float borderAngle = (float) Math.toRadians(89.0f);
+        float borderAngle = (float) Math.toRadians(89.999f);
 
         if (pitch > borderAngle) {
             pitch = borderAngle;

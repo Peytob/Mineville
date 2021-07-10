@@ -1,14 +1,12 @@
 package ru.peytob.mineville.controller.game.state;
 
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL33;
 import ru.peytob.mineville.controller.draw.CameraController;
 import ru.peytob.mineville.controller.game.Game;
 import ru.peytob.mineville.math.*;
 import ru.peytob.mineville.model.game.object.Block;
-import ru.peytob.mineville.model.graphic.Mesh;
-import ru.peytob.mineville.view.WorldDrawer;
 import ru.peytob.mineville.view.input.KeyboardMouseInput;
+import ru.peytob.mineville.view.render.world.WorldDrawer;
 
 public class RunningGameState implements IGameState {
     private final Game game;
@@ -82,7 +80,7 @@ public class RunningGameState implements IGameState {
         game.getResources().getShadersPack().getWorldShader().setViewMatrix(cameraController.computeView());
 
         final WorldDrawer drawer = game.getWorldDrawer();
-        drawer.draw(game.getWorld(), game.getResources().getShadersPack().getWorldShader(), Mat4.computeIdentity());
+        drawer.draw(game.getWorld(), Mat4.computeIdentity());
     }
 
     @Override

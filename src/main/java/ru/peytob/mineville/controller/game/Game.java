@@ -4,10 +4,8 @@ import ru.peytob.mineville.controller.WindowController;
 import ru.peytob.mineville.controller.game.state.IGameState;
 import ru.peytob.mineville.controller.game.state.RunningGameState;
 import ru.peytob.mineville.model.game.Resources;
-import ru.peytob.mineville.model.game.world.Chunk;
 import ru.peytob.mineville.model.game.world.World;
-import ru.peytob.mineville.view.WorldDrawer;
-import ru.peytob.mineville.view.input.KeyboardMouseInput;
+import ru.peytob.mineville.view.render.world.WorldDrawer;
 
 public class Game {
     private IGameState state;
@@ -22,7 +20,7 @@ public class Game {
     public Game(Resources resources, WindowController windowController) {
         this.isRunning = true;
         this.resources = resources;
-        this.worldDrawer = new WorldDrawer(windowController);
+        this.worldDrawer = new WorldDrawer(windowController, resources.getShadersPack());
         this.world = new World(4);
         setState(new RunningGameState(this));
     }
