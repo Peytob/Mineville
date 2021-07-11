@@ -13,7 +13,7 @@ public class ResourcesLoader {
     }
 
     public Resources loadResources() throws IOException {
-        new BlockLoader(resources.getBlockRepository()).loadBlocks();
+        new BlockLoader(resources).loadBlocks();
         resources.setShadersPack(new ShadersLoader().loadShaderPack(Path.of("src/main/resources/shaders")));
         return resources;
     }

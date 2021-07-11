@@ -18,7 +18,6 @@ public class RunningGameState implements IGameState {
     private final Game game;
     private final Vec2 cursorPosition;
     private final CameraController cameraController;
-    private Texture texture;
 
     public RunningGameState(Game game) {
         this.game = game;
@@ -43,13 +42,6 @@ public class RunningGameState implements IGameState {
         }
 
         game.getWorld().setBlock(0, 0, 0, block);
-
-        ImageLoader loader = new ImageLoader();
-        try {
-            Image image = loader.loadFromFile("src/main/resources/images/blocks/grass_side.png");
-            this.texture = new Texture(image);
-        } catch (IOException ignored) {
-        }
     }
 
     @Override
@@ -89,8 +81,6 @@ public class RunningGameState implements IGameState {
 
     @Override
     public void draw() {
-        GL33.glActiveTexture(texture.getId());
-
         game.getResources().getShadersPack().getWorldShader().use();
         game.getResources().getShadersPack().getWorldShader().setProjectionMatrix(cameraController.computeProjection());
         game.getResources().getShadersPack().getWorldShader().setViewMatrix(cameraController.computeView());
@@ -101,12 +91,10 @@ public class RunningGameState implements IGameState {
 
     @Override
     public void onChange() {
-        texture.destroy();
     }
 
     @Override
     public void onClose() {
-        texture.destroy();
     }
 
     @Override

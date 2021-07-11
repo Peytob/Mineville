@@ -8,6 +8,7 @@ import ru.peytob.mineville.model.game.world.Chunk;
 import ru.peytob.mineville.model.game.world.Octree;
 import ru.peytob.mineville.model.game.world.World;
 import ru.peytob.mineville.model.graphic.Mesh;
+import ru.peytob.mineville.model.graphic.TexturesPack;
 import ru.peytob.mineville.model.graphic.shader.ShadersPack;
 import ru.peytob.mineville.model.graphic.shader.WorldShader;
 import ru.peytob.mineville.view.render.Drawer;
@@ -15,13 +16,15 @@ import ru.peytob.mineville.view.render.Drawer;
 import static org.lwjgl.opengl.GL33.*;
 
 public class WorldDrawer extends Drawer {
-    protected World world;
+    private World world;
+    private final TexturesPack texturesPack;
     private WorldShader worldShader;
 
-    public WorldDrawer(WindowController windowController, ShadersPack shadersPack) {
+    public WorldDrawer(WindowController windowController, ShadersPack shadersPack, TexturesPack texturesPack) {
         super(windowController, shadersPack);
         this.world = null;
         this.worldShader = shadersPack.getWorldShader();
+        this.texturesPack = texturesPack;
     }
 
     public void clear() {
@@ -37,6 +40,7 @@ public class WorldDrawer extends Drawer {
     private void justDrawIt(Mat4 transform) {
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LESS);
+        glActiveTexture(texturesPack.getTexture().getId());
 
         for (int x = 0; x < world.getWorldSide(); x++) {
             for (int z = 0; z < world.getWorldSide(); z++) {

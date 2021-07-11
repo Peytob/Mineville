@@ -20,7 +20,7 @@ public class Game {
     public Game(Resources resources, WindowController windowController) {
         this.isRunning = true;
         this.resources = resources;
-        this.worldDrawer = new WorldDrawer(windowController, resources.getShadersPack());
+        this.worldDrawer = new WorldDrawer(windowController, resources.getShadersPack(), resources.getTexturesPack());
         this.world = new World(4);
         setState(new RunningGameState(this));
     }

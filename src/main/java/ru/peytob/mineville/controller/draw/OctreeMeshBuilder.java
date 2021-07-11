@@ -23,6 +23,9 @@ public class OctreeMeshBuilder {
             top[i] += x;
             top[i + 1] += y;
             top[i + 2] += z;
+
+            top[i + 6] = block.getModel().getTexture().getTopFace().getX() + top[i + 6] * block.getModel().getTexture().getTopFace().getAbsoluteWidth();
+            top[i + 7] = block.getModel().getTexture().getTopFace().getY() + top[i + 7] * block.getModel().getTexture().getTopFace().getAbsoluteHeight();
         }
 
         Collections.addAll(buffer, top);
@@ -36,6 +39,9 @@ public class OctreeMeshBuilder {
             top[i] += x;
             top[i + 1] += y;
             top[i + 2] += z;
+
+            top[i + 6] = block.getModel().getTexture().getBottomFace().getX() + top[i + 6] * block.getModel().getTexture().getBottomFace().getAbsoluteWidth();
+            top[i + 7] = block.getModel().getTexture().getBottomFace().getY() + top[i + 7] * block.getModel().getTexture().getBottomFace().getAbsoluteHeight();
         }
 
         Collections.addAll(buffer, top);
@@ -49,6 +55,9 @@ public class OctreeMeshBuilder {
             top[i] += x;
             top[i + 1] += y;
             top[i + 2] += z;
+
+            top[i + 6] = block.getModel().getTexture().getWestFace().getX() + top[i + 6] * block.getModel().getTexture().getWestFace().getAbsoluteWidth();
+            top[i + 7] = block.getModel().getTexture().getWestFace().getY() + top[i + 7] * block.getModel().getTexture().getWestFace().getAbsoluteHeight();
         }
 
         Collections.addAll(buffer, top);
@@ -62,6 +71,9 @@ public class OctreeMeshBuilder {
             top[i] += x;
             top[i + 1] += y;
             top[i + 2] += z;
+
+            top[i + 6] = block.getModel().getTexture().getEastFace().getX() + top[i + 6] * block.getModel().getTexture().getEastFace().getAbsoluteWidth();
+            top[i + 7] = block.getModel().getTexture().getEastFace().getY() + top[i + 7] * block.getModel().getTexture().getEastFace().getAbsoluteHeight();
         }
 
         Collections.addAll(buffer, top);
@@ -75,6 +87,9 @@ public class OctreeMeshBuilder {
             top[i] += x;
             top[i + 1] += y;
             top[i + 2] += z;
+
+            top[i + 6] = block.getModel().getTexture().getSouthFace().getX() + top[i + 6] * block.getModel().getTexture().getSouthFace().getAbsoluteWidth();
+            top[i + 7] = block.getModel().getTexture().getSouthFace().getY() + top[i + 7] * block.getModel().getTexture().getSouthFace().getAbsoluteHeight();
         }
 
         Collections.addAll(buffer, top);
@@ -88,6 +103,9 @@ public class OctreeMeshBuilder {
             top[i] += x;
             top[i + 1] += y;
             top[i + 2] += z;
+
+            top[i + 6] = block.getModel().getTexture().getNorthFace().getX() + top[i + 6] * block.getModel().getTexture().getNorthFace().getAbsoluteWidth();
+            top[i + 7] = block.getModel().getTexture().getNorthFace().getY() + top[i + 7] * block.getModel().getTexture().getNorthFace().getAbsoluteHeight();
         }
 
         Collections.addAll(buffer, top);

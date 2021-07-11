@@ -10,15 +10,17 @@ public class BlockModel {
     private final Float[] eastFace;
     private final Float[] topFace;
     private final Float[] bottomFace;
+    private final BlockTexture texture;
 
     public BlockModel(Float[] northFace, Float[] southFace, Float[] westFace, Float[] eastFace,
-                      Float[] topFace, Float[] bottomFace) {
+                      Float[] topFace, Float[] bottomFace, BlockTexture texture) {
         this.northFace = northFace;
         this.southFace = southFace;
         this.westFace = westFace;
         this.eastFace = eastFace;
         this.topFace = topFace;
         this.bottomFace = bottomFace;
+        this.texture = texture;
     }
 
     public Float[] getNorthFace() {
@@ -43,5 +45,9 @@ public class BlockModel {
 
     public Float[] getBottomFace() {
         return bottomFace;
+    }
+
+    public BlockTexture getTexture() {
+        return texture;
     }
 }
