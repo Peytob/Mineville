@@ -10,17 +10,18 @@ import java.util.Objects;
 import static ru.peytob.mineville.math.CoordinatesUtils.toFlat3D;
 
 public class Octree implements IBlockly {
-    // TODO: Make octrees!
     protected static final int ROOT_SIDE_SIZE_POWER_2 = 4;
     public static final int ROOT_SIDE_SIZE = 1 << ROOT_SIDE_SIZE_POWER_2;
     static final Vec3i SIZES = new Vec3i(ROOT_SIDE_SIZE, ROOT_SIDE_SIZE, ROOT_SIDE_SIZE);
 
     private final AbstractNode root;
     private Mesh mesh;
+    private final Vec3i position;
 
-    public Octree() {
+    public Octree(Vec3i position) {
         this.root = new InnerNode(ROOT_SIDE_SIZE);
         this.mesh = null;
+        this.position = position;
     }
 
     @Override
@@ -44,6 +45,10 @@ public class Octree implements IBlockly {
         }
 
         return null;
+    }
+
+    public Vec3i getPosition() {
+        return position;
     }
 
     @Override

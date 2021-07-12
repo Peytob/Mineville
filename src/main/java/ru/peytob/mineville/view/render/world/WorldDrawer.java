@@ -3,6 +3,7 @@ package ru.peytob.mineville.view.render.world;
 import ru.peytob.mineville.controller.WindowController;
 import ru.peytob.mineville.controller.draw.OctreeMeshBuilder;
 import ru.peytob.mineville.math.Mat4;
+import ru.peytob.mineville.math.Vec3i;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.game.world.Chunk;
 import ru.peytob.mineville.model.game.world.Octree;
@@ -40,6 +41,13 @@ public class WorldDrawer extends Drawer {
     private void justDrawIt(Mat4 transform) {
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LESS);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+
+        // Fix for white lines between tiles. But it is not perfect.
+        glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+        glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
         glActiveTexture(texturesPack.getTexture().getId());
 
         for (int x = 0; x < world.getWorldSide(); x++) {
@@ -69,6 +77,7 @@ public class WorldDrawer extends Drawer {
     // It's controller, but in view ^^
     public Mesh makeOctreeMesh(Octree octree) {
         OctreeMeshBuilder builder = new OctreeMeshBuilder();
+        Vec3i octreePosition = octree.getPosition();
 
         for (int x = 0; x < Octree.ROOT_SIDE_SIZE; x++) {
             for (int y = 0; y < Octree.ROOT_SIDE_SIZE; y++) {
@@ -79,27 +88,27 @@ public class WorldDrawer extends Drawer {
                         continue;
                     }
 
-                    if (octree.getBlock(x, y - 1, z) == null) {
+                    if (world.getBlock(octreePosition.x + x, octreePosition.y + y - 1, octreePosition.z + z) == null) {
                         builder.addBottom(block, x, y, z);
                     }
 
-                    if (octree.getBlock(x + 1, y, z)  == null) {
+                    if (world.getBlock(octreePosition.x + x + 1, octreePosition.y + y, octreePosition.z + z) == null) {
                         builder.addEast(block, x, y, z);
                     }
 
-                    if (octree.getBlock(x, y, z + 1)  == null) {
+                    if (world.getBlock(octreePosition.x + x, octreePosition.y + y, octreePosition.z + z + 1) == null) {
                         builder.addNorth(block, x, y, z);
                     }
 
-                    if (octree.getBlock(x, y, z - 1) == null) {
+                    if (world.getBlock(octreePosition.x + x, octreePosition.y + y, octreePosition.z + z - 1) == null) {
                         builder.addSouth(block, x, y, z);
                     }
 
-                    if (octree.getBlock(x - 1, y, z)  == null) {
+                    if (world.getBlock(octreePosition.x + x - 1, octreePosition.y + y, octreePosition.z + z) == null) {
                         builder.addWest(block, x, y, z);
                     }
 
-                    if (octree.getBlock(x, y + 1, z)  == null) {
+                    if (world.getBlock(octreePosition.x + x, octreePosition.y + y + 1, octreePosition.z + z) == null) {
                         builder.addTop(block, x, y, z);
                     }
                 }
@@ -107,6 +116,14 @@ public class WorldDrawer extends Drawer {
         }
 
         return builder.buildMesh();
+    }
+
+    public void changeDrawMode() {
+        if (glGetInteger(GL_POLYGON_MODE) == GL_FILL) {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        } else {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        }
     }
 
     public void draw(World target, Mat4 transform) {

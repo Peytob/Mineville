@@ -113,13 +113,18 @@ public class RunningGameState implements IGameState {
 
     @Override
     public void onKeyPress(int key, int scancode, int action, int mods) {
-        switch (key) {
-            case GLFW.GLFW_KEY_Q:
-                game.close();
-                break;
+        if (action == GLFW.GLFW_PRESS) {
+            switch (key) {
+                case GLFW.GLFW_KEY_Q:
+                    game.close();
+                    break;
 
-            default:
-                break;
+                case GLFW.GLFW_KEY_E:
+                    game.getWorldDrawer().changeDrawMode();
+
+                default:
+                    break;
+            }
         }
     }
 

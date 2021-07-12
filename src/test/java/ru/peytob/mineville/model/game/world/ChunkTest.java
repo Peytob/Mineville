@@ -2,6 +2,7 @@ package ru.peytob.mineville.model.game.world;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.peytob.mineville.math.Vec3i;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.game.object.BlockBuilder;
 
@@ -27,7 +28,7 @@ class ChunkTest {
 
     @Test
     void setAndGetBlock() {
-        Chunk chunk = new Chunk();
+        Chunk chunk = new Chunk(new Vec3i(0, 0, 0));
 
         for (int y = 0; y < chunk.getSizes().y; y++) {
             int x = y % chunk.getSizes().x;
@@ -55,7 +56,7 @@ class ChunkTest {
 
     @Test
     void removeBlock() {
-        Chunk chunk = new Chunk();
+        Chunk chunk = new Chunk(new Vec3i(0, 0, 0));
 
         chunk.setBlock(0, 0, 0, block1);
         assertNotNull(chunk.getBlock(0, 0, 0));
@@ -73,7 +74,7 @@ class ChunkTest {
 
     @Test
     void isPointIn() {
-        Chunk chunk = new Chunk();
+        Chunk chunk = new Chunk(new Vec3i(0, 0, 0));
         Random random = new Random();
 
         for (int y = 0; y < chunk.getSizes().y; y++) {

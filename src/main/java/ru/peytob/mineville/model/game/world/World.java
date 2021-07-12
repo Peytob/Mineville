@@ -16,7 +16,7 @@ public class World implements IBlockly {
 
         for (int x = 0; x < worldSide; x++) {
             for (int z = 0; z < worldSide; z++) {
-                setChunk(x, z, new Chunk());
+                setChunk(x, z, new Chunk(new Vec3i(x * Chunk.SIDE_SIZE_X, 0, z * Chunk.SIDE_SIZE_Z)));
             }
         }
         this.sizes = new Vec3i(Chunk.SIDE_SIZE_X * worldSide, Chunk.SIDE_SIZE_Y, Chunk.SIDE_SIZE_Z * worldSide);

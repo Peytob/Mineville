@@ -15,11 +15,13 @@ public class Chunk implements IBlockly {
     private static final Vec3i sizes = new Vec3i(SIDE_SIZE_X, SIDE_SIZE_Y, SIDE_SIZE_Z);
 
     private final Octree[] octrees;
+    private final Vec3i position;
 
-    public Chunk() {
+    public Chunk(Vec3i position) {
+        this.position = position;
         this.octrees = new Octree[OCTREES_COUNT];
         for (int i = 0; i < octrees.length; ++i) {
-            octrees[i] = new Octree();
+            octrees[i] = new Octree(new Vec3i(position.x, position.y + i * Octree.ROOT_SIDE_SIZE, position.z));
         }
     }
 
@@ -44,6 +46,10 @@ public class Chunk implements IBlockly {
         }
 
         return null;
+    }
+
+    public Vec3i getPosition() {
+        return position;
     }
 
     @Override

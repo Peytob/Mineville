@@ -2,6 +2,7 @@ package ru.peytob.mineville.model.game.world;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.peytob.mineville.math.Vec3i;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.game.object.BlockBuilder;
 
@@ -26,7 +27,7 @@ class OctreeTest {
 
     @Test
     void setAndGetBlock() {
-        Octree octree = new Octree();
+        Octree octree = new Octree(new Vec3i(0, 0, 0));
 
         octree.setBlock(0, 0, 0, block1); // 1 block inside
         assertEquals(block1.getId(), octree.getBlock(0, 0, 0).getId());
@@ -56,7 +57,7 @@ class OctreeTest {
 
     @Test
     void removeBlock() {
-        Octree octree = new Octree();
+        Octree octree = new Octree(new Vec3i(0, 0, 0));
 
         octree.setBlock(0, 0, 0, block1);
         assertNotNull(octree.getBlock(0, 0, 0));
@@ -74,7 +75,7 @@ class OctreeTest {
 
     @Test
     void isPointIn() {
-        Octree octree = new Octree();
+        Octree octree = new Octree(new Vec3i(0, 0, 0));
 
         assertTrue(octree.isPointIn(0, 0, 0));
 
