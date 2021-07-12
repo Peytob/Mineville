@@ -1,6 +1,6 @@
 package ru.peytob.mineville.model.game.object;
 
-import ru.peytob.mineville.model.graphic.BlockModel;
+import ru.peytob.mineville.model.graphic.block.BlockModel;
 
 public class Block {
     private final Integer id;

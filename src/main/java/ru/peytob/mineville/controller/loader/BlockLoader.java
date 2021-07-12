@@ -5,6 +5,9 @@ import ru.peytob.mineville.model.game.Resources;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.game.object.BlockBuilder;
 import ru.peytob.mineville.model.graphic.*;
+import ru.peytob.mineville.model.graphic.block.BlockFace;
+import ru.peytob.mineville.model.graphic.block.BlockFacePoints;
+import ru.peytob.mineville.model.graphic.block.BlockModel;
 import ru.peytob.mineville.model.opengl.Texture;
 
 import java.io.IOException;
@@ -65,7 +68,7 @@ class BlockLoader {
     }
 
     private void loadModel() {
-        Float[] northSide = new Float[]{
+        BlockFacePoints northSide = new BlockFacePoints(new Float[]{
                 0.5f, 0.5f, 0.5f, // position
                 0.0f, 0.0f, 1.0f, // normal
                 1.0f, 0.0f, // texture
@@ -89,9 +92,9 @@ class BlockLoader {
                 0.5f, -0.5f, 0.5f, // position
                 0.0f, 0.0f, 1.0f, // normal
                 1.0f, 1.0f, // texture
-        };
+        });
 
-        Float[] southSide = new Float[]{
+        BlockFacePoints southSide = new BlockFacePoints(new Float[]{
                 -0.5f, 0.5f, -0.5f, // position
                 0.0f, 0.0f, -1.0f, // normal
                 1.0f, 0.0f, // texture
@@ -115,9 +118,9 @@ class BlockLoader {
                 -0.5f, -0.5f, -0.5f, // position
                 0.0f, 0.0f, -1.0f, // normal
                 1.0f, 1.0f, // texture
-        };
+        });
 
-        Float[] westSide = new Float[]{
+        BlockFacePoints westSide = new BlockFacePoints(new Float[]{
                 -0.5f, 0.5f, 0.5f, // position
                 -1.0f, 0.0f, 0.0f, // normal
                 0.0f, 0.0f, // texture
@@ -141,9 +144,9 @@ class BlockLoader {
                 -0.5f, -0.5f, 0.5f, // position
                 -1.0f, 0.0f, 0.0f, // normal
                 0.0f, 1.0f, // texture
-        };
+        });
 
-        Float[] eastSide = new Float[]{
+        BlockFacePoints eastSide = new BlockFacePoints(new Float[]{
                 0.5f, 0.5f, -0.5f, // position
                 1.0f, 0.0f, 0.0f, // normal
                 0.0f, 0.0f, // texture
@@ -167,9 +170,9 @@ class BlockLoader {
                 0.5f, -0.5f, -0.5f, // position
                 1.0f, 0.0f, 0.0f, // normal
                 0.0f, 1.0f, // texture
-        };
+        });
 
-        Float[] topSide = new Float[]{
+        BlockFacePoints topSide = new BlockFacePoints(new Float[]{
                 -0.5f, 0.5f, -0.5f, // position
                 0.0f, 1.0f, 0.0f, // normal
                 1.0f, 1.0f, // texture
@@ -193,9 +196,9 @@ class BlockLoader {
                 0.5f, 0.5f, -0.5f, // position
                 0.0f, 1.0f, 0.0f, // normal
                 0.0f, 1.0f, // texture
-        };
+        });
 
-        Float[] bottomSide = new Float[]{
+        BlockFacePoints bottomSide = new BlockFacePoints(new Float[]{
                 0.5f, -0.5f, -0.5f, // position
                 0.0f, -1.0f, 0.0f, // normal
                 1.0f, 1.0f, // texture
@@ -219,13 +222,16 @@ class BlockLoader {
                 -0.5f, -0.5f, -0.5f, // position
                 0.0f, -1.0f, 0.0f, // normal
                 0.0f, 1.0f, // texture
-        };
+        });
 
-        TextureTile side = texturesPack.getTile("grass_side");
-        TextureTile top = texturesPack.getTile("grass_top");
-        TextureTile bottom = texturesPack.getTile("grass_bottom");
-        BlockTexture cubeTexture = new BlockTexture(side, side, side, side, top, bottom);
-        BlockModel cubeModel = new BlockModel(northSide, southSide, westSide, eastSide, topSide, bottomSide, cubeTexture);
+        BlockFace north = new BlockFace(northSide, texturesPack.getTile("grass_side"));
+        BlockFace south = new BlockFace(southSide, texturesPack.getTile("grass_side"));
+        BlockFace west = new BlockFace(westSide, texturesPack.getTile("grass_side"));
+        BlockFace east = new BlockFace(eastSide, texturesPack.getTile("grass_side"));
+        BlockFace top = new BlockFace(topSide, texturesPack.getTile("grass_top"));
+        BlockFace bottom = new BlockFace(bottomSide, texturesPack.getTile("grass_bottom"));
+
+        BlockModel cubeModel = new BlockModel(north, south, west, east, top, bottom);
 
         models.put("solidFullBlock", cubeModel);
     }

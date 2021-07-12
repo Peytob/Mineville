@@ -1,114 +1,60 @@
 package ru.peytob.mineville.controller.draw;
 
-import ru.peytob.mineville.math.Vec3i;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.graphic.Mesh;
+import ru.peytob.mineville.model.graphic.TextureTile;
+import ru.peytob.mineville.model.graphic.block.BlockFace;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+
+import static ru.peytob.mineville.model.graphic.block.BlockFacePoints.*;
 
 public class OctreeMeshBuilder {
-    private final ArrayList<Float> buffer;
+    private final List<Float> buffer;
 
     public OctreeMeshBuilder() {
         this.buffer = new ArrayList<>();
     }
 
-    public void addTop(Block block, int x, int y, int z) {
-        Float[] target = block.getModel().getTopFace();
-        Float[] top = Arrays.copyOf(target, target.length);
+    private void addFace(BlockFace face, int x, int y, int z) {
+        TextureTile texture = face.getTextureTile();
+        Float[] points = face.getPoints().getData();
 
-        for (int i = 0; i < top.length; i += 8) {
-            top[i] += x;
-            top[i + 1] += y;
-            top[i + 2] += z;
+        Collections.addAll(buffer, points);
+        for (int i = buffer.size() - points.length; i < buffer.size(); i += VERTEX_SIZE_FLOATS) {
+            buffer.set(i + POSITION_X, buffer.get(i + POSITION_X) + x);
+            buffer.set(i + POSITION_Y, buffer.get(i + POSITION_Y) + y);
+            buffer.set(i + POSITION_Z, buffer.get(i + POSITION_Z) + z);
 
-            top[i + 6] = block.getModel().getTexture().getTopFace().getX() + top[i + 6] * block.getModel().getTexture().getTopFace().getAbsoluteWidth();
-            top[i + 7] = block.getModel().getTexture().getTopFace().getY() + top[i + 7] * block.getModel().getTexture().getTopFace().getAbsoluteHeight();
+            buffer.set(i + TEXTURE_X, texture.getX() + texture.getAbsoluteWidth() * buffer.get(i + TEXTURE_X));
+            buffer.set(i + TEXTURE_Y, texture.getY() + texture.getAbsoluteHeight() * buffer.get(i + TEXTURE_Y));
         }
+    }
 
-        Collections.addAll(buffer, top);
+    public void addTop(Block block, int x, int y, int z) {
+        this.addFace(block.getModel().getTopFace(), x, y, z);
     }
 
     public void addBottom(Block block, int x, int y, int z) {
-        Float[] target = block.getModel().getBottomFace();
-        Float[] top = Arrays.copyOf(target, target.length);
-
-        for (int i = 0; i < top.length; i += 8) {
-            top[i] += x;
-            top[i + 1] += y;
-            top[i + 2] += z;
-
-            top[i + 6] = block.getModel().getTexture().getBottomFace().getX() + top[i + 6] * block.getModel().getTexture().getBottomFace().getAbsoluteWidth();
-            top[i + 7] = block.getModel().getTexture().getBottomFace().getY() + top[i + 7] * block.getModel().getTexture().getBottomFace().getAbsoluteHeight();
-        }
-
-        Collections.addAll(buffer, top);
+        this.addFace(block.getModel().getBottomFace(), x, y, z);
     }
 
     public void addWest(Block block, int x, int y, int z) {
-        Float[] target = block.getModel().getWestFace();
-        Float[] top = Arrays.copyOf(target, target.length);
-
-        for (int i = 0; i < top.length; i += 8) {
-            top[i] += x;
-            top[i + 1] += y;
-            top[i + 2] += z;
-
-            top[i + 6] = block.getModel().getTexture().getWestFace().getX() + top[i + 6] * block.getModel().getTexture().getWestFace().getAbsoluteWidth();
-            top[i + 7] = block.getModel().getTexture().getWestFace().getY() + top[i + 7] * block.getModel().getTexture().getWestFace().getAbsoluteHeight();
-        }
-
-        Collections.addAll(buffer, top);
+        this.addFace(block.getModel().getWestFace(), x, y, z);
     }
 
     public void addEast(Block block, int x, int y, int z) {
-        Float[] target = block.getModel().getEastFace();
-        Float[] top = Arrays.copyOf(target, target.length);
-
-        for (int i = 0; i < top.length; i += 8) {
-            top[i] += x;
-            top[i + 1] += y;
-            top[i + 2] += z;
-
-            top[i + 6] = block.getModel().getTexture().getEastFace().getX() + top[i + 6] * block.getModel().getTexture().getEastFace().getAbsoluteWidth();
-            top[i + 7] = block.getModel().getTexture().getEastFace().getY() + top[i + 7] * block.getModel().getTexture().getEastFace().getAbsoluteHeight();
-        }
-
-        Collections.addAll(buffer, top);
+        this.addFace(block.getModel().getEastFace(), x, y, z);
     }
 
     public void addSouth(Block block, int x, int y, int z) {
-        Float[] target = block.getModel().getSouthFace();
-        Float[] top = Arrays.copyOf(target, target.length);
-
-        for (int i = 0; i < top.length; i += 8) {
-            top[i] += x;
-            top[i + 1] += y;
-            top[i + 2] += z;
-
-            top[i + 6] = block.getModel().getTexture().getSouthFace().getX() + top[i + 6] * block.getModel().getTexture().getSouthFace().getAbsoluteWidth();
-            top[i + 7] = block.getModel().getTexture().getSouthFace().getY() + top[i + 7] * block.getModel().getTexture().getSouthFace().getAbsoluteHeight();
-        }
-
-        Collections.addAll(buffer, top);
+        this.addFace(block.getModel().getSouthFace(), x, y, z);
     }
 
     public void addNorth(Block block, int x, int y, int z) {
-        Float[] target = block.getModel().getNorthFace();
-        Float[] top = Arrays.copyOf(target, target.length);
-
-        for (int i = 0; i < top.length; i += 8) {
-            top[i] += x;
-            top[i + 1] += y;
-            top[i + 2] += z;
-
-            top[i + 6] = block.getModel().getTexture().getNorthFace().getX() + top[i + 6] * block.getModel().getTexture().getNorthFace().getAbsoluteWidth();
-            top[i + 7] = block.getModel().getTexture().getNorthFace().getY() + top[i + 7] * block.getModel().getTexture().getNorthFace().getAbsoluteHeight();
-        }
-
-        Collections.addAll(buffer, top);
+        this.addFace(block.getModel().getNorthFace(), x, y, z);
     }
 
     public Mesh buildMesh() {
