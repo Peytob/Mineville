@@ -1,8 +1,5 @@
 package ru.peytob.mineville.controller;
 
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWKeyCallbackI;
-
 import ru.peytob.mineville.controller.game.Game;
 import ru.peytob.mineville.controller.loader.ResourcesLoader;
 import ru.peytob.mineville.model.game.Resources;

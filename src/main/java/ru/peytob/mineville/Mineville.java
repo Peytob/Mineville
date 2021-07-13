@@ -1,10 +1,11 @@
 package ru.peytob.mineville;
 
 import ru.peytob.mineville.controller.ApplicationController;
+import ru.peytob.mineville.model.loader.DefaultResourcesLoader;
 
 import java.io.IOException;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.glfwInit;
 
 /**
  * Application entry point.
@@ -24,6 +25,15 @@ public class Mineville {
             e.printStackTrace();
             return;
         }
+
+        try {
+            new DefaultResourcesLoader().loadResources();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
         controller.setWindowCallbacks();
         controller.run();
         controller.destroy();

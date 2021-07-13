@@ -1,6 +1,5 @@
 package ru.peytob.mineville.controller.loader;
 
-import ru.peytob.mineville.model.game.BlockRepository;
 import ru.peytob.mineville.model.game.Resources;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.game.object.BlockBuilder;
