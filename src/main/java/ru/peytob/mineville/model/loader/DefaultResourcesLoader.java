@@ -24,19 +24,27 @@ public class DefaultResourcesLoader {
     public void loadResources() throws IOException {
         // Models loading
 
-        URI blockModelUri;
-        try {
-            blockModelUri = Objects.requireNonNull(getClass().getResource("/model/block")).toURI();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            throw new IOException("Can't find resource: block models");
-        }
-
         ModelLoader modelLoader = new ModelLoader();
-        File blockModelsFolder = new File(blockModelUri);
+        File blockModelsFolder = new File(resourceToURI("/model/block"));
 
         for (File fileEntry: Objects.requireNonNull(blockModelsFolder.listFiles())) {
             modelLoader.loadModel(fileEntry);
         }
+
+        // Shaders loading
+
+        ShadersLoader shadersLoader = new ShadersLoader();
+        File shadersFolder = new File(resourceToURI("/shader"));
+        resources.setShadersPack(shadersLoader.loadShaderPack(shadersFolder));
+    }
+
+    private URI resourceToURI(String name) throws IOException {
+        URI uri;
+        try {
+            uri = Objects.requireNonNull(getClass().getResource(name)).toURI();
+        } catch (URISyntaxException e) {
+            throw new IOException("Can't find resource: " + name);
+        }
+        return uri;
     }
 }

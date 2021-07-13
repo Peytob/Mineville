@@ -14,7 +14,7 @@ public class ResourcesLoader {
 
     public Resources loadResources() throws IOException {
         new BlockLoader(resources).loadBlocks();
-        resources.setShadersPack(new ShadersLoader().loadShaderPack(Path.of("src/main/resources/shaders")));
+        resources.setShadersPack(new ShadersLoader().loadShaderPack(Path.of("src/main/resources/shader")));
         return resources;
     }
 }
