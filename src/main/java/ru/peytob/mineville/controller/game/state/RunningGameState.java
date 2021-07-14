@@ -1,18 +1,12 @@
 package ru.peytob.mineville.controller.game.state;
 
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL33;
 import ru.peytob.mineville.controller.draw.CameraController;
 import ru.peytob.mineville.controller.game.Game;
-import ru.peytob.mineville.controller.loader.ImageLoader;
 import ru.peytob.mineville.math.*;
 import ru.peytob.mineville.model.game.object.Block;
-import ru.peytob.mineville.model.graphic.Image;
-import ru.peytob.mineville.model.opengl.Texture;
 import ru.peytob.mineville.view.input.KeyboardMouseInput;
 import ru.peytob.mineville.view.render.world.WorldDrawer;
-
-import java.io.IOException;
 
 public class RunningGameState implements IGameState {
     private final Game game;
@@ -30,6 +24,8 @@ public class RunningGameState implements IGameState {
 
     @Override
     public void onSet() {
+        System.out.println("Set state: RunningGameState");
+
         Vec3i sizes = game.getWorld().getSizes();
         Block block = game.getResources().getBlockRepository().getBlock(1);
 
@@ -91,6 +87,7 @@ public class RunningGameState implements IGameState {
 
     @Override
     public void onChange() {
+        System.out.println("Change state: RunningGameState");
     }
 
     @Override
@@ -121,6 +118,11 @@ public class RunningGameState implements IGameState {
 
                 case GLFW.GLFW_KEY_E:
                     game.getWorldDrawer().changeDrawMode();
+                    break;
+
+                case GLFW.GLFW_KEY_TAB:
+                    game.setState(new ShowTextureGameState(game, game.getResources().getTexturesPack().getTexture()));
+                    break;
 
                 default:
                     break;

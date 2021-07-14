@@ -41,8 +41,8 @@ public class WorldDrawer extends Drawer {
     private void justDrawIt(Mat4 transform) {
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LESS);
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
+//        glEnable(GL_CULL_FACE);
+//        glCullFace(GL_BACK);
 
         // Fix for white lines between tiles. But it is not perfect.
         glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
