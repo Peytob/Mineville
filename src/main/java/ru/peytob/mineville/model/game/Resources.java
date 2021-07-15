@@ -1,6 +1,6 @@
 package ru.peytob.mineville.model.game;
 
-import ru.peytob.mineville.model.graphic.TexturesPack;
+import ru.peytob.mineville.model.graphic.TextureBlockAtlas;
 import ru.peytob.mineville.model.graphic.shader.ShadersPack;
 
 public class Resources {
@@ -8,7 +8,7 @@ public class Resources {
 
     private ShadersPack shadersPack;
 
-    private TexturesPack texturesPack;
+    private TextureBlockAtlas textureBlockAtlas;
 
     public Resources() {
         blockRepository = new BlockRepository();
@@ -26,11 +26,11 @@ public class Resources {
         this.shadersPack = shadersPack;
     }
 
-    public TexturesPack getTexturesPack() {
-        return texturesPack;
+    public TextureBlockAtlas getTexturesPack() {
+        return textureBlockAtlas;
     }
 
-    public void setTexturesPack(TexturesPack texturesPack) {
-        this.texturesPack = texturesPack;
+    public void setTexturesPack(TextureBlockAtlas textureBlockAtlas) {
+        this.textureBlockAtlas = textureBlockAtlas;
     }
 }

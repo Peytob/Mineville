@@ -9,7 +9,7 @@ import ru.peytob.mineville.model.game.world.Chunk;
 import ru.peytob.mineville.model.game.world.Octree;
 import ru.peytob.mineville.model.game.world.World;
 import ru.peytob.mineville.model.graphic.Mesh;
-import ru.peytob.mineville.model.graphic.TexturesPack;
+import ru.peytob.mineville.model.graphic.TextureBlockAtlas;
 import ru.peytob.mineville.model.graphic.shader.ShadersPack;
 import ru.peytob.mineville.model.graphic.shader.WorldShader;
 import ru.peytob.mineville.view.render.Drawer;
@@ -18,14 +18,14 @@ import static org.lwjgl.opengl.GL33.*;
 
 public class WorldDrawer extends Drawer {
     private World world;
-    private final TexturesPack texturesPack;
+    private final TextureBlockAtlas textureBlockAtlas;
     private WorldShader worldShader;
 
-    public WorldDrawer(WindowController windowController, ShadersPack shadersPack, TexturesPack texturesPack) {
+    public WorldDrawer(WindowController windowController, ShadersPack shadersPack, TextureBlockAtlas textureBlockAtlas) {
         super(windowController, shadersPack);
         this.world = null;
         this.worldShader = shadersPack.getWorldShader();
-        this.texturesPack = texturesPack;
+        this.textureBlockAtlas = textureBlockAtlas;
     }
 
     public void clear() {
@@ -48,7 +48,7 @@ public class WorldDrawer extends Drawer {
         glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
         glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-        glActiveTexture(texturesPack.getTexture().getId());
+        glActiveTexture(textureBlockAtlas.getTexture().getId());
 
         for (int x = 0; x < world.getWorldSide(); x++) {
             for (int z = 0; z < world.getWorldSide(); z++) {

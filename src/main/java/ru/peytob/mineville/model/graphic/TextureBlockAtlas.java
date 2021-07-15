@@ -5,15 +5,15 @@ import ru.peytob.mineville.model.opengl.Texture;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TexturesPack {
+public class TextureBlockAtlas {
     private final Map<String, TextureTile> data;
     private final int tileSizePixels;
     private final Texture texture;
     private final Float absoluteWidth;
     private final Float absoluteHeight;
 
-    public TexturesPack(int tileSizePixels, Texture texture, Float absoluteWidth,
-                        Float absoluteHeight) {
+    public TextureBlockAtlas(int tileSizePixels, Texture texture, Float absoluteWidth,
+                             Float absoluteHeight) {
         this.data = new HashMap<>();
         this.tileSizePixels = tileSizePixels;
         this.texture = texture;

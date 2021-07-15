@@ -7,6 +7,7 @@ import ru.peytob.mineville.model.graphic.*;
 import ru.peytob.mineville.model.graphic.block.BlockFace;
 import ru.peytob.mineville.model.graphic.block.BlockFacePoints;
 import ru.peytob.mineville.model.graphic.block.BlockModel;
+import ru.peytob.mineville.model.loader.ImageLoader;
 import ru.peytob.mineville.model.opengl.Texture;
 
 import java.io.IOException;
@@ -16,16 +17,16 @@ import java.util.Map;
 class BlockLoader {
     private final Resources resources;
     private final Map<String, BlockModel> models;
-    private final TexturesPack texturesPack;
+    private final TextureBlockAtlas textureBlockAtlas;
 
     public BlockLoader(Resources resources) {
         this.resources = resources;
         this.models = new HashMap<>();
-        this.texturesPack = loadTextures();
-        this.resources.setTexturesPack(this.texturesPack);
+        this.textureBlockAtlas = loadTextures();
+        this.resources.setTexturesPack(this.textureBlockAtlas);
     }
 
-    public TexturesPack loadTextures() {
+    public TextureBlockAtlas loadTextures() {
         final String folder = "src/main/resources/images/blocks/";
 
         ImageLoader imageLoader = new ImageLoader();
@@ -40,7 +41,7 @@ class BlockLoader {
             return null;
         }
 
-        TexturesPack pack = new TexturesPack(16, tilemapTexture,
+        TextureBlockAtlas pack = new TextureBlockAtlas(16, tilemapTexture,
                 16.0f / tilemapImage.getWidth(), 16.0f / tilemapImage.getHeight());
 
         pack.registerTile("grass_side", 0, 0);
@@ -223,12 +224,12 @@ class BlockLoader {
                 0.0f, 1.0f, // texture
         });
 
-        BlockFace north = new BlockFace(northSide, texturesPack.getTile("grass_side"));
-        BlockFace south = new BlockFace(southSide, texturesPack.getTile("grass_side"));
-        BlockFace west = new BlockFace(westSide, texturesPack.getTile("grass_side"));
-        BlockFace east = new BlockFace(eastSide, texturesPack.getTile("grass_side"));
-        BlockFace top = new BlockFace(topSide, texturesPack.getTile("grass_top"));
-        BlockFace bottom = new BlockFace(bottomSide, texturesPack.getTile("grass_bottom"));
+        BlockFace north = new BlockFace(northSide, textureBlockAtlas.getTile("grass_side"));
+        BlockFace south = new BlockFace(southSide, textureBlockAtlas.getTile("grass_side"));
+        BlockFace west = new BlockFace(westSide, textureBlockAtlas.getTile("grass_side"));
+        BlockFace east = new BlockFace(eastSide, textureBlockAtlas.getTile("grass_side"));
+        BlockFace top = new BlockFace(topSide, textureBlockAtlas.getTile("grass_top"));
+        BlockFace bottom = new BlockFace(bottomSide, textureBlockAtlas.getTile("grass_bottom"));
 
         BlockModel cubeModel = new BlockModel(north, south, west, east, top, bottom);
 

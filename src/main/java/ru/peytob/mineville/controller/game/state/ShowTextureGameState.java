@@ -25,55 +25,19 @@ public class ShowTextureGameState implements IGameState {
         this.rectangleMesh = new Mesh(new float[] {
                 -1.0f, 1.0f, 0.0f,
                 0.0f, 0.0f, 0.0f,
-                1.0f, 0.0f,
+                0.0f, 1.0f - 1.0f,
 
                 1.0f, 1.0f, 0.0f,
                 0.0f, 0.0f, 0.0f,
-                1.0f, 1.0f,
+                1.0f, 1.0f - 1.0f,
 
                 -1.0f, -1.0f, 0.0f,
                 0.0f, 0.0f, 0.0f,
-                0.0f, 0.0f,
-
-                // ---
-
-                1.0f, 1.0f, 0.0f,
-                0.0f, 0.0f, 0.0f,
-                1.0f, 1.0f,
-
-                -1.0f, -1.0f, 0.0f,
-                0.0f, 0.0f, 0.0f,
-                0.0f, 0.0f,
+                0.0f, 1.0f - 0.0f,
 
                 1.0f, -1.0f, 0.0f,
                 0.0f, 0.0f, 0.0f,
-                0.0f, 1.0f,
-
-                -1.0f, 1.0f, 0.0f,
-                0.0f, 0.0f, 0.0f,
-                1.0f, 0.0f,
-
-                1.0f, 1.0f, 0.0f,
-                0.0f, 0.0f, 0.0f,
-                1.0f, 1.0f,
-
-                -1.0f, -1.0f, 0.0f,
-                0.0f, 0.0f, 0.0f,
-                0.0f, 0.0f,
-
-                // ---
-
-                1.0f, 1.0f, 0.0f,
-                0.0f, 0.0f, 0.0f,
-                1.0f, 1.0f,
-
-                -1.0f, -1.0f, 0.0f,
-                0.0f, 0.0f, 0.0f,
-                0.0f, 0.0f,
-
-                1.0f, -1.0f, 0.0f,
-                0.0f, 0.0f, 0.0f,
-                0.0f, 1.0f,
+                1.0f, 1.0f - 0.0f,
         });
 
         WorldShader shader = game.getResources().getShadersPack().getWorldShader();
@@ -99,7 +63,7 @@ public class ShowTextureGameState implements IGameState {
     @Override
     public void draw() {
         WorldDrawer drawer = game.getWorldDrawer();
-        drawer.draw(rectangleMesh, GL33.GL_TRIANGLES);
+        drawer.draw(rectangleMesh, GL33.GL_TRIANGLE_STRIP);
     }
 
     @Override
@@ -110,17 +74,14 @@ public class ShowTextureGameState implements IGameState {
 
     @Override
     public void onClose() {
-
     }
 
     @Override
     public void onMouseClick(int button, int action, int mods) {
-
     }
 
     @Override
     public void onMouseMove(double newX, double newY) {
-
     }
 
     @Override
@@ -132,6 +93,5 @@ public class ShowTextureGameState implements IGameState {
 
     @Override
     public void onScroll(double xOffset, double yOffset) {
-
     }
 }

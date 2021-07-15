@@ -3,9 +3,9 @@ package ru.peytob.mineville.model.graphic;
 public class TextureTile {
     private final float x;
     private final float y;
-    private final TexturesPack parent;
+    private final TextureBlockAtlas parent;
 
-    public TextureTile(float x, float y, TexturesPack parent) {
+    public TextureTile(float x, float y, TextureBlockAtlas parent) {
         this.x = x;
         this.y = y;
         this.parent = parent;
