@@ -49,6 +49,14 @@ public class ImageBuilder {
         data.put(index + Image.ALPHA_BYTE_OFFSET, a);
     }
 
+    public Integer getWidth() {
+        return width;
+    }
+
+    public Integer getHeight() {
+        return height;
+    }
+
     public Image buildImage() {
         return new Image(data, width, height);
     }
