@@ -26,14 +26,6 @@ public class Mineville {
             return;
         }
 
-        try {
-            new DefaultResourcesLoader().loadResources();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-
         controller.setWindowCallbacks();
         controller.run();
         controller.destroy();

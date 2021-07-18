@@ -3,7 +3,13 @@ package ru.peytob.mineville.model.loader;
 import ru.peytob.mineville.model.builder.ImageBuilder;
 import ru.peytob.mineville.model.builder.TextureBlockAtlasBuilder;
 import ru.peytob.mineville.model.game.Resources;
+import ru.peytob.mineville.model.game.object.Block;
+import ru.peytob.mineville.model.game.object.BlockBuilder;
 import ru.peytob.mineville.model.graphic.Image;
+import ru.peytob.mineville.model.graphic.TextureBlockAtlas;
+import ru.peytob.mineville.model.graphic.block.BlockFace;
+import ru.peytob.mineville.model.graphic.block.BlockFacePoints;
+import ru.peytob.mineville.model.graphic.block.BlockModel;
 import ru.peytob.mineville.model.graphic.shader.ShadersPack;
 import ru.peytob.mineville.model.opengl.Texture;
 
@@ -30,6 +36,7 @@ public class DefaultResourcesLoader {
         loadShadersPack();
         loadBlocksModels();
         loadTexturesBlockAtlas();
+        loadBlocks();
     }
 
     private void loadShadersPack() throws IOException {
@@ -67,6 +74,25 @@ public class DefaultResourcesLoader {
         }
 
         resources.setTexturesPack(textureBlockAtlasBuilder.buildAtlas());
+    }
+
+    private void loadBlocks() {
+        BlockUntexturedModelGson untexturedModel = modelLoader.get("solidCube");
+        TextureBlockAtlas atlas = resources.getTexturesPack();
+
+        BlockBuilder grass = new BlockBuilder();
+        BlockModel grassModel = new BlockModel(
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.north), atlas.getTile("grass_side")),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.south), atlas.getTile("grass_side")),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.west), atlas.getTile("grass_side")),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.east), atlas.getTile("grass_side")),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.top), atlas.getTile("grass_top")),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.bottom), atlas.getTile("dirt"))
+        );
+        grass.setModel(grassModel);
+        grass.setId(1);
+        grass.setTextId("grass");
+        resources.getBlockRepository().addBlock(new Block(grass));
     }
 
     private URI resourceToURI(String name) throws IOException {
