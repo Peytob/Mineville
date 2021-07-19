@@ -1,7 +1,6 @@
 package ru.peytob.mineville.controller;
 
 import ru.peytob.mineville.controller.game.Game;
-import ru.peytob.mineville.controller.loader.ResourcesLoader;
 import ru.peytob.mineville.model.game.Resources;
 import ru.peytob.mineville.model.loader.DefaultResourcesLoader;
 

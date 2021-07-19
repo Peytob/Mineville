@@ -60,9 +60,6 @@ public class DefaultResourcesLoader {
         File blocksTexturesFolder = new File(resourceToURI("/images/blocks"));
 
         for (File file: Objects.requireNonNull(blocksTexturesFolder.listFiles())) {
-            if (file.getName().equals("tilemap.png"))
-                continue;
-
             String modelName = file.getName();
             int pointIndex = modelName.lastIndexOf('.');
             if (pointIndex != -1) {
@@ -93,6 +90,20 @@ public class DefaultResourcesLoader {
         grass.setId(1);
         grass.setTextId("grass");
         resources.getBlockRepository().addBlock(new Block(grass));
+
+        BlockBuilder stone = new BlockBuilder();
+        BlockModel stoneModel = new BlockModel(
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.north), atlas.getTile("stone")),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.south), atlas.getTile("stone")),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.west), atlas.getTile("stone")),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.east), atlas.getTile("stone")),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.top), atlas.getTile("stone")),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.bottom), atlas.getTile("stone"))
+        );
+        stone.setModel(stoneModel);
+        stone.setId(2);
+        stone.setTextId("stone");
+        resources.getBlockRepository().addBlock(new Block(stone));
     }
 
     private URI resourceToURI(String name) throws IOException {

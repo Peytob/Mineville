@@ -25,19 +25,6 @@ public class RunningGameState implements IGameState {
     @Override
     public void onSet() {
         System.out.println("Set state: RunningGameState");
-
-        Vec3i sizes = game.getWorld().getSizes();
-        Block block = game.getResources().getBlockRepository().getBlock(1);
-
-        for (int y = 8; y < sizes.y; y += 8) {
-            for (int x = 0; x < sizes.x; x++) {
-                for (int z = 0; z < sizes.z; z++) {
-                    game.getWorld().setBlock(x, y, z, block);
-                }
-            }
-        }
-
-        game.getWorld().setBlock(0, 0, 0, block);
     }
 
     @Override

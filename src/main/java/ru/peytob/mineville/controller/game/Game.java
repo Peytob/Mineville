@@ -3,6 +3,8 @@ package ru.peytob.mineville.controller.game;
 import ru.peytob.mineville.controller.WindowController;
 import ru.peytob.mineville.controller.game.state.IGameState;
 import ru.peytob.mineville.controller.game.state.RunningGameState;
+import ru.peytob.mineville.controller.game.worldGenerator.TestGenerator;
+import ru.peytob.mineville.controller.game.worldGenerator.WorldGenerator;
 import ru.peytob.mineville.model.game.Resources;
 import ru.peytob.mineville.model.game.world.World;
 import ru.peytob.mineville.view.render.world.WorldDrawer;
@@ -21,7 +23,7 @@ public class Game {
         this.isRunning = true;
         this.resources = resources;
         this.worldDrawer = new WorldDrawer(windowController, resources.getShadersPack(), resources.getTexturesPack());
-        this.world = new World(4);
+        this.world = new TestGenerator(123, resources.getBlockRepository()).generate();
         setState(new RunningGameState(this));
     }
 
