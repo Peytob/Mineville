@@ -10,6 +10,7 @@ import ru.peytob.mineville.model.graphic.TextureBlockAtlas;
 import ru.peytob.mineville.model.graphic.block.BlockFace;
 import ru.peytob.mineville.model.graphic.block.BlockFacePoints;
 import ru.peytob.mineville.model.graphic.block.BlockModel;
+import ru.peytob.mineville.model.graphic.block.BlockTexture;
 import ru.peytob.mineville.model.graphic.shader.ShadersPack;
 import ru.peytob.mineville.model.opengl.Texture;
 
@@ -78,29 +79,47 @@ public class DefaultResourcesLoader {
         TextureBlockAtlas atlas = resources.getTexturesPack();
 
         BlockBuilder grass = new BlockBuilder();
+        BlockTexture grassTexture = new BlockTexture(
+                atlas.getTile("grass_side"),
+                atlas.getTile("grass_side"),
+                atlas.getTile("grass_side"),
+                atlas.getTile("grass_side"),
+                atlas.getTile("grass_top"),
+                atlas.getTile("dirt")
+        );
         BlockModel grassModel = new BlockModel(
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.north), atlas.getTile("grass_side")),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.south), atlas.getTile("grass_side")),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.west), atlas.getTile("grass_side")),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.east), atlas.getTile("grass_side")),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.top), atlas.getTile("grass_top")),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.bottom), atlas.getTile("dirt"))
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.north)),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.south)),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.west)),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.east)),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.top)),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.bottom))
         );
         grass.setModel(grassModel);
+        grass.setBlockTexture(grassTexture);
         grass.setId(1);
         grass.setTextId("grass");
         resources.getBlockRepository().addBlock(new Block(grass));
 
         BlockBuilder stone = new BlockBuilder();
+        BlockTexture stoneTexture = new BlockTexture(
+                atlas.getTile("stone"),
+                atlas.getTile("stone"),
+                atlas.getTile("stone"),
+                atlas.getTile("stone"),
+                atlas.getTile("stone"),
+                atlas.getTile("stone")
+        );
         BlockModel stoneModel = new BlockModel(
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.north), atlas.getTile("stone")),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.south), atlas.getTile("stone")),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.west), atlas.getTile("stone")),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.east), atlas.getTile("stone")),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.top), atlas.getTile("stone")),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.bottom), atlas.getTile("stone"))
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.north)),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.south)),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.west)),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.east)),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.top)),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.bottom))
         );
         stone.setModel(stoneModel);
+        stone.setBlockTexture(stoneTexture);
         stone.setId(2);
         stone.setTextId("stone");
         resources.getBlockRepository().addBlock(new Block(stone));

@@ -18,8 +18,7 @@ public class OctreeMeshBuilder {
         this.buffer = new ArrayList<>();
     }
 
-    private void addFace(BlockFace face, int x, int y, int z) {
-        TextureTile texture = face.getTextureTile();
+    private void addFace(BlockFace face, TextureTile textureTile, int x, int y, int z) {
         Float[] points = face.getPoints().getData();
 
         Collections.addAll(buffer, points);
@@ -28,33 +27,33 @@ public class OctreeMeshBuilder {
             buffer.set(i + POSITION_Y, buffer.get(i + POSITION_Y) + y);
             buffer.set(i + POSITION_Z, buffer.get(i + POSITION_Z) + z);
 
-            buffer.set(i + TEXTURE_X, texture.getX() + texture.getAbsoluteWidth() * buffer.get(i + TEXTURE_X));
-            buffer.set(i + TEXTURE_Y, texture.getY() + texture.getAbsoluteHeight() * buffer.get(i + TEXTURE_Y));
+            buffer.set(i + TEXTURE_X, textureTile.getX() + textureTile.getAbsoluteWidth() * buffer.get(i + TEXTURE_X));
+            buffer.set(i + TEXTURE_Y, textureTile.getY() + textureTile.getAbsoluteHeight() * buffer.get(i + TEXTURE_Y));
         }
     }
 
     public void addTop(Block block, int x, int y, int z) {
-        this.addFace(block.getModel().getTopFace(), x, y, z);
+        this.addFace(block.getModel().getTopFace(), block.getTexture().getTopFace(), x, y, z);
     }
 
     public void addBottom(Block block, int x, int y, int z) {
-        this.addFace(block.getModel().getBottomFace(), x, y, z);
+        this.addFace(block.getModel().getBottomFace(), block.getTexture().getBottomFace(), x, y, z);
     }
 
     public void addWest(Block block, int x, int y, int z) {
-        this.addFace(block.getModel().getWestFace(), x, y, z);
+        this.addFace(block.getModel().getWestFace(), block.getTexture().getWestFace(), x, y, z);
     }
 
     public void addEast(Block block, int x, int y, int z) {
-        this.addFace(block.getModel().getEastFace(), x, y, z);
+        this.addFace(block.getModel().getEastFace(), block.getTexture().getEastFace(), x, y, z);
     }
 
     public void addSouth(Block block, int x, int y, int z) {
-        this.addFace(block.getModel().getSouthFace(), x, y, z);
+        this.addFace(block.getModel().getSouthFace(), block.getTexture().getSouthFace(), x, y, z);
     }
 
     public void addNorth(Block block, int x, int y, int z) {
-        this.addFace(block.getModel().getNorthFace(), x, y, z);
+        this.addFace(block.getModel().getNorthFace(), block.getTexture().getNorthFace(), x, y, z);
     }
 
     public Mesh buildMesh() {
