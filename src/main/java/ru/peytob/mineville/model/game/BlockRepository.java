@@ -33,12 +33,12 @@ public class BlockRepository {
 
     public void addBlock(Block block) {
         blocksById.put(block.getId(), block);
-        blocksByTextId.put(block.getTextId(), block);
+        blocksByTextId.put(block.getRegistryName(), block);
     }
 
     public void removeBlock(Block block) {
         blocksById.remove(block.getId());
-        blocksByTextId.remove(block.getTextId());
+        blocksByTextId.remove(block.getRegistryName());
     }
 
     public int getBlocksCount() {

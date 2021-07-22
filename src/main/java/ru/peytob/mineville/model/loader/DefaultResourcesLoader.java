@@ -78,7 +78,7 @@ public class DefaultResourcesLoader {
         BlockUntexturedModelGson untexturedModel = modelLoader.get("solidCube");
         TextureBlockAtlas atlas = resources.getTexturesPack();
 
-        BlockBuilder grass = new BlockBuilder();
+        BaseBlock grass = new BaseBlock();
         BlockTexture grassTexture = new BlockTexture(
                 atlas.getTile("grass_side"),
                 atlas.getTile("grass_side"),
@@ -96,12 +96,12 @@ public class DefaultResourcesLoader {
                 new BlockFace(new BlockFacePoints(untexturedModel.faces.bottom))
         );
         grass.setModel(grassModel);
-        grass.setBlockTexture(grassTexture);
-        grass.setId(1);
-        grass.setTextId("grass");
-        resources.getBlockRepository().addBlock(new Block(grass));
+        grass.setTexture(grassTexture);
+        grass.setRegistryName("grass");
+        grass.setUnlocalizedName("grass");
+        resources.getBlockRepository().addBlock(new Block(1, grass));
 
-        BlockBuilder stone = new BlockBuilder();
+        BaseBlock stone = new BaseBlock();
         BlockTexture stoneTexture = new BlockTexture(
                 atlas.getTile("stone"),
                 atlas.getTile("stone"),
@@ -119,10 +119,10 @@ public class DefaultResourcesLoader {
                 new BlockFace(new BlockFacePoints(untexturedModel.faces.bottom))
         );
         stone.setModel(stoneModel);
-        stone.setBlockTexture(stoneTexture);
-        stone.setId(2);
-        stone.setTextId("stone");
-        resources.getBlockRepository().addBlock(new Block(stone));
+        stone.setTexture(stoneTexture);
+        stone.setRegistryName("stone");
+        stone.setUnlocalizedName("stone");
+        resources.getBlockRepository().addBlock(new Block(2, stone));
     }
 
     private URI resourceToURI(String name) throws IOException {
