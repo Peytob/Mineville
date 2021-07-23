@@ -1,6 +1,6 @@
 package ru.peytob.mineville.controller.game.worldGenerator;
 
-import ru.peytob.mineville.model.game.BlockRepository;
+import ru.peytob.mineville.model.repository.BlockRepository;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.game.world.Chunk;
 import ru.peytob.mineville.model.game.world.World;

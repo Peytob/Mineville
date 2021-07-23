@@ -1,6 +1,6 @@
 package ru.peytob.mineville.controller.game.worldGenerator;
 
-import ru.peytob.mineville.model.game.BlockRepository;
+import ru.peytob.mineville.model.repository.BlockRepository;
 
 public abstract class WorldGenerator {
     protected final int seed;

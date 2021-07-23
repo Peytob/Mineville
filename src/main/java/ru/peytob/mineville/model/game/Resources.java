@@ -2,6 +2,7 @@ package ru.peytob.mineville.model.game;
 
 import ru.peytob.mineville.model.graphic.TextureBlockAtlas;
 import ru.peytob.mineville.model.graphic.shader.ShadersPack;
+import ru.peytob.mineville.model.repository.BlockRepository;
 
 public class Resources {
     private final BlockRepository blockRepository;

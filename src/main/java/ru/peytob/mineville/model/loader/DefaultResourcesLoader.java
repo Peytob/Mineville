@@ -1,18 +1,14 @@
 package ru.peytob.mineville.model.loader;
 
-import ru.peytob.mineville.model.builder.ImageBuilder;
 import ru.peytob.mineville.model.builder.TextureBlockAtlasBuilder;
 import ru.peytob.mineville.model.game.Resources;
 import ru.peytob.mineville.model.game.object.Block;
-import ru.peytob.mineville.model.game.object.BlockBuilder;
 import ru.peytob.mineville.model.graphic.Image;
 import ru.peytob.mineville.model.graphic.TextureBlockAtlas;
 import ru.peytob.mineville.model.graphic.block.BlockFace;
 import ru.peytob.mineville.model.graphic.block.BlockFacePoints;
 import ru.peytob.mineville.model.graphic.block.BlockModel;
 import ru.peytob.mineville.model.graphic.block.BlockTexture;
-import ru.peytob.mineville.model.graphic.shader.ShadersPack;
-import ru.peytob.mineville.model.opengl.Texture;
 
 import java.io.File;
 import java.io.IOException;
@@ -97,7 +93,7 @@ public class DefaultResourcesLoader {
         );
         grass.setModel(grassModel);
         grass.setTexture(grassTexture);
-        grass.setRegistryName("grass");
+        grass.setRepositoryName("grass");
         grass.setUnlocalizedName("grass");
         resources.getBlockRepository().addBlock(new Block(1, grass));
 
@@ -120,7 +116,7 @@ public class DefaultResourcesLoader {
         );
         stone.setModel(stoneModel);
         stone.setTexture(stoneTexture);
-        stone.setRegistryName("stone");
+        stone.setRepositoryName("stone");
         stone.setUnlocalizedName("stone");
         resources.getBlockRepository().addBlock(new Block(2, stone));
     }

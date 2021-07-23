@@ -1,4 +1,4 @@
-package ru.peytob.mineville.model.game;
+package ru.peytob.mineville.model.repository;
 
 import ru.peytob.mineville.model.game.object.Block;
 
@@ -33,12 +33,12 @@ public class BlockRepository {
 
     public void addBlock(Block block) {
         blocksById.put(block.getId(), block);
-        blocksByTextId.put(block.getRegistryName(), block);
+        blocksByTextId.put(block.getRepositoryName(), block);
     }
 
     public void removeBlock(Block block) {
         blocksById.remove(block.getId());
-        blocksByTextId.remove(block.getRegistryName());
+        blocksByTextId.remove(block.getRepositoryName());
     }
 
     public int getBlocksCount() {

@@ -3,40 +3,29 @@ package ru.peytob.mineville.model.game.object;
 import ru.peytob.mineville.model.graphic.block.BlockModel;
 import ru.peytob.mineville.model.graphic.block.BlockTexture;
 import ru.peytob.mineville.model.loader.BaseBlock;
+import ru.peytob.mineville.model.repository.AbstractRegistrable;
 
-public class Block {
-    private final Integer id;
-    private final String registryName;
+public class Block extends AbstractRegistrable {
     private final String unlocalizedName;
     private final BlockModel model;
     private final BlockTexture texture;
 
     public Block(BlockBuilder builder) {
-        this.id = builder.getId();
+        super(builder.getTextId(), builder.getId());
         this.model = builder.getModel();
-        this.registryName = builder.getTextId();
         this.unlocalizedName = "From builder.";
         this.texture = builder.getTexture();
     }
 
     public Block(Integer id, BaseBlock baseBlock) {
-        this.id = id;
+        super(baseBlock.getRepositoryName(), id);
         this.model = baseBlock.getModel();
-        this.registryName = baseBlock.getRegistryName();
         this.unlocalizedName = baseBlock.getUnlocalizedName();
         this.texture = baseBlock.getTexture();
     }
 
-    public int getId() {
-        return id;
-    }
-
     public BlockModel getModel() {
         return model;
-    }
-
-    public String getRegistryName() {
-        return registryName;
     }
 
     public BlockTexture getTexture() {

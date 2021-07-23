@@ -5,7 +5,7 @@ import ru.peytob.mineville.model.graphic.block.BlockTexture;
 
 public class BaseBlock {
     private String unlocalizedName;
-    private String registryName;
+    private String repositoryName;
     private BlockModel model;
     private BlockTexture texture;
 
@@ -17,12 +17,12 @@ public class BaseBlock {
         this.unlocalizedName = unlocalizedName;
     }
 
-    public String getRegistryName() {
-        return registryName;
+    public String getRepositoryName() {
+        return repositoryName;
     }
 
-    public void setRegistryName(String registryName) {
-        this.registryName = registryName;
+    public void setRepositoryName(String repositoryName) {
+        this.repositoryName = repositoryName;
     }
 
     public BlockModel getModel() {
