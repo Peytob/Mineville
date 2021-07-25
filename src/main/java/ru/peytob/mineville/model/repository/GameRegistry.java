@@ -11,6 +11,7 @@ public class GameRegistry {
     }
 
     private final Repository<Block> blockRepository;
+
     private final GameRegistryModifier modifier;
 
     private GameRegistry() {
@@ -18,7 +19,7 @@ public class GameRegistry {
         this.modifier = new GameRegistryModifier();
     }
 
-    public ImmutableRepository<Block> getBlockRepository() {
+    public Repository<Block> getBlockRepository() {
         return blockRepository;
     }
 
