@@ -2,7 +2,7 @@ package ru.peytob.mineville.model.game.object;
 
 import ru.peytob.mineville.model.graphic.block.BlockModel;
 import ru.peytob.mineville.model.graphic.block.BlockTexture;
-import ru.peytob.mineville.model.loader.BaseBlock;
+import ru.peytob.mineville.model.loader.base.BaseBlock;
 import ru.peytob.mineville.model.repository.AbstractRegistrable;
 
 public class Block extends AbstractRegistrable {

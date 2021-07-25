@@ -1,6 +1,9 @@
 package ru.peytob.mineville.model.graphic.block;
 
-public class BlockModel {
+import ru.peytob.mineville.model.loader.base.BaseBlockModel;
+import ru.peytob.mineville.model.repository.AbstractRegistrable;
+
+public class BlockModel extends AbstractRegistrable {
     private final BlockFace northFace;
     private final BlockFace southFace;
     private final BlockFace westFace;
@@ -8,14 +11,14 @@ public class BlockModel {
     private final BlockFace topFace;
     private final BlockFace bottomFace;
 
-    public BlockModel(BlockFace northFace, BlockFace southFace, BlockFace westFace, BlockFace eastFace,
-                      BlockFace topFace, BlockFace bottomFace) {
-        this.northFace = northFace;
-        this.southFace = southFace;
-        this.westFace = westFace;
-        this.eastFace = eastFace;
-        this.topFace = topFace;
-        this.bottomFace = bottomFace;
+    public BlockModel(Integer id, BaseBlockModel baseModel) {
+        super(baseModel.getRepositoryName(), id);
+        this.northFace = baseModel.getNorthFace();
+        this.southFace = baseModel.getSouthFace();
+        this.westFace = baseModel.getWestFace();
+        this.eastFace = baseModel.getEastFace();
+        this.topFace = baseModel.getTopFace();
+        this.bottomFace = baseModel.getBottomFace();
     }
 
     public BlockFace getNorthFace() {

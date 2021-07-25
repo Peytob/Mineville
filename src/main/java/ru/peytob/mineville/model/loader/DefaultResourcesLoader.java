@@ -9,6 +9,8 @@ import ru.peytob.mineville.model.graphic.block.BlockFace;
 import ru.peytob.mineville.model.graphic.block.BlockFacePoints;
 import ru.peytob.mineville.model.graphic.block.BlockModel;
 import ru.peytob.mineville.model.graphic.block.BlockTexture;
+import ru.peytob.mineville.model.loader.base.BaseBlock;
+import ru.peytob.mineville.model.loader.base.BaseBlockModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -74,6 +76,18 @@ public class DefaultResourcesLoader {
         BlockUntexturedModelGson untexturedModel = modelLoader.get("solidCube");
         TextureBlockAtlas atlas = resources.getTexturesPack();
 
+        BaseBlockModel solidCubeModelBase = new BaseBlockModel(
+                "solidCubeModel",
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.north)),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.south)),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.west)),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.east)),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.top)),
+                new BlockFace(new BlockFacePoints(untexturedModel.faces.bottom))
+        );
+
+        BlockModel solidCubeModel = new BlockModel(1, solidCubeModelBase);
+
         BaseBlock grass = new BaseBlock();
         BlockTexture grassTexture = new BlockTexture(
                 atlas.getTile("grass_side"),
@@ -83,15 +97,7 @@ public class DefaultResourcesLoader {
                 atlas.getTile("grass_top"),
                 atlas.getTile("dirt")
         );
-        BlockModel grassModel = new BlockModel(
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.north)),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.south)),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.west)),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.east)),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.top)),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.bottom))
-        );
-        grass.setModel(grassModel);
+        grass.setModel(solidCubeModel);
         grass.setTexture(grassTexture);
         grass.setRepositoryName("grass");
         grass.setUnlocalizedName("grass");
@@ -106,15 +112,7 @@ public class DefaultResourcesLoader {
                 atlas.getTile("stone"),
                 atlas.getTile("stone")
         );
-        BlockModel stoneModel = new BlockModel(
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.north)),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.south)),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.west)),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.east)),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.top)),
-                new BlockFace(new BlockFacePoints(untexturedModel.faces.bottom))
-        );
-        stone.setModel(stoneModel);
+        stone.setModel(solidCubeModel);
         stone.setTexture(stoneTexture);
         stone.setRepositoryName("stone");
         stone.setUnlocalizedName("stone");

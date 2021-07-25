@@ -1,4 +1,4 @@
-package ru.peytob.mineville.model.loader;
+package ru.peytob.mineville.model.loader.base;
 
 import ru.peytob.mineville.model.graphic.block.BlockModel;
 import ru.peytob.mineville.model.graphic.block.BlockTexture;
