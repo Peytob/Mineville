@@ -1,6 +1,6 @@
-package ru.peytob.mineville.model.loader;
+package ru.peytob.mineville.model.loader.marshall;
 
-class BlockUntexturedFaces {
+public class BlockFaceMarshall {
     public Float[] north;
     public Float[] south;
     public Float[] west;

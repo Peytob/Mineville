@@ -2,7 +2,6 @@ package ru.peytob.mineville.controller;
 
 import ru.peytob.mineville.controller.game.Game;
 import ru.peytob.mineville.model.game.Resources;
-import ru.peytob.mineville.model.loader.DefaultResourcesLoader;
 
 import java.io.IOException;
 
@@ -17,9 +16,9 @@ public class ApplicationController {
 
         Resources loadedResources;
         try {
-            DefaultResourcesLoader defaultResourcesLoader = new DefaultResourcesLoader();
-            defaultResourcesLoader.loadResources();
-            loadedResources = defaultResourcesLoader.getResources();
+//            DefaultResourcesLoader defaultResourcesLoader = new DefaultResourcesLoader();
+//            defaultResourcesLoader.loadResources();
+//            loadedResources = defaultResourcesLoader.getResources();
         }
 
         catch (Exception exception) {
@@ -27,7 +26,7 @@ public class ApplicationController {
             exception.printStackTrace();
         }
 
-        this.resources = loadedResources;
+        this.resources = null;
         game = new Game(resources, windowController);
     }
 

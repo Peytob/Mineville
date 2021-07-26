@@ -34,7 +34,7 @@ public class GameRegistry {
         return modifier;
     }
 
-    class GameRegistryModifier {
+    public class GameRegistryModifier {
         public Integer addBlock(BaseBlock baseBlock) {
             Integer id = blockRepository.getCount();
             Block block = new Block(id, baseBlock);

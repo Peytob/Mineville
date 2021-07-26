@@ -1,7 +1,6 @@
 package ru.peytob.mineville;
 
 import ru.peytob.mineville.controller.ApplicationController;
-import ru.peytob.mineville.model.loader.DefaultResourcesLoader;
 
 import java.io.IOException;
 

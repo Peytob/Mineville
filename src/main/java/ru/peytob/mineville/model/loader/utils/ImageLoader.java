@@ -1,4 +1,4 @@
-package ru.peytob.mineville.model.loader;
+package ru.peytob.mineville.model.loader.utils;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import ru.peytob.mineville.model.graphic.Image;
