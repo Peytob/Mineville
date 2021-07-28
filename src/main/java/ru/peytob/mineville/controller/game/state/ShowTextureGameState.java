@@ -40,7 +40,7 @@ public class ShowTextureGameState implements IGameState {
                 1.0f, 1.0f - 0.0f,
         });
 
-        WorldShader shader = game.getResources().getShadersPack().getWorldShader();
+        WorldShader shader = game.getCurrentShaders().getWorldShader();
         shader.setProjectionMatrix(Mat4.computeIdentity());
         shader.setViewMatrix(Mat4.computeIdentity());
         shader.setModelMatrix(Mat4.computeIdentity());

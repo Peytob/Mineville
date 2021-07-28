@@ -1,6 +1,7 @@
 package ru.peytob.mineville;
 
 import ru.peytob.mineville.controller.ApplicationController;
+import ru.peytob.mineville.controller.WindowController;
 import ru.peytob.mineville.model.loader.GameResourcesLoadManager;
 import ru.peytob.mineville.model.repository.GameRegistry;
 
@@ -19,11 +20,33 @@ public class Mineville {
             return;
         }
 
-        new GameResourcesLoadManager(GameRegistry.getInstance().getModifier()).loadBlocks();
+        WindowController windowController = new WindowController("Mineville", 800, 600);
+
+        GameResourcesLoadManager loadManager = new GameResourcesLoadManager(GameRegistry.getInstance().getModifier());
+
+        try {
+            loadManager.loadModels();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            loadManager.loadTextures();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            loadManager.loadShaders();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        loadManager.loadBlocks();
 
         ApplicationController controller;
         try {
-            controller = new ApplicationController();
+            controller = new ApplicationController(windowController);
         } catch (IOException e) {
             e.printStackTrace();
             return;

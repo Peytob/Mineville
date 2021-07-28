@@ -1,33 +1,18 @@
 package ru.peytob.mineville.controller;
 
 import ru.peytob.mineville.controller.game.Game;
-import ru.peytob.mineville.model.game.Resources;
+import ru.peytob.mineville.model.repository.GameRegistry;
 
 import java.io.IOException;
 
 public class ApplicationController {
     private final WindowController windowController;
-    private final Resources resources;
     private final Game game;
 
-    public ApplicationController() throws IOException {
-        windowController = new WindowController("Mineville", 800, 600);
-        windowController.show();
-
-        Resources loadedResources;
-        try {
-//            DefaultResourcesLoader defaultResourcesLoader = new DefaultResourcesLoader();
-//            defaultResourcesLoader.loadResources();
-//            loadedResources = defaultResourcesLoader.getResources();
-        }
-
-        catch (Exception exception) {
-            loadedResources = null;
-            exception.printStackTrace();
-        }
-
-        this.resources = null;
-        game = new Game(resources, windowController);
+    public ApplicationController(WindowController windowController) throws IOException {
+        this.windowController = windowController;
+        this.windowController.show();
+        game = new Game(GameRegistry.getInstance(), windowController);
     }
 
     public void setWindowCallbacks() {

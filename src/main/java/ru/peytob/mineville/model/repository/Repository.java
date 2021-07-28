@@ -16,11 +16,17 @@ public class Repository<T extends AbstractRegistrable> {
         this.registrableByNames = new HashMap<>();
     }
 
-    public T get(String repositoryName) {
+    public T get(String repositoryName) throws IllegalArgumentException {
+        if (!contains(repositoryName)) {
+            throw new IllegalArgumentException("Resource not found: " + repositoryName);
+        }
         return registrableByNames.get(repositoryName);
     }
 
     public T get(Integer repositoryId) {
+        if (!contains(repositoryId)) {
+            throw new IllegalArgumentException("Resource not found: " + repositoryId);
+        }
         return registrableByIds.get(repositoryId);
     }
 

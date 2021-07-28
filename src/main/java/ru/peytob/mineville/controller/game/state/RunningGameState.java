@@ -64,9 +64,9 @@ public class RunningGameState implements IGameState {
 
     @Override
     public void draw() {
-        game.getResources().getShadersPack().getWorldShader().use();
-        game.getResources().getShadersPack().getWorldShader().setProjectionMatrix(cameraController.computeProjection());
-        game.getResources().getShadersPack().getWorldShader().setViewMatrix(cameraController.computeView());
+        game.getCurrentShaders().getWorldShader().use();
+        game.getCurrentShaders().getWorldShader().setProjectionMatrix(cameraController.computeProjection());
+        game.getCurrentShaders().getWorldShader().setViewMatrix(cameraController.computeView());
 
         final WorldDrawer drawer = game.getWorldDrawer();
         drawer.draw(game.getWorld(), Mat4.computeIdentity());
@@ -108,7 +108,7 @@ public class RunningGameState implements IGameState {
                     break;
 
                 case GLFW.GLFW_KEY_TAB:
-                    game.setState(new ShowTextureGameState(game, game.getResources().getTexturesPack().getTexture()));
+                    game.setState(new ShowTextureGameState(game, game.getCurrentTextures().getBlockAtlasTexture()));
                     break;
 
                 default:

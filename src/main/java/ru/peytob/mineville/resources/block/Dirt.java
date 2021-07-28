@@ -8,24 +8,24 @@ import ru.peytob.mineville.model.loader.base.BaseBlock;
 import ru.peytob.mineville.model.repository.GameRegistry;
 
 @Block
-public class Stone extends BaseBlock {
-    public Stone() {
-        this.setUnlocalizedName("stone");
-        this.setRepositoryName("stone");
+public class Dirt extends BaseBlock {
+    public Dirt() {
+        this.setUnlocalizedName("dirt");
+        this.setRepositoryName("dirt");
         this.setModel(GameRegistry.getInstance().getModelRepository().get("mineville::solidCube"));
 
         TexturesPack texturesPack = GameRegistry.getInstance().getTexturesPackRepository().get("default");
-        TextureTile stone = texturesPack.getTile("mineville::stone");
+        TextureTile dirt = texturesPack.getTile("mineville::dirt");
 
-        BlockTexture stoneTexture = new BlockTexture(
-                stone,
-                stone,
-                stone,
-                stone,
-                stone,
-                stone
+        BlockTexture dirtTexture = new BlockTexture(
+                dirt,
+                dirt,
+                dirt,
+                dirt,
+                dirt,
+                dirt
         );
 
-        setTexture(stoneTexture);
+        setTexture(dirtTexture);
     }
 }

@@ -35,7 +35,9 @@ public class BlockLoader extends AbstractResourcesLoader {
                 .filter(BaseBlock.class::isAssignableFrom) // Checks classes.
                 .map(cls -> {
                     try {
-                        return (BaseBlock) cls.getConstructor().newInstance();
+                        BaseBlock baseBlock = (BaseBlock) cls.getConstructor().newInstance();
+                        baseBlock.setRepositoryName(getNamespace() + "::" + baseBlock.getRepositoryName());
+                        return baseBlock;
                     } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
                             IllegalAccessException e) {
                         return null; // Put logs there.

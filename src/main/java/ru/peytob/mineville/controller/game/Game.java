@@ -4,26 +4,28 @@ import ru.peytob.mineville.controller.WindowController;
 import ru.peytob.mineville.controller.game.state.IGameState;
 import ru.peytob.mineville.controller.game.state.RunningGameState;
 import ru.peytob.mineville.controller.game.worldGenerator.TestGenerator;
-import ru.peytob.mineville.controller.game.worldGenerator.WorldGenerator;
-import ru.peytob.mineville.model.game.Resources;
 import ru.peytob.mineville.model.game.world.World;
+import ru.peytob.mineville.model.graphic.TexturesPack;
+import ru.peytob.mineville.model.graphic.shader.ShadersPack;
+import ru.peytob.mineville.model.repository.GameRegistry;
 import ru.peytob.mineville.view.render.world.WorldDrawer;
 
 public class Game {
     private IGameState state;
-
-    private final Resources resources;
     private final World world;
-
     private final WorldDrawer worldDrawer;
-
     private boolean isRunning;
+    private final ShadersPack currentShaders;
+    private final TexturesPack currentTextures;
 
-    public Game(Resources resources, WindowController windowController) {
+    public Game(GameRegistry gameRegistry, WindowController windowController) {
         this.isRunning = true;
-        this.resources = resources;
-        this.worldDrawer = new WorldDrawer(windowController, resources.getShadersPack(), resources.getTexturesPack());
-        this.world = new TestGenerator(123, resources.getBlockRepository()).generate();
+        this.currentShaders = gameRegistry.getShadersPackRepository().get("mineville::default");
+        this.currentTextures = gameRegistry.getTexturesPackRepository().get("default");
+        this.worldDrawer = new WorldDrawer(windowController,
+                this.currentShaders,
+                this.currentTextures);
+        this.world = new TestGenerator(123, gameRegistry.getBlockRepository()).generate();
         setState(new RunningGameState(this));
     }
 
@@ -43,6 +45,14 @@ public class Game {
         return state;
     }
 
+    public ShadersPack getCurrentShaders() {
+        return currentShaders;
+    }
+
+    public TexturesPack getCurrentTextures() {
+        return currentTextures;
+    }
+
     public void setState(IGameState state) {
         if (this.state != null) {
             this.state.onChange();
@@ -50,10 +60,6 @@ public class Game {
 
         this.state = state;
         this.state.onSet();
-    }
-
-    public Resources getResources() {
-        return resources;
     }
 
     public WorldDrawer getWorldDrawer() {

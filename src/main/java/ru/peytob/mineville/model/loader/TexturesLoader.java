@@ -2,6 +2,7 @@ package ru.peytob.mineville.model.loader;
 
 import ru.peytob.mineville.model.builder.TextureBlockAtlasBuilder;
 import ru.peytob.mineville.model.graphic.Image;
+import ru.peytob.mineville.model.graphic.TextureBlockAtlas;
 import ru.peytob.mineville.model.loader.utils.ImageLoader;
 
 import java.io.File;
@@ -15,13 +16,13 @@ public class TexturesLoader extends AbstractResourcesLoader {
         this.textureBlockAtlasBuilder = builder;
     }
 
-    public void loadTextures(File texturesDirectory) throws IOException {
+    public TextureBlockAtlas loadTextures(File texturesDirectory) throws IOException {
         ImageLoader imageLoader = new ImageLoader();
 
         // Checks if directory is empty.
         File[] fileList = texturesDirectory.listFiles();
         if (fileList == null) {
-            return;
+            return textureBlockAtlasBuilder.buildAtlas();
         }
 
         for (File file : fileList) {
@@ -40,5 +41,7 @@ public class TexturesLoader extends AbstractResourcesLoader {
                 loadTextures(file);
             }
         }
+
+        return textureBlockAtlasBuilder.buildAtlas();
     }
 }
