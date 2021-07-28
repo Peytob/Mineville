@@ -1,6 +1,8 @@
 package ru.peytob.mineville;
 
 import ru.peytob.mineville.controller.ApplicationController;
+import ru.peytob.mineville.model.loader.GameResourcesLoadManager;
+import ru.peytob.mineville.model.repository.GameRegistry;
 
 import java.io.IOException;
 
@@ -16,6 +18,8 @@ public class Mineville {
             System.out.println("GLFW initialization error.");
             return;
         }
+
+        new GameResourcesLoadManager(GameRegistry.getInstance().getModifier()).loadBlocks();
 
         ApplicationController controller;
         try {

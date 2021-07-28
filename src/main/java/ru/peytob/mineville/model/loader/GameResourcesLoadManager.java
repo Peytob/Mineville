@@ -1,6 +1,7 @@
 package ru.peytob.mineville.model.loader;
 
 import ru.peytob.mineville.model.builder.TextureBlockAtlasBuilder;
+import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.graphic.shader.ShadersPack;
 import ru.peytob.mineville.model.loader.base.BaseBlockModel;
 import ru.peytob.mineville.model.repository.GameRegistry;
@@ -42,6 +43,8 @@ public class GameResourcesLoadManager {
     }
 
     public void loadBlocks() {
+        BlockLoader loader = new BlockLoader("mineville", "ru.peytob.mineville.resources.block");
+        loader.getBaseInstances().forEach(gameRegistryModifier::addBlock);
     }
 
     private URI resourceToURI(String name) throws IOException {

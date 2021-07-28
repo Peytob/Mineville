@@ -3,7 +3,8 @@ package ru.peytob.mineville.model.annotation;
 import java.lang.annotation.*;
 
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.RUNTIME)
+@Inherited
 @Documented
-public @interface Immutable {
+public @interface Block {
 }
