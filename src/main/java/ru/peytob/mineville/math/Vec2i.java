@@ -1,104 +1,94 @@
 package ru.peytob.mineville.math;
 
 /**
- * Used for two-dimensional vector representation and performance operations on the one.
- * The coordinates of the vector are of int type.
+ * Contains a three-component integer vector.
  */
-public final class Vec2i {
-    /**
-     * The vector's X coordinate.
-     */
-    public int x;
-
-    /**
-     * The vector's Y coordinate.
-     */
-    public int y;
-
-    /**
-     * Constructor which sets both vector's coordinates.
-     *
-     * @param _x The value of X coordinate
-     * @param _y The value of Y coordinate
-     */
-    public Vec2i(int _x, int _y) {
-        x = _x;
-        y = _y;
+public final class Vec2i extends ImmutableVec2i {
+    public Vec2i(int x, int y) {
+        super(x, y);
     }
 
-    /* Arithmetical operations. */
+    public Vec2i(ImmutableVec2i from) {
+        super(from);
+    }
 
-    /**
-     * Retrieving a backward vector (-v).
-     *
-     * @return A backward vector.
-     */
-    public Vec2i negative() {
-        return new Vec2i(-x, -y);
+    public Vec2i() {
+        super();
     }
 
     /**
-     * Vectors addition.
-     *
-     * @param _right Right operand.
-     * @return The result of two vectors addition.
+     * Makes this vector negative.
      */
-    public Vec2i plus(Vec2i _right) {
-        return new Vec2i(x + _right.x, y + _right.y);
+    public void negative() {
+        x = -x;
+        y = -y;
     }
 
     /**
-     * Vector and scalar addition.
+     * Adds given vector right to this vector. Results will be saved in this object.
      *
-     * @param _right Right operand.
-     * @return The result of vector and scalar addition.
+     * @param right Right vector.
      */
-    public Vec2i plus(int _right) {
-        return new Vec2i(x + _right, y + _right);
+    public void plus(ImmutableVec2i right) {
+        x += right.getX();
+        y += right.getY();
     }
 
     /**
-     * Vectors subtraction.
+     * Adds given scalar to this vector. Results will be saved in this object.
      *
-     * @param _right Right operand.
-     * @return Two vectors subtraction result.
+     * @param right Scalar.
      */
-    public Vec2i minus(Vec2i _right) {
-        return new Vec2i(x - _right.x, y - _right.y);
+    public void plus(int right) {
+        x += right;
+        y += right;
     }
 
     /**
-     * Vector and scalar subtraction.
+     * Subtracts given vector right from this vector. Results will be saved in this object.
      *
-     * @param _right Right operand.
-     * @return Vector and scalar subtraction result.
+     * @param right Right vector.
      */
-    public Vec2i minus(int _right) {
-        return new Vec2i(x - _right, y - _right);
+    public void minus(ImmutableVec2i right) {
+        x -= right.getX();
+        y -= right.getY();
     }
 
     /**
-     * Multiplying the vector by a number.
+     * Subtracts given scalar to this vector. Results will be saved in this object.
      *
-     * @param _right Right operand.
-     * @return Multiplying the vector by a number result.
+     * @param right Scalar.
      */
-    public Vec2i multiplication(int _right) {
-        return new Vec2i(x * _right, y * _right);
+    public void minus(int right) {
+        x -= right;
+        y -= right;
     }
 
     /**
-     * Scalar multiplication of vectors.
+     * Computes multiplication of this vector and scalar. Results will be saved in this object.
      *
-     * @param _right Right operand.
-     * @return Multiplication result.
+     * @param right Right scalar.
      */
-    public Vec2i scalarMultiplication(Vec2i _right) {
-        return new Vec2i(x * _right.x, y * _right.y);
+    public void multiplication(int right) {
+        x *= right;
+        y *= right;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     @Override
-    public String toString() {
-        return "(" + x + ", " + y + ")";
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

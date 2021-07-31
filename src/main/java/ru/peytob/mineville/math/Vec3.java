@@ -1,161 +1,115 @@
 package ru.peytob.mineville.math;
 
-import java.util.Objects;
-
 /**
- * Implements storage and processing of a 3 float vector.
+ * Contains a three-component integer vector.
  */
-public class Vec3 {
-
-    /**
-     * X vector component.
-     */
-    public float x;
-
-    /**
-     * Y vector component.
-     */
-    public float y;
-
-    /**
-     * Z vector component.
-     */
-    public float z;
-
-    public Vec3(float _x, float _y, float _z) {
-        x = _x;
-        y = _y;
-        z = _z;
+public class Vec3 extends ImmutableVec3 {
+    public Vec3(int x, int y, int z) {
+        super(x, y, z);
     }
 
-    /**
-     * Creates a zero vector.
-     */
+    public Vec3(ImmutableVec3 from) {
+        super(from);
+    }
+
     public Vec3() {
-
+        super();
     }
 
     /**
-     * Computes negative vector.
-     *
-     * @return Negative vector.
+     * Makes this vector negative.
      */
-    public Vec3 negative() {
-        return new Vec3(-x, -y, -z);
+    public void negative() {
+        x = -x;
+        y = -y;
+        z = -z;
     }
 
     /**
-     * Computes sum of two vectors.
+     * Adds given vector right to this vector. Results will be saved in this object.
      *
-     * @param _right Right vector.
-     * @return Sum of vectors.
+     * @param right Right vector.
      */
-    public Vec3 plus(Vec3 _right) {
-        return new Vec3(x + _right.x, y + _right.y, z + _right.z);
+    public void plus(ImmutableVec3 right) {
+        x += right.getX();
+        y += right.getY();
+        z += right.getZ();
     }
 
     /**
-     * Computes sum of this vector and scalar.
+     * Adds given scalar to this vector. Results will be saved in this object.
      *
-     * @param _right Right scalar.
-     * @return Sum of vector and scalar.
+     * @param right Scalar.
      */
-    public Vec3 plus(float _right) {
-        return new Vec3(x + _right, y + _right, z + _right);
+    public void plus(float right) {
+        x += right;
+        y += right;
+        z += right;
     }
 
     /**
-     * Computes subtraction of two vectors.
+     * Subtracts given vector right from this vector. Results will be saved in this object.
      *
-     * @param _right Right scalar.
-     * @return Subtraction of vector and scalar.
+     * @param right Right vector.
      */
-    public Vec3 minus(Vec3 _right) {
-        return new Vec3(x - _right.x, y - _right.y, z - _right.z);
+    public void minus(ImmutableVec3 right) {
+        x -= right.getX();
+        y -= right.getY();
+        z -= right.getZ();
     }
 
     /**
-     * Computes subtraction of this vector and scalar.
+     * Subtracts given scalar to this vector. Results will be saved in this object.
      *
-     * @param _right Right scalar.
-     * @return Subtraction of vector and scalar.
+     * @param right Scalar.
      */
-    public Vec3 minus(float _right) {
-        return new Vec3(x - _right, y - _right, z - _right);
+    public void minus(float right) {
+        x -= right;
+        y -= right;
+        z -= right;
     }
 
     /**
-     * Returns multiplication of vector and scalar.
+     * Computes multiplication of this vector and scalar. Results will be saved in this object.
      *
-     * @param _right Right scalar.
-     * @return Multiplication of vector and scalar.
+     * @param right Right scalar.
      */
-    public Vec3 multiplication(float _right) {
-        return new Vec3(x * _right, y * _right, z * _right);
+    public void multiplication(float right) {
+        x *= right;
+        y *= right;
+        z *= right;
     }
 
     /**
-     * Returns scalar multiplication of vectors.
+     * Computes vector multiplication of this vector and other vector. Results will be saved in this object.
      *
-     * @param _right Right vector.
-     * @return Scalar multiplication of vectors.
+     * @param right Right vector.
      */
-    public float scalarMultiplication(Vec3 _right) {
-        return x * _right.x + y * _right.y + z * _right.z;
+    public void vectorMultiplication(ImmutableVec3 right) {
+        x = y * right.z - z * right.y;
+        y = z * right.x - x * right.z;
+        z = x * right.y - y * right.x;
     }
 
-    /**
-     * Returns vector multiplication of vectors.
-     *
-     * @param _right Right vector.
-     * @return Vector multiplication of vectors.
-     */
-    public Vec3 vectorMultiplication(Vec3 _right) {
-        return new Vec3(
-                y * _right.z - z * _right.y,
-                z * _right.x - x * _right.z,
-                x * _right.y - y * _right.x
-        );
+    public void setX(int x) {
+        this.x = x;
     }
 
-    /**
-     * Computes length of vector.
-     *
-     * @return Length of vector
-     */
-    public float length() {
-        return (float) Math.sqrt(x * x + y * y + z * z);
+    public void setY(int y) {
+        this.y = y;
     }
 
-    /**
-     * Computes normalized vector.
-     *
-     * @return Normalized vector
-     */
-    public Vec3 normalize() {
-        float invLength = 1.0f / this.length();
-        return new Vec3(x * invLength, y * invLength, z * invLength);
-    }
-
-    @Override
-    public String toString() {
-        return "(" + x + ", " + y + ", " + z + ")";
-    }
-
-    public Vec3i toVec3i() {
-        return new Vec3i((int) x, (int) y, (int) z);
+    public void setZ(int z) {
+        this.z = z;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Vec3 vec3 = (Vec3) o;
-        return Float.compare(vec3.x, x) == 0 && Float.compare(vec3.y, y) == 0 && Float.compare(vec3.z, z) == 0;
+        return super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y, z);
+        return super.hashCode();
     }
 }
