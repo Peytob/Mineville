@@ -69,7 +69,7 @@ public class ImmutableVec2 {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass() || Objects.equals(o.getClass(), Vec2.class)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         ImmutableVec2 vec2 = (ImmutableVec2) o;
         return Float.compare(vec2.x, x) == 0 && Float.compare(vec2.y, y) == 0;
     }

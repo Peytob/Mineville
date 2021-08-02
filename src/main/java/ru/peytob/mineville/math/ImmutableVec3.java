@@ -91,7 +91,7 @@ public class ImmutableVec3 {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass() || Objects.equals(o.getClass(), Vec3.class)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         ImmutableVec3 immutableVec3 = (ImmutableVec3) o;
         return Float.compare(x, immutableVec3.getX()) == 0 &&
                 Float.compare(y, immutableVec3.getY()) == 0 &&

@@ -100,10 +100,23 @@ public class Vec3 extends ImmutableVec3 {
      * @return This vector object (for chain calls).
      */
     public Vec3 vectorMultiplication(ImmutableVec3 right) {
-        x = y * right.z - z * right.y;
-        y = z * right.x - x * right.z;
-        z = x * right.y - y * right.x;
+        float oldX = x;
+        float oldY = y;
+
+        x = oldY * right.z - z * right.y;
+        y = z * right.x - oldX * right.z;
+        z = oldX * right.y - oldY * right.x;
         return this;
+    }
+
+    /**
+     * Computes scalar multiplication of this vector and other vector. Results will be saved in this object.
+     *
+     * @param right Right vector.
+     * @return Scalar multiplication of vectors.
+     */
+    public float scalarMultiplication(Vec3 right) {
+        return x * right.x + y * right.y + z * right.z;
     }
 
     /**
@@ -114,7 +127,7 @@ public class Vec3 extends ImmutableVec3 {
     public Vec3 normalize() {
         float invLength = 1.0f / length();
         x *= invLength;
-        y += invLength;
+        y *= invLength;
         z *= invLength;
         return this;
     }

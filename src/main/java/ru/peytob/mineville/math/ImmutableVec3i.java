@@ -90,7 +90,7 @@ public class ImmutableVec3i {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass() || Objects.equals(o.getClass(), Vec3i.class)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         ImmutableVec3i immutableVec3 = (ImmutableVec3i) o;
         return x == immutableVec3.getX() && y == immutableVec3.getY() && z == immutableVec3.getZ();
     }

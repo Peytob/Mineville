@@ -77,7 +77,7 @@ public class ImmutableMat4 {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass() || Objects.equals(o.getClass(), Mat4.class)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         ImmutableMat4 mat4 = (ImmutableMat4) o;
         return Arrays.equals(data, mat4.data);
     }

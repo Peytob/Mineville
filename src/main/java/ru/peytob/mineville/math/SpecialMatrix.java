@@ -12,12 +12,14 @@ public class SpecialMatrix {
 
     }
 
-    public final ImmutableMat4 IDENTITY = new Mat4(new float[]{
+    private static final float[] IDENTITY_4_MATRIX_DATA = new float[]{
             1, 0, 0, 0,
             0, 1, 0, 0,
             0, 0, 1, 0,
             0, 0, 0, 1
-    });
+    };
+
+    public static final ImmutableMat4 IDENTITY = new Mat4(IDENTITY_4_MATRIX_DATA);
 
     /**
      * Computes identity matrix. If you need immutable instance of identity matrix, just use constant field IDENTITY.
@@ -25,14 +27,7 @@ public class SpecialMatrix {
      * @return New instance of identity matrix.
      */
     static public Mat4 computeIdentity() {
-        float[] data = new float[]{
-                1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
-                0, 0, 0, 1
-        };
-
-        return new Mat4(data);
+        return new Mat4(IDENTITY_4_MATRIX_DATA);
     }
 
     /**
@@ -60,7 +55,7 @@ public class SpecialMatrix {
      * @param vec3 Scale vector.
      * @return New instance of scale matrix.
      */
-    static public Mat4 computeScaleMatrix(Vec3 vec3) {
+    static public Mat4 computeScaleMatrix(ImmutableVec3 vec3) {
         return computeScaleMatrix(vec3.x, vec3.y, vec3.z);
     }
 
@@ -89,7 +84,7 @@ public class SpecialMatrix {
      * @param vec3 Translation vector.
      * @return New instance of transposed translation matrix.
      */
-    static public Mat4 computeTranslation(Vec3 vec3) {
+    static public Mat4 computeTranslation(ImmutableVec3 vec3) {
         return computeTranslation(vec3.x, vec3.y, vec3.z);
     }
 
@@ -180,7 +175,7 @@ public class SpecialMatrix {
      * @param vec3 Rotation vector.
      * @return New instance of transposed rotation matrix around (x, y, z) vector.
      */
-    static public Mat4 computeRotation(float angle, Vec3 vec3) {
+    static public Mat4 computeRotation(float angle, ImmutableVec3 vec3) {
         return computeRotation(angle, vec3.x, vec3.y, vec3.z);
     }
 
@@ -192,19 +187,14 @@ public class SpecialMatrix {
      * @param up       Up vector.
      * @return New instance of transposed view matrix.
      */
-    static public Mat4 computeLookAt(Vec3 position, Vec3 target, Vec3 up) {
-        Vec3 zAxis = LinearAlgebra.minus(position, target);
-        zAxis.normalize();
+    static public Mat4 computeLookAt(ImmutableVec3 position, ImmutableVec3 target, ImmutableVec3 up) {
+        Vec3 zAxis = new Vec3(position).minus(target).normalize();
+        Vec3 xAxis = new Vec3(up).normalize().vectorMultiplication(zAxis).normalize();
+        Vec3 yAxis = new Vec3(zAxis).vectorMultiplication(xAxis);
 
-        Vec3 xAxis = LinearAlgebra.normalize(up);
-        xAxis.vectorMultiplication(zAxis);
-        xAxis.normalize();
+        Mat4 translation = computeTranslation(-position.x, -position.y, -position.z);
 
-        Vec3 yAxis = zAxis.vectorMultiplication(xAxis);
-
-        Mat4 translation = Mat4.computeTranslation(position.negative());
-
-        Mat4 rotation = Mat4.computeIdentity();
+        Mat4 rotation = computeIdentity();
         rotation.set(0, 0, xAxis.x);
         rotation.set(1, 0, xAxis.y);
         rotation.set(2, 0, xAxis.z);
@@ -238,19 +228,19 @@ public class SpecialMatrix {
                                      float upx, float upy, float upz) {
         return computeLookAt(new Vec3(posx, posy, posz), new Vec3(tarx, tary, tarz), new Vec3(upx, upy, upz));
     }
-//
-//    static public Mat4 computePerspective(float fov, float aspect, float nearPlane, float farPlane) {
-//        float zp = farPlane + nearPlane;
-//        float zm = farPlane - nearPlane;
-//
-//        Mat4 perspective = new Mat4();
-//        perspective.set(1, 1, 1.0f / (float) Math.tan(fov / 2)); // yscale
-//        perspective.set(0, 0, perspective.get(1, 1) / aspect); // xscale = yscale / aspect
-//        perspective.set(2, 2, -zp / zm);
-//
-//        perspective.set(3, 2, -(2 * farPlane * nearPlane) / zm);
-//        perspective.set(2, 3, -1.0f);
-//
-//        return perspective;
-//    }
+
+    static public Mat4 computePerspective(float fov, float aspect, float nearPlane, float farPlane) {
+        float zp = farPlane + nearPlane;
+        float zm = farPlane - nearPlane;
+
+        Mat4 perspective = new Mat4();
+        perspective.set(1, 1, 1.0f / (float) Math.tan(fov / 2)); // yscale
+        perspective.set(0, 0, perspective.get(1, 1) / aspect); // xscale = yscale / aspect
+        perspective.set(2, 2, -zp / zm);
+
+        perspective.set(3, 2, -(2 * farPlane * nearPlane) / zm);
+        perspective.set(2, 3, -1.0f);
+
+        return perspective;
+    }
 }
