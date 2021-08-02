@@ -4,7 +4,7 @@ package ru.peytob.mineville.math;
  * Contains a three-component integer vector.
  */
 public class Vec3 extends ImmutableVec3 {
-    public Vec3(int x, int y, int z) {
+    public Vec3(float x, float y, float z) {
         super(x, y, z);
     }
 
@@ -90,6 +90,17 @@ public class Vec3 extends ImmutableVec3 {
         y = z * right.x - x * right.z;
         z = x * right.y - y * right.x;
     }
+
+    /**
+     * Computes normalized vector. Results will be saved in this object.
+     */
+    public void normalize() {
+        float invLength = 1.0f / length();
+        x *= invLength;
+        y += invLength;
+        z *= invLength;
+    }
+
 
     public void setX(int x) {
         this.x = x;

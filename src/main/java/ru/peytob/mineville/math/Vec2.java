@@ -74,6 +74,15 @@ public class Vec2 extends ImmutableVec2 {
         y *= right;
     }
 
+    /**
+     * Computes normalized vector. Results will be saved in this object.
+     */
+    public void normalize() {
+        float invLength = 1.0f / length();
+        x *= invLength;
+        y += invLength;
+    }
+
     public void setX(float x) {
         this.x = x;
     }

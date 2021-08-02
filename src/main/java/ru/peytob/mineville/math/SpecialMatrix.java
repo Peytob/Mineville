@@ -1,6 +1,17 @@
 package ru.peytob.mineville.math;
 
+/**
+ * Utility class for creating special matrices, like translation or rotation matrices.
+ */
 public class SpecialMatrix {
+
+    /**
+     * Closed constructor.
+     */
+    private SpecialMatrix() {
+
+    }
+
     public final ImmutableMat4 IDENTITY = new Mat4(new float[]{
             1, 0, 0, 0,
             0, 1, 0, 0,
@@ -9,7 +20,7 @@ public class SpecialMatrix {
     });
 
     /**
-     * Computes identity matrix. If you need immutable instance of identity matrix
+     * Computes identity matrix. If you need immutable instance of identity matrix, just use constant field IDENTITY.
      *
      * @return New instance of identity matrix.
      */
@@ -44,53 +55,53 @@ public class SpecialMatrix {
     }
 
     /**
-     * Alias for Mat4.computeScaleMatrix(vec3.x, vec3.y, vec3.z).
+     * Alias for SpecialMatrix.computeScaleMatrix(vec3.x, vec3.y, vec3.z).
      *
-     * @param _vec3 Scale vector.
+     * @param vec3 Scale vector.
      * @return New instance of scale matrix.
      */
-    static public Mat4 computeScaleMatrix(Vec3 _vec3) {
-        return computeScaleMatrix(_vec3.x, _vec3.y, _vec3.z);
+    static public Mat4 computeScaleMatrix(Vec3 vec3) {
+        return computeScaleMatrix(vec3.x, vec3.y, vec3.z);
     }
 
     /**
      * Computes transposed translate matrix.
      *
-     * @param _x X axis translate.
-     * @param _y Y axis translate.
-     * @param _z Z axis translate.
+     * @param x X axis translate.
+     * @param y Y axis translate.
+     * @param z Z axis translate.
      * @return New instance of transposed translation matrix.
      */
-    static public Mat4 computeTranslation(float _x, float _y, float _z) {
+    static public Mat4 computeTranslation(float x, float y, float z) {
         float[] data = new float[]{
                 1, 0, 0, 0,
                 0, 1, 0, 0,
                 0, 0, 1, 0,
-                _x, _y, _z, 1
+                x, y, z, 1
         };
 
         return new Mat4(data);
     }
 
     /**
-     * Alias for Mat4.computeTranslation(vec3.x, vec3.y, vec3.z).
+     * Alias for SpecialMatrix.computeTranslation(vec3.x, vec3.y, vec3.z).
      *
-     * @param _vec3 Translation vector.
+     * @param vec3 Translation vector.
      * @return New instance of transposed translation matrix.
      */
-    static public Mat4 computeTranslation(Vec3 _vec3) {
-        return computeTranslation(_vec3.x, _vec3.y, _vec3.z);
+    static public Mat4 computeTranslation(Vec3 vec3) {
+        return computeTranslation(vec3.x, vec3.y, vec3.z);
     }
 
     /**
      * Returns transposed rotation matrix around (1, 0, 0) vector.
      *
-     * @param _angle Rotate angle in radians.
+     * @param angle Rotate angle in radians.
      * @return New instance of transposed rotation matrix around X axis ((1, 0, 0) vector).
      */
-    static public Mat4 computeRotationX(float _angle) {
-        float cos = (float) Math.cos(_angle);
-        float sin = (float) Math.sin(_angle);
+    static public Mat4 computeRotationX(float angle) {
+        float cos = (float) Math.cos(angle);
+        float sin = (float) Math.sin(angle);
 
         float[] data = new float[]{
                 1, 0, 0, 0,
@@ -105,12 +116,12 @@ public class SpecialMatrix {
     /**
      * Returns transposed rotation matrix around (0, 1, 0) vector.
      *
-     * @param _angle Rotate angle in radians.
+     * @param angle Rotate angle in radians.
      * @return New instance of transposed rotation matrix around Y axis ((0, 1, 0) vector).
      */
-    static public Mat4 computeRotationY(float _angle) {
-        float cos = (float) Math.cos(_angle);
-        float sin = (float) Math.sin(_angle);
+    static public Mat4 computeRotationY(float angle) {
+        float cos = (float) Math.cos(angle);
+        float sin = (float) Math.sin(angle);
 
         float[] data = new float[]{
                 cos, 0, -sin, 0,
@@ -125,12 +136,12 @@ public class SpecialMatrix {
     /**
      * Returns transposed rotation matrix around (0, 0, 1) vector.
      *
-     * @param _angle Rotate angle in radians.
+     * @param angle Rotate angle in radians.
      * @return New instance of transposed rotation matrix around X axis ((0, 0, 1) vector).
      */
-    static public Mat4 computeRotationZ(float _angle) {
-        float cos = (float) Math.cos(_angle);
-        float sin = (float) Math.sin(_angle);
+    static public Mat4 computeRotationZ(float angle) {
+        float cos = (float) Math.cos(angle);
+        float sin = (float) Math.sin(angle);
 
         float[] data = new float[]{
                 cos, sin, 0, 0,
@@ -143,19 +154,20 @@ public class SpecialMatrix {
     }
 
     /**
-     * Returns transposed rotation matrix around (x, y, z) vector.
+     * Returns transposed rotation matrix around (x, y, z) vector. If you need to rotate matrix around (1, 0, 0),
+     * (0, 1, 0) or (0, 0, 1) vectors use computeRotationX, computeRotationY or computeRotationZ methods. It's faster!
      *
-     * @param _angle Rotate angle in radians.
+     * @param angle Rotate angle in radians.
      * @return New instance of transposed rotation matrix around (x, y, z) vector.
      */
-    static public Mat4 computeRotation(float _angle, float _x, float _y, float _z) {
-        float cos = (float) Math.cos(_angle);
-        float sin = (float) Math.sin(_angle);
+    static public Mat4 computeRotation(float angle, float x, float y, float z) {
+        float cos = (float) Math.cos(angle);
+        float sin = (float) Math.sin(angle);
 
         float[] data = new float[]{
-                cos + _x * _x * (1 - cos), _y * _x * (1 - cos) + _z * sin, _z * _x * (1 - cos) - _y * sin, 0,
-                _x * _y * (1 - cos) - _z * sin, cos + _y * _y * (1 - cos), _z * _y * (1 - cos) + _x * sin, 0,
-                _x * _z * (1 - cos) + _y * sin, _y * _z * (1 - cos) - _x * sin, cos + _z * _z * (1 - cos), 0,
+                cos + x * x * (1 - cos), y * x * (1 - cos) + z * sin, z * x * (1 - cos) - y * sin, 0,
+                x * y * (1 - cos) - z * sin, cos + y * y * (1 - cos), z * y * (1 - cos) + x * sin, 0,
+                x * z * (1 - cos) + y * sin, y * z * (1 - cos) - x * sin, cos + z * z * (1 - cos), 0,
                 0, 0, 0, 1
         };
 
@@ -163,34 +175,34 @@ public class SpecialMatrix {
     }
 
     /**
-     * Alias for Mat4.computeRotation(angle, vec3.x, vec3.y, vec3.z).
+     * Alias for SpecialMatrix.computeRotation(angle, vec3.x, vec3.y, vec3.z).
      *
-     * @param _vec3 Rotation vector.
+     * @param vec3 Rotation vector.
      * @return New instance of transposed rotation matrix around (x, y, z) vector.
      */
-    static public Mat4 computeRotation(float _angle, Vec3 _vec3) {
-        return computeRotation(_angle, _vec3.x, _vec3.y, _vec3.z);
+    static public Mat4 computeRotation(float angle, Vec3 vec3) {
+        return computeRotation(angle, vec3.x, vec3.y, vec3.z);
     }
 
     /**
      * Returns transposed view matrix.
      *
-     * @param _position Camera position.
-     * @param _target   Point at camera front vector.
-     * @param _up       Up vector.
+     * @param position Camera position.
+     * @param target   Point at camera front vector.
+     * @param up       Up vector.
      * @return New instance of transposed view matrix.
      */
-    static public Mat4 computeLookAt(Vec3 _position, Vec3 _target, Vec3 _up) {
-        Vec3 zAxis = _position.minus(_target);
-        zAxis = zAxis.normalize();
+    static public Mat4 computeLookAt(Vec3 position, Vec3 target, Vec3 up) {
+        Vec3 zAxis = LinearAlgebra.minus(position, target);
+        zAxis.normalize();
 
-        Vec3 upNormalize = _up.normalize();
-        Vec3 crossUpAndZ = upNormalize.vectorMultiplication(zAxis);
-        Vec3 xAxis = crossUpAndZ.normalize();
+        Vec3 xAxis = LinearAlgebra.normalize(up);
+        xAxis.vectorMultiplication(zAxis);
+        xAxis.normalize();
 
         Vec3 yAxis = zAxis.vectorMultiplication(xAxis);
 
-        Mat4 translation = Mat4.computeTranslation(_position.negative());
+        Mat4 translation = Mat4.computeTranslation(position.negative());
 
         Mat4 rotation = Mat4.computeIdentity();
         rotation.set(0, 0, xAxis.x);
@@ -209,7 +221,7 @@ public class SpecialMatrix {
     }
 
     /**
-     * Alias for computeLookAt(positionVec3, targetVec3, upVec3).
+     * Alias for SpecialMatrix.computeLookAt(positionVec3, targetVec3, upVec3).
      *
      * @param posx X component of position vector.
      * @param posy Y component of position vector.
@@ -226,19 +238,19 @@ public class SpecialMatrix {
                                      float upx, float upy, float upz) {
         return computeLookAt(new Vec3(posx, posy, posz), new Vec3(tarx, tary, tarz), new Vec3(upx, upy, upz));
     }
-
-    static public Mat4 computePerspective(float _fov, float _aspect, float _nearPlane, float _farPlane) {
-        float zp = _farPlane + _nearPlane;
-        float zm = _farPlane - _nearPlane;
-
-        Mat4 perspective = new Mat4();
-        perspective.set(1, 1, 1.0f / (float) Math.tan(_fov / 2)); // y_scale
-        perspective.set(0, 0, perspective.get(1, 1) / _aspect); // x_scale = y_scale / aspect
-        perspective.set(2, 2, -zp / zm);
-
-        perspective.set(3, 2, -(2 * _farPlane * _nearPlane) / zm);
-        perspective.set(2, 3, -1.0f);
-
-        return perspective;
-    }
+//
+//    static public Mat4 computePerspective(float fov, float aspect, float nearPlane, float farPlane) {
+//        float zp = farPlane + nearPlane;
+//        float zm = farPlane - nearPlane;
+//
+//        Mat4 perspective = new Mat4();
+//        perspective.set(1, 1, 1.0f / (float) Math.tan(fov / 2)); // yscale
+//        perspective.set(0, 0, perspective.get(1, 1) / aspect); // xscale = yscale / aspect
+//        perspective.set(2, 2, -zp / zm);
+//
+//        perspective.set(3, 2, -(2 * farPlane * nearPlane) / zm);
+//        perspective.set(2, 3, -1.0f);
+//
+//        return perspective;
+//    }
 }

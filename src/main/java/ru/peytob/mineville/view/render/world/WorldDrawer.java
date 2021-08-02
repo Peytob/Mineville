@@ -2,7 +2,9 @@ package ru.peytob.mineville.view.render.world;
 
 import ru.peytob.mineville.controller.WindowController;
 import ru.peytob.mineville.controller.draw.OctreeMeshBuilder;
+import ru.peytob.mineville.math.ImmutableMat4;
 import ru.peytob.mineville.math.Mat4;
+import ru.peytob.mineville.math.SpecialMatrix;
 import ru.peytob.mineville.math.Vec3i;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.game.world.Chunk;
@@ -39,11 +41,11 @@ public class WorldDrawer extends Drawer {
         this.worldShader = this.shadersPack.getWorldShader();
     }
 
-    private void justDrawIt(Mat4 transform) {
+    private void justDrawIt(ImmutableMat4 transform) {
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LESS);
-//        glEnable(GL_CULL_FACE);
-//        glCullFace(GL_BACK);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
 
         // Fix for white lines between tiles. But it is not perfect.
         glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
@@ -53,20 +55,20 @@ public class WorldDrawer extends Drawer {
 
         for (int x = 0; x < world.getWorldSide(); x++) {
             for (int z = 0; z < world.getWorldSide(); z++) {
-                Mat4 position = Mat4.computeTranslation(x * Chunk.SIDE_SIZE_X, 0, z * Chunk.SIDE_SIZE_Z);
+                ImmutableMat4 position = SpecialMatrix.computeTranslation(x * Chunk.SIDE_SIZE_X, 0, z * Chunk.SIDE_SIZE_Z);
                 draw(world.getChunk(x, z), position.multiplication(transform));
             }
         }
     }
 
-    public void draw(Chunk chunk, Mat4 transform) {
+    public void draw(Chunk chunk, ImmutableMat4 transform) {
         for (int y = 0; y < Chunk.OCTREES_COUNT; ++y) {
-            Mat4 localTrans = Mat4.computeTranslation(0, Octree.ROOT_SIDE_SIZE * y, 0);
+            ImmutableMat4 localTrans = SpecialMatrix.computeTranslation(0, Octree.ROOT_SIDE_SIZE * y, 0);
             draw(chunk.getOctree(y), localTrans.multiplication(transform));
         }
     }
 
-    public void draw(Octree octree, Mat4 transform) {
+    public void draw(Octree octree, ImmutableMat4 transform) {
         if (octree.getMesh() == null) {
             octree.setMesh(makeOctreeMesh(octree));
         }
@@ -127,7 +129,7 @@ public class WorldDrawer extends Drawer {
         }
     }
 
-    public void draw(World target, Mat4 transform) {
+    public void draw(World target, ImmutableMat4 transform) {
         world = target;
         clear();
         justDrawIt(transform);
