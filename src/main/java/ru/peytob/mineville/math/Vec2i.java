@@ -18,68 +18,95 @@ public final class Vec2i extends ImmutableVec2i {
 
     /**
      * Makes this vector negative.
+     *
+     * @return This vector object (for chain calls).
      */
-    public void negative() {
+    public Vec2i negative() {
         x = -x;
         y = -y;
+        return this;
     }
 
     /**
      * Adds given vector right to this vector. Results will be saved in this object.
      *
      * @param right Right vector.
+     * @return This vector object (for chain calls).
      */
-    public void plus(ImmutableVec2i right) {
+    public Vec2i plus(ImmutableVec2i right) {
         x += right.getX();
         y += right.getY();
+        return this;
     }
 
     /**
      * Adds given scalar to this vector. Results will be saved in this object.
      *
      * @param right Scalar.
+     * @return This vector object (for chain calls).
      */
-    public void plus(int right) {
+    public Vec2i plus(int right) {
         x += right;
         y += right;
+        return this;
     }
 
     /**
      * Subtracts given vector right from this vector. Results will be saved in this object.
      *
      * @param right Right vector.
+     * @return This vector object (for chain calls).
      */
-    public void minus(ImmutableVec2i right) {
+    public Vec2i minus(ImmutableVec2i right) {
         x -= right.getX();
         y -= right.getY();
+        return this;
     }
 
     /**
      * Subtracts given scalar to this vector. Results will be saved in this object.
      *
      * @param right Scalar.
+     * @return This vector object (for chain calls).
      */
-    public void minus(int right) {
+    public Vec2i minus(int right) {
         x -= right;
         y -= right;
+        return this;
     }
 
     /**
      * Computes multiplication of this vector and scalar. Results will be saved in this object.
      *
      * @param right Right scalar.
+     * @return This vector object (for chain calls).
      */
-    public void multiplication(int right) {
+    public Vec2i multiplication(int right) {
         x *= right;
         y *= right;
+        return this;
     }
 
-    public void setX(int x) {
+    /**
+     * Setter, but with chain calls support.
+     *
+     * @param x New x.
+     * @return This vector object (for chain calls).
+     */
+    public Vec2i setX(int x) {
         this.x = x;
+        return this;
     }
 
-    public void setY(int y) {
+    /**
+     * Setter, but with chain calls support.
+     *
+     * @param y New y.
+     * @return This vector object (for chain calls).
+     */
+    public Vec2i setY(int y) {
         this.y = y;
+        return this;
     }
 
     @Override
