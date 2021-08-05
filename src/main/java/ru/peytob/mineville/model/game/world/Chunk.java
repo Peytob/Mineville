@@ -1,5 +1,6 @@
 package ru.peytob.mineville.model.game.world;
 
+import ru.peytob.mineville.math.ImmutableVec3i;
 import ru.peytob.mineville.math.Vec3i;
 import ru.peytob.mineville.model.game.object.Block;
 
@@ -12,16 +13,17 @@ public class Chunk implements IBlockly {
 
     public static final int OCTREES_COUNT = 8;
     public static final int SIDE_SIZE_Y = OCTREES_COUNT * Octree.ROOT_SIDE_SIZE;
-    private static final Vec3i sizes = new Vec3i(SIDE_SIZE_X, SIDE_SIZE_Y, SIDE_SIZE_Z);
+    private static final ImmutableVec3i sizes = new ImmutableVec3i(SIDE_SIZE_X, SIDE_SIZE_Y, SIDE_SIZE_Z);
 
     private final Octree[] octrees;
-    private final Vec3i position;
+    private final ImmutableVec3i position;
 
-    public Chunk(Vec3i position) {
+    public Chunk(ImmutableVec3i position) {
         this.position = position;
         this.octrees = new Octree[OCTREES_COUNT];
         for (int i = 0; i < octrees.length; ++i) {
-            octrees[i] = new Octree(new Vec3i(position.x, position.y + i * Octree.ROOT_SIDE_SIZE, position.z));
+            octrees[i] = new Octree(new ImmutableVec3i(position.getX(), position.getY() + i * Octree.ROOT_SIDE_SIZE,
+                    position.getZ()));
         }
     }
 
@@ -48,12 +50,12 @@ public class Chunk implements IBlockly {
         return null;
     }
 
-    public Vec3i getPosition() {
+    public ImmutableVec3i getPosition() {
         return position;
     }
 
     @Override
-    public Vec3i getSizes() {
+    public ImmutableVec3i getSizes() {
         return sizes;
     }
 

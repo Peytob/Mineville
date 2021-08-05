@@ -20,7 +20,7 @@ public class TestGenerator extends WorldGenerator {
 
         for (int x = 0; x < Chunk.SIDE_SIZE_X; ++x) {
             for (int z = 0; z < Chunk.SIDE_SIZE_Z; ++z) {
-                double sinArg = chunk.getPosition().x + x;
+                double sinArg = chunk.getPosition().getX() + x;
                 int height = (int) (seaLevel + hillsSize * Math.sin(sinArg));
                 for (int y = 0; y < height - 1; ++y) {
                     chunk.setBlock(x, y, z, stone);

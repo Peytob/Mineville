@@ -1,13 +1,12 @@
 package ru.peytob.mineville.controller.draw;
 
-import ru.peytob.mineville.math.Mat4;
-import ru.peytob.mineville.math.Vec3;
+import ru.peytob.mineville.math.*;
 import ru.peytob.mineville.model.graphic.Camera;
 
 public class CameraController {
-    Camera camera;
+    private final Camera camera;
 
-    float aspect;
+    private float aspect;
 
     public CameraController(Vec3 position, float pith, float yaw, float fov, float aspect) {
         this.camera = new Camera(position, pith, yaw, fov);
@@ -16,16 +15,16 @@ public class CameraController {
     }
 
     public Mat4 computeProjection() {
-        return Mat4.computePerspective(camera.getFov(), aspect, 0.1f, 128.0f);
+        return SpecialMatrix.computePerspective(camera.getFov(), aspect, 0.1f, 128.0f);
     }
 
     public Mat4 computeView() {
         updateVectors();
 
-        Vec3 up = camera.getRight().vectorMultiplication(camera.getFront());
-        up = up.normalize();
+        Vec3 up = new Vec3(camera.getRight()).vectorMultiplication(camera.getFront()).normalize();
+        Vec3 target = new Vec3(camera.getPosition()).plus(camera.getFront());
 
-        return Mat4.computeLookAt(camera.getPosition(), camera.getPosition().plus(camera.getFront()), up);
+        return SpecialMatrix.computeLookAt(camera.getPosition(), target, up);
     }
 
     public void lookAround(float xOffset, float yOffset) {
@@ -56,25 +55,25 @@ public class CameraController {
         ).normalize();
 
         Vec3 worldUp = new Vec3(0, 1, 0);
-        Vec3 right = front.vectorMultiplication(worldUp).normalize();
+        Vec3 right = new Vec3(front).vectorMultiplication(worldUp).normalize();
 
         camera.setFront(front);
         camera.setRight(right);
     }
 
-    public void move(Vec3 _offset) {
-        camera.setPosition(camera.getPosition().plus(_offset));
+    public void move(Vec3 offset) {
+        camera.move(offset);
     }
 
-    public Vec3 getPosition() {
+    public ImmutableVec3 getPosition() {
         return camera.getPosition();
     }
 
-    public Vec3 getFrontVector() {
+    public ImmutableVec3 getFrontVector() {
         return camera.getFront();
     }
 
-    public Vec3 getRightVector() {
+    public ImmutableVec3 getRightVector() {
         return camera.getRight();
     }
 }

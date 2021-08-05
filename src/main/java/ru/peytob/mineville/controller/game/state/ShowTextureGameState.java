@@ -4,6 +4,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL33;
 import ru.peytob.mineville.controller.game.Game;
 import ru.peytob.mineville.math.Mat4;
+import ru.peytob.mineville.math.SpecialMatrix;
 import ru.peytob.mineville.model.graphic.Mesh;
 import ru.peytob.mineville.model.graphic.shader.WorldShader;
 import ru.peytob.mineville.model.opengl.Texture;
@@ -41,9 +42,9 @@ public class ShowTextureGameState implements IGameState {
         });
 
         WorldShader shader = game.getCurrentShaders().getWorldShader();
-        shader.setProjectionMatrix(Mat4.computeIdentity());
-        shader.setViewMatrix(Mat4.computeIdentity());
-        shader.setModelMatrix(Mat4.computeIdentity());
+        shader.setProjectionMatrix(SpecialMatrix.IDENTITY);
+        shader.setViewMatrix(SpecialMatrix.IDENTITY);
+        shader.setModelMatrix(SpecialMatrix.IDENTITY);
     }
 
     @Override

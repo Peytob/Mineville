@@ -43,6 +43,5 @@ public class ApplicationController {
     public void destroy() {
         windowController.close();
         windowController.destroy();
-//        resources.destroy();
     }
 }

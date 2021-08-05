@@ -4,6 +4,8 @@ import org.lwjgl.glfw.GLFWCursorPosCallbackI;
 import org.lwjgl.glfw.GLFWKeyCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWScrollCallbackI;
+import ru.peytob.mineville.math.ImmutableVec2;
+import ru.peytob.mineville.math.ImmutableVec2i;
 import ru.peytob.mineville.math.Vec2;
 import ru.peytob.mineville.math.Vec2i;
 import ru.peytob.mineville.view.Window;
@@ -40,11 +42,11 @@ public class WindowController {
         window.show();
     }
 
-    public Vec2 getCursorPosition() {
+    public ImmutableVec2 getCursorPosition() {
         return window.getCursorPosition();
     }
 
-    public Vec2i getWindowSizes() {
+    public ImmutableVec2i getWindowSizes() {
         return window.getWindowSizes();
     }
 

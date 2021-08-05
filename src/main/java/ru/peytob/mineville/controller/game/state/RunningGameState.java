@@ -15,11 +15,11 @@ public class RunningGameState implements IGameState {
 
     public RunningGameState(Game game) {
         this.game = game;
-        this.cursorPosition = game.getWorldDrawer().getWindowController().getCursorPosition();
+        this.cursorPosition = new Vec2(game.getWorldDrawer().getWindowController().getCursorPosition());
 
-        Vec2i windowSizes = game.getWorldDrawer().getWindowController().getWindowSizes();
+        ImmutableVec2i windowSizes = game.getWorldDrawer().getWindowController().getWindowSizes();
         this.cameraController = new CameraController(new Vec3(0, 0, -10 ), 0, (float) Math.toRadians(90),
-                (float) Math.toRadians(75), (float) windowSizes.x / (float) windowSizes.y);
+                (float) Math.toRadians(75), (float) windowSizes.getX() / (float) windowSizes.getY());
     }
 
     @Override
@@ -35,21 +35,22 @@ public class RunningGameState implements IGameState {
         float speed = 0.15f;
 
         if (input.isKeyPressed(GLFW.GLFW_KEY_W)) {
-            cameraOffset = cameraOffset.plus(cameraController.getFrontVector().multiplication(speed));
+            cameraOffset.plus(cameraController.getFrontVector());
         }
 
         if (input.isKeyPressed(GLFW.GLFW_KEY_A)) {
-            cameraOffset = cameraOffset.minus(cameraController.getRightVector().multiplication(speed));
+            cameraOffset.minus(cameraController.getRightVector());
         }
 
         if (input.isKeyPressed(GLFW.GLFW_KEY_D)) {
-            cameraOffset = cameraOffset.plus(cameraController.getRightVector().multiplication(speed));
+            cameraOffset.plus(cameraController.getRightVector());
         }
 
         if (input.isKeyPressed(GLFW.GLFW_KEY_S)) {
-            cameraOffset = cameraOffset.minus(cameraController.getFrontVector().multiplication(speed));
+            cameraOffset.minus(cameraController.getFrontVector());
         }
 
+        cameraOffset.multiplication(speed);
         cameraController.move(cameraOffset);
     }
 
@@ -69,7 +70,7 @@ public class RunningGameState implements IGameState {
         game.getCurrentShaders().getWorldShader().setViewMatrix(cameraController.computeView());
 
         final WorldDrawer drawer = game.getWorldDrawer();
-        drawer.draw(game.getWorld(), Mat4.computeIdentity());
+        drawer.draw(game.getWorld(), SpecialMatrix.IDENTITY);
     }
 
     @Override
@@ -87,10 +88,9 @@ public class RunningGameState implements IGameState {
 
     @Override
     public void onMouseMove(double newX, double newY) {
-        float dx = (float) newX - cursorPosition.x;
-        float dy = (float) newY - cursorPosition.y;
-        cursorPosition.x = (float) newX;
-        cursorPosition.y = (float) newY;
+        float dx = (float) newX - cursorPosition.getX();
+        float dy = (float) newY - cursorPosition.getY();
+        cursorPosition.setX((float) newX).setY((float) newY);
 
         cameraController.lookAround(dx * 0.1f, -dy * 0.1f);
     }

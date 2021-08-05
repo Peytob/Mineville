@@ -51,7 +51,7 @@ public class TextureBlockAtlasBuilder {
                 (float) tileSizePixels / imageBuilder.getHeight());
 
         tilesPositions.forEach((textId, position) -> {
-            atlas.registerTile(textId, position.x, position.y);
+            atlas.registerTile(textId, position.getX(), position.getY());
             TextureTile tile = atlas.getTile(textId);
             System.out.println(textId + " " + tile.getX() + " " + tile.getY());
         });

@@ -1,5 +1,7 @@
 package ru.peytob.mineville.model.graphic;
 
+import ru.peytob.mineville.math.ImmutableVec3;
+import ru.peytob.mineville.math.ImmutableVec3i;
 import ru.peytob.mineville.math.Vec3;
 
 public class Camera {
@@ -22,12 +24,16 @@ public class Camera {
         this.pitch = pith;
     }
 
-    public Vec3 getPosition() {
+    public ImmutableVec3 getPosition() {
         return position;
     }
 
     public void setPosition(Vec3 position) {
         this.position = position;
+    }
+
+    public void move(ImmutableVec3 offset) {
+        this.position.plus(offset);
     }
 
     public float getFov() {
@@ -50,7 +56,7 @@ public class Camera {
         this.pitch = pitch;
     }
 
-    public Vec3 getFront() {
+    public ImmutableVec3 getFront() {
         return front;
     }
 
@@ -58,7 +64,7 @@ public class Camera {
         this.front = front;
     }
 
-    public Vec3 getRight() {
+    public ImmutableVec3 getRight() {
         return right;
     }
 

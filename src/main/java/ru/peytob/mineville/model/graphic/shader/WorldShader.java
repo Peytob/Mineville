@@ -1,5 +1,6 @@
 package ru.peytob.mineville.model.graphic.shader;
 
+import ru.peytob.mineville.math.ImmutableMat4;
 import ru.peytob.mineville.math.Mat4;
 import ru.peytob.mineville.model.opengl.AbstractShaderProgram;
 
@@ -49,19 +50,19 @@ public class WorldShader extends AbstractShaderProgram {
         }
     }
 
-    void setMatrix(int location, Mat4 matrix) {
+    void setMatrix(int location, ImmutableMat4 matrix) {
         glUniformMatrix4fv(location, false, matrix.toFloatArray());
     }
 
-    public void setModelMatrix(Mat4 modelMatrix) {
+    public void setModelMatrix(ImmutableMat4 modelMatrix) {
         setMatrix(modelMatrixLocation, modelMatrix);
     }
 
-    public void setProjectionMatrix(Mat4 projectionMatrix) {
+    public void setProjectionMatrix(ImmutableMat4 projectionMatrix) {
         setMatrix(projectionMatrixLocation, projectionMatrix);
     }
 
-    public void setViewMatrix(Mat4 viewMatrix) {
+    public void setViewMatrix(ImmutableMat4 viewMatrix) {
         setMatrix(viewMatrixLocation, viewMatrix);
     }
 }

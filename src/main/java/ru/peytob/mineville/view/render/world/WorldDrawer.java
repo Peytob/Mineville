@@ -2,10 +2,7 @@ package ru.peytob.mineville.view.render.world;
 
 import ru.peytob.mineville.controller.WindowController;
 import ru.peytob.mineville.controller.draw.OctreeMeshBuilder;
-import ru.peytob.mineville.math.ImmutableMat4;
-import ru.peytob.mineville.math.Mat4;
-import ru.peytob.mineville.math.SpecialMatrix;
-import ru.peytob.mineville.math.Vec3i;
+import ru.peytob.mineville.math.*;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.game.world.Chunk;
 import ru.peytob.mineville.model.game.world.Octree;
@@ -55,7 +52,7 @@ public class WorldDrawer extends Drawer {
 
         for (int x = 0; x < world.getWorldSide(); x++) {
             for (int z = 0; z < world.getWorldSide(); z++) {
-                ImmutableMat4 position = SpecialMatrix.computeTranslation(x * Chunk.SIDE_SIZE_X, 0, z * Chunk.SIDE_SIZE_Z);
+                Mat4 position = SpecialMatrix.computeTranslation(x * Chunk.SIDE_SIZE_X, 0, z * Chunk.SIDE_SIZE_Z);
                 draw(world.getChunk(x, z), position.multiplication(transform));
             }
         }
@@ -63,7 +60,7 @@ public class WorldDrawer extends Drawer {
 
     public void draw(Chunk chunk, ImmutableMat4 transform) {
         for (int y = 0; y < Chunk.OCTREES_COUNT; ++y) {
-            ImmutableMat4 localTrans = SpecialMatrix.computeTranslation(0, Octree.ROOT_SIDE_SIZE * y, 0);
+            Mat4 localTrans = SpecialMatrix.computeTranslation(0, Octree.ROOT_SIDE_SIZE * y, 0);
             draw(chunk.getOctree(y), localTrans.multiplication(transform));
         }
     }
@@ -80,7 +77,7 @@ public class WorldDrawer extends Drawer {
     // It's controller, but in view ^^
     public Mesh makeOctreeMesh(Octree octree) {
         OctreeMeshBuilder builder = new OctreeMeshBuilder();
-        Vec3i octreePosition = octree.getPosition();
+        ImmutableVec3i octreePosition = octree.getPosition();
 
         for (int x = 0; x < Octree.ROOT_SIDE_SIZE; x++) {
             for (int y = 0; y < Octree.ROOT_SIDE_SIZE; y++) {
@@ -91,27 +88,39 @@ public class WorldDrawer extends Drawer {
                         continue;
                     }
 
-                    if (world.getBlock(octreePosition.x + x, octreePosition.y + y - 1, octreePosition.z + z) == null) {
+                    Block bottomBlock = world.getBlock(octreePosition.getX() + x,
+                            octreePosition.getY() + y - 1, octreePosition.getZ() + z);
+                    if (bottomBlock == null) {
                         builder.addBottom(block, x, y, z);
                     }
 
-                    if (world.getBlock(octreePosition.x + x + 1, octreePosition.y + y, octreePosition.z + z) == null) {
+                    Block eastBlock = world.getBlock(octreePosition.getX() + x + 1,
+                            octreePosition.getY() + y, octreePosition.getZ() + z);
+                    if (eastBlock == null) {
                         builder.addEast(block, x, y, z);
                     }
 
-                    if (world.getBlock(octreePosition.x + x, octreePosition.y + y, octreePosition.z + z + 1) == null) {
+                    Block northBlock = world.getBlock(octreePosition.getX() + x,
+                            octreePosition.getY() + y, octreePosition.getZ() + z + 1);
+                    if (northBlock == null) {
                         builder.addNorth(block, x, y, z);
                     }
 
-                    if (world.getBlock(octreePosition.x + x, octreePosition.y + y, octreePosition.z + z - 1) == null) {
+                    Block southBlock = world.getBlock(octreePosition.getX() + x,
+                            octreePosition.getY() + y, octreePosition.getZ() + z - 1);
+                    if (southBlock == null) {
                         builder.addSouth(block, x, y, z);
                     }
 
-                    if (world.getBlock(octreePosition.x + x - 1, octreePosition.y + y, octreePosition.z + z) == null) {
+                    Block westBlock = world.getBlock(octreePosition.getX() + x - 1,
+                            octreePosition.getY() + y, octreePosition.getZ() + z);
+                    if (westBlock == null) {
                         builder.addWest(block, x, y, z);
                     }
 
-                    if (world.getBlock(octreePosition.x + x, octreePosition.y + y + 1, octreePosition.z + z) == null) {
+                    Block topBlock = world.getBlock(octreePosition.getX() + x,
+                            octreePosition.getY() + y + 1, octreePosition.getZ() + z);
+                    if (topBlock == null) {
                         builder.addTop(block, x, y, z);
                     }
                 }

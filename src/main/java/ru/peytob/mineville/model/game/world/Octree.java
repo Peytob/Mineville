@@ -1,6 +1,6 @@
 package ru.peytob.mineville.model.game.world;
 
-import ru.peytob.mineville.math.Vec3i;
+import ru.peytob.mineville.math.ImmutableVec3i;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.graphic.Mesh;
 
@@ -12,13 +12,13 @@ import static ru.peytob.mineville.math.CoordinatesUtils.toFlat3D;
 public class Octree implements IBlockly {
     protected static final int ROOT_SIDE_SIZE_POWER_2 = 4;
     public static final int ROOT_SIDE_SIZE = 1 << ROOT_SIDE_SIZE_POWER_2;
-    static final Vec3i SIZES = new Vec3i(ROOT_SIDE_SIZE, ROOT_SIDE_SIZE, ROOT_SIDE_SIZE);
+    static final ImmutableVec3i SIZES = new ImmutableVec3i(ROOT_SIDE_SIZE, ROOT_SIDE_SIZE, ROOT_SIDE_SIZE);
 
     private final AbstractNode root;
     private Mesh mesh;
-    private final Vec3i position;
+    private final ImmutableVec3i position;
 
-    public Octree(Vec3i position) {
+    public Octree(ImmutableVec3i position) {
         this.root = new InnerNode(ROOT_SIDE_SIZE);
         this.mesh = null;
         this.position = position;
@@ -47,12 +47,12 @@ public class Octree implements IBlockly {
         return null;
     }
 
-    public Vec3i getPosition() {
+    public ImmutableVec3i getPosition() {
         return position;
     }
 
     @Override
-    public Vec3i getSizes() {
+    public ImmutableVec3i getSizes() {
         return SIZES;
     }
 
@@ -137,7 +137,7 @@ public class Octree implements IBlockly {
         }
 
         @Override
-        public Vec3i getSizes() {
+        public ImmutableVec3i getSizes() {
             return null;
         }
 
@@ -171,7 +171,7 @@ public class Octree implements IBlockly {
         }
 
         @Override
-        public Vec3i getSizes() {
+        public ImmutableVec3i getSizes() {
             return null;
         }
 

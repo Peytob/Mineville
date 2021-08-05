@@ -1,5 +1,6 @@
 package ru.peytob.mineville.model.game.world;
 
+import ru.peytob.mineville.math.ImmutableVec3i;
 import ru.peytob.mineville.math.Vec3i;
 import ru.peytob.mineville.model.game.object.Block;
 
@@ -7,7 +8,7 @@ import static ru.peytob.mineville.math.CoordinatesUtils.toFlat2D;
 
 public class World implements IBlockly {
     private final Chunk[] chunks;
-    private final Vec3i sizes;
+    private final ImmutableVec3i sizes;
     private final int worldSide;
 
     public World(int sizes) {
@@ -16,10 +17,11 @@ public class World implements IBlockly {
 
         for (int x = 0; x < worldSide; x++) {
             for (int z = 0; z < worldSide; z++) {
-                setChunk(x, z, new Chunk(new Vec3i(x * Chunk.SIDE_SIZE_X, 0, z * Chunk.SIDE_SIZE_Z)));
+                setChunk(x, z, new Chunk(new ImmutableVec3i(x * Chunk.SIDE_SIZE_X, 0, z * Chunk.SIDE_SIZE_Z)));
             }
         }
-        this.sizes = new Vec3i(Chunk.SIDE_SIZE_X * worldSide, Chunk.SIDE_SIZE_Y, Chunk.SIDE_SIZE_Z * worldSide);
+        this.sizes = new ImmutableVec3i(Chunk.SIDE_SIZE_X * worldSide, Chunk.SIDE_SIZE_Y,
+                Chunk.SIDE_SIZE_Z * worldSide);
     }
 
     @Override
@@ -58,7 +60,7 @@ public class World implements IBlockly {
     }
 
     @Override
-    public Vec3i getSizes() {
+    public ImmutableVec3i getSizes() {
         return sizes;
     }
 
