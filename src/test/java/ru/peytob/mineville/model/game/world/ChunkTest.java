@@ -30,20 +30,20 @@ class ChunkTest {
     void setAndGetBlock() {
         Chunk chunk = new Chunk(new Vec3i(0, 0, 0));
 
-        for (int y = 0; y < chunk.getSizes().y; y++) {
-            int x = y % chunk.getSizes().x;
-            int z = y % chunk.getSizes().z;
+        for (int y = 0; y < chunk.getSizes().getY(); y++) {
+            int x = y % chunk.getSizes().getX();
+            int z = y % chunk.getSizes().getZ();
 
             chunk.setBlock(x, y, z, block1);
             assertEquals(block1.getId(), chunk.getBlock(x, y, z).getId());
         }
 
-        // chunk.getSizes().y blocks inside
+        // chunk.getSizes().getY() blocks inside
 
         int blocksInsideCount = 0;
-        for (int x = 0; x < chunk.getSizes().x; x++) {
-            for (int y = 0; y < chunk.getSizes().y; y++) {
-                for (int z = 0; z < chunk.getSizes().z; z++) {
+        for (int x = 0; x < chunk.getSizes().getX(); x++) {
+            for (int y = 0; y < chunk.getSizes().getY(); y++) {
+                for (int z = 0; z < chunk.getSizes().getZ(); z++) {
                     if (chunk.getBlock(x, y, z) != null) {
                         blocksInsideCount++;
                     }
@@ -51,7 +51,7 @@ class ChunkTest {
             }
         }
 
-        assertEquals(chunk.getSizes().y, blocksInsideCount);
+        assertEquals(chunk.getSizes().getY(), blocksInsideCount);
     }
 
     @Test
@@ -77,17 +77,17 @@ class ChunkTest {
         Chunk chunk = new Chunk(new Vec3i(0, 0, 0));
         Random random = new Random();
 
-        for (int y = 0; y < chunk.getSizes().y; y++) {
+        for (int y = 0; y < chunk.getSizes().getY(); y++) {
             assertTrue(chunk.isPointIn(random.nextInt(16), y, random.nextInt(16)));
         }
 
         assertTrue(chunk.isPointIn(0, 0, 0));
-        assertTrue(chunk.isPointIn(chunk.getSizes().x - 1, chunk.getSizes().y - 1, chunk.getSizes().z - 1));
+        assertTrue(chunk.isPointIn(chunk.getSizes().getX() - 1, chunk.getSizes().getY() - 1, chunk.getSizes().getZ() - 1));
 
         assertFalse(chunk.isPointIn(-1, 0, 0));
         assertFalse(chunk.isPointIn(0, 0, -1));
         assertFalse(chunk.isPointIn(0, -1, 0));
-        assertFalse(chunk.isPointIn(chunk.getSizes().x + 1, chunk.getSizes().y + 1, chunk.getSizes().z + 1));
+        assertFalse(chunk.isPointIn(chunk.getSizes().getX() + 1, chunk.getSizes().getY() + 1, chunk.getSizes().getZ() + 1));
 
     }
 }

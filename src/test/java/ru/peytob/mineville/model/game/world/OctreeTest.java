@@ -42,9 +42,9 @@ class OctreeTest {
         assertNull(octree.getBlock(20, 20, 20));
 
         int blocksInsideCount = 0;
-        for (int x = 0; x < octree.getSizes().x; x++) {
-            for (int y = 0; y < octree.getSizes().y; y++) {
-                for (int z = 0; z < octree.getSizes().z; z++) {
+        for (int x = 0; x < octree.getSizes().getX(); x++) {
+            for (int y = 0; y < octree.getSizes().getY(); y++) {
+                for (int z = 0; z < octree.getSizes().getZ(); z++) {
                     if (octree.getBlock(x, y, z) != null) {
                         blocksInsideCount++;
                     }

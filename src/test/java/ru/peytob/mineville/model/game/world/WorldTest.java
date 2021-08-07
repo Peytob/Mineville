@@ -27,18 +27,18 @@ class WorldTest {
     void setAndGetBlock() {
         World world = new World(4);
 
-        for (int x = 0; x < world.getSizes().x; x++) {
-            for (int y = 0; y < world.getSizes().y; y++) {
-                for (int z = 5; z < world.getSizes().z; z += 16) {
+        for (int x = 0; x < world.getSizes().getX(); x++) {
+            for (int y = 0; y < world.getSizes().getY(); y++) {
+                for (int z = 5; z < world.getSizes().getZ(); z += 16) {
                     world.setBlock(x, y, z, block1);
                     world.setBlock(x, y, z - 2, block2);
                 }
             }
         }
 
-        for (int x = 0; x < world.getSizes().x; x++) {
-            for (int y = 0; y < world.getSizes().y; y++) {
-                for (int z = 5; z < world.getSizes().z; z += 16) {
+        for (int x = 0; x < world.getSizes().getX(); x++) {
+            for (int y = 0; y < world.getSizes().getY(); y++) {
+                for (int z = 5; z < world.getSizes().getZ(); z += 16) {
                     assertEquals(block1.getId(), world.getBlock(x, y, z).getId());
                     assertEquals(block2.getId(), world.getBlock(x, y, z - 2).getId());
                 }
@@ -65,21 +65,21 @@ class WorldTest {
     void isPointIn() {
         World world = new World(4);
 
-        for (int y = 0; y < world.getSizes().y; y += 8) {
+        for (int y = 0; y < world.getSizes().getY(); y += 8) {
             assertTrue(world.isPointIn(0, y, 0));
         }
 
         for (int x = 0; x < world.getWorldSide(); x += 8) {
-            for (int y = 0; y < world.getSizes().y; y += 8) {
+            for (int y = 0; y < world.getSizes().getY(); y += 8) {
                 assertTrue(world.isPointIn(x, y, x));
             }
         }
 
-        assertFalse(world.isPointIn(world.getSizes().x + 1, 0, 0));
+        assertFalse(world.isPointIn(world.getSizes().getX() + 1, 0, 0));
         assertFalse(world.isPointIn(-1, 0, 0));
-        assertFalse(world.isPointIn(0, world.getSizes().y + 1, 0));
+        assertFalse(world.isPointIn(0, world.getSizes().getY() + 1, 0));
         assertFalse(world.isPointIn(0, -1, 0));
-        assertFalse(world.isPointIn(0, 0, world.getSizes().z + 1));
+        assertFalse(world.isPointIn(0, 0, world.getSizes().getZ() + 1));
         assertFalse(world.isPointIn(0, 0, -1));
     }
 }
