@@ -1,5 +1,6 @@
 package ru.peytob.mineville.model.game.world;
 
+import ru.peytob.mineville.math.ImmutableVec2i;
 import ru.peytob.mineville.math.ImmutableVec3i;
 import ru.peytob.mineville.math.Vec3i;
 import ru.peytob.mineville.model.game.object.Block;
@@ -17,9 +18,12 @@ public class Chunk implements IBlockly {
 
     private final Octree[] octrees;
     private final ImmutableVec3i position;
+    private final ImmutableVec2i gridPosition;
 
-    public Chunk(ImmutableVec3i position) {
-        this.position = position;
+    public Chunk(ImmutableVec2i gridPosition) {
+        this.position = new ImmutableVec3i(gridPosition.getX() * SIDE_SIZE_X, 0, gridPosition.getY() * SIDE_SIZE_Z);
+        this.gridPosition = gridPosition;
+
         this.octrees = new Octree[OCTREES_COUNT];
         for (int i = 0; i < octrees.length; ++i) {
             octrees[i] = new Octree(new ImmutableVec3i(position.getX(), position.getY() + i * Octree.ROOT_SIDE_SIZE,
@@ -62,6 +66,10 @@ public class Chunk implements IBlockly {
     @Override
     public boolean isPointIn(int x, int y, int z) {
         return x >= 0 && x < SIDE_SIZE_X && y >= 0 && y < SIDE_SIZE_Y && z >= 0 && z < SIDE_SIZE_Z;
+    }
+
+    public ImmutableVec2i getGridPosition() {
+        return gridPosition;
     }
 
     public Octree getOctree(int y) {

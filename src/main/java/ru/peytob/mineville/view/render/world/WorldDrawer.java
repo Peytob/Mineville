@@ -50,24 +50,28 @@ public class WorldDrawer extends Drawer {
 
         glActiveTexture(textureBlockAtlas.getBlockAtlasTexture().getId());
 
-        for (int x = 0; x < world.getWorldSide(); x++) {
-            for (int z = 0; z < world.getWorldSide(); z++) {
-                Mat4 position = SpecialMatrix.computeTranslation(x * Chunk.SIDE_SIZE_X, 0, z * Chunk.SIDE_SIZE_Z);
-                draw(world.getChunk(x, z), position.multiplication(transform));
-            }
-        }
+        world.getChunkStream().forEach(chunk -> {
+            ImmutableVec3i chunkPosition = chunk.getPosition();
+
+            Mat4 position = SpecialMatrix.computeTranslation(chunkPosition.getX(), chunkPosition.getY(), chunkPosition.getZ());
+            draw(chunk, position.multiplication(transform));
+        });
     }
 
     public void draw(Chunk chunk, ImmutableMat4 transform) {
         for (int y = 0; y < Chunk.OCTREES_COUNT; ++y) {
-            Mat4 localTrans = SpecialMatrix.computeTranslation(0, Octree.ROOT_SIDE_SIZE * y, 0);
-            draw(chunk.getOctree(y), localTrans.multiplication(transform));
+            Octree octree = chunk.getOctree(y);
+            ImmutableVec3i octreePosition = octree.getPosition();
+
+            Mat4 localTrans = SpecialMatrix.computeTranslation(0, octreePosition.getY(), 0);
+            draw(octree, localTrans.multiplication(transform));
         }
     }
 
     public void draw(Octree octree, ImmutableMat4 transform) {
-        if (octree.getMesh() == null) {
+        if (octree.getMesh() == null || octree.isMeshShouldBeUpdated()) {
             octree.setMesh(makeOctreeMesh(octree));
+            octree.markMeshAsUpdated();
         }
 
         worldShader.setModelMatrix(transform);

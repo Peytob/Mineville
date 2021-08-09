@@ -2,8 +2,13 @@ package ru.peytob.mineville.model.game.world;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.peytob.mineville.math.ImmutableVec2i;
+import ru.peytob.mineville.math.Vec2i;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.game.object.BlockBuilder;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,22 +30,29 @@ class WorldTest {
 
     @Test
     void setAndGetBlock() {
-        World world = new World(4);
+        setAndGetBlock(1, 1, -51);
+        setAndGetBlock(2, 0, 0);
+    }
 
-        for (int x = 0; x < world.getSizes().getX(); x++) {
-            for (int y = 0; y < world.getSizes().getY(); y++) {
-                for (int z = 5; z < world.getSizes().getZ(); z += 16) {
-                    world.setBlock(x, y, z, block1);
-                    world.setBlock(x, y, z - 2, block2);
+    void setAndGetBlock(int radius, int originX, int originY) {
+        World world = emptyWorld(radius, originX, originY);
+        originX *= Chunk.SIDE_SIZE_X;
+        originY *= Chunk.SIDE_SIZE_Z;
+
+        for (int x = -radius * Chunk.SIDE_SIZE_X; x < radius * Chunk.SIDE_SIZE_X; x += 5) {
+            for (int y = 0; y < Chunk.SIDE_SIZE_Y; y++) {
+                for (int z = -radius * Chunk.SIDE_SIZE_X + 5; z < radius * Chunk.SIDE_SIZE_Z; z += 16) {
+                    world.setBlock(originX + x, y, originY + z, block1);
+                    world.setBlock(originX + x, y, originY + z - 2, block2);
                 }
             }
         }
 
-        for (int x = 0; x < world.getSizes().getX(); x++) {
-            for (int y = 0; y < world.getSizes().getY(); y++) {
-                for (int z = 5; z < world.getSizes().getZ(); z += 16) {
-                    assertEquals(block1.getId(), world.getBlock(x, y, z).getId());
-                    assertEquals(block2.getId(), world.getBlock(x, y, z - 2).getId());
+        for (int x = -radius * Chunk.SIDE_SIZE_X; x < radius * Chunk.SIDE_SIZE_X; x += 5) {
+            for (int y = 0; y < Chunk.SIDE_SIZE_Y; y++) {
+                for (int z = -radius * Chunk.SIDE_SIZE_X + 5; z < radius * Chunk.SIDE_SIZE_Z; z += 16) {
+                    assertEquals(block1.getId(), world.getBlock(originX + x, y, originY + z).getId());
+                    assertEquals(block2.getId(), world.getBlock(originX + x, y, originY + z - 2).getId());
                 }
             }
         }
@@ -48,38 +60,70 @@ class WorldTest {
 
     @Test
     void removeBlock() {
-        World world = new World(4);
+        removeBlock(1, 1, -51);
+        removeBlock(12, 0, 0);
+    }
 
-        world.setBlock(0, 0, 0, block1);
-        assertNotNull(world.getBlock(0, 0, 0));
-        world.removeBlock(0, 0, 0);
-        assertNull(world.getBlock(0, 0, 0));
+    void removeBlock(int radius, int originX, int originY) {
+        World world = emptyWorld(radius, originX, originY);
+        originX *= Chunk.SIDE_SIZE_X;
+        originY *= Chunk.SIDE_SIZE_Z;
 
-        world.setBlock(5, 5, 5, block1);
-        assertNotNull(world.getBlock(5, 5, 5));
-        world.removeBlock(0, 0, 0);
-        assertNotNull(world.getBlock(5, 5, 5));
+        world.setBlock(originX, 0, originY, block1);
+        assertNotNull(world.getBlock(originX, 0, originY));
+        world.removeBlock(originX, 0, originY);
+        assertNull(world.getBlock(originX, 0, originY));
+
+        world.setBlock(originX + 5, 5, originY + 5, block1);
+        assertNotNull(world.getBlock(originX + 5, 5, originY + 5));
+        world.removeBlock(originX, 0, originY);
+        assertNotNull(world.getBlock(originX + 5, 5, originY + 5));
     }
 
     @Test
     void isPointIn() {
-        World world = new World(4);
+        isPointIn(5, 0, 0);
+        isPointIn(2, 6, -4);
+    }
 
-        for (int y = 0; y < world.getSizes().getY(); y += 8) {
-            assertTrue(world.isPointIn(0, y, 0));
+    void isPointIn(int radius, int originX, int originY) {
+        World world = emptyWorld(radius, originX, originY);
+        originX *= Chunk.SIDE_SIZE_X;
+        originY *= Chunk.SIDE_SIZE_Z;
+
+        for (int y = 0; y < Chunk.SIDE_SIZE_Y; y += 8) {
+            assertTrue(world.isPointIn(originX, y, originY));
+            assertTrue(world.isPointIn(originX - 15, y, originY + 31));
+            assertTrue(world.isPointIn(originX + 16, y, originY - 32));
         }
 
-        for (int x = 0; x < world.getWorldSide(); x += 8) {
-            for (int y = 0; y < world.getSizes().getY(); y += 8) {
-                assertTrue(world.isPointIn(x, y, x));
+        for (int x = -radius * Chunk.SIDE_SIZE_X; x < radius * Chunk.SIDE_SIZE_X; x += 8) {
+            for (int y = 0; y < Chunk.SIDE_SIZE_Y; y += 8) {
+                assertTrue(world.isPointIn(originX + x, y, originY + x));
             }
         }
 
-        assertFalse(world.isPointIn(world.getSizes().getX() + 1, 0, 0));
-        assertFalse(world.isPointIn(-1, 0, 0));
-        assertFalse(world.isPointIn(0, world.getSizes().getY() + 1, 0));
-        assertFalse(world.isPointIn(0, -1, 0));
-        assertFalse(world.isPointIn(0, 0, world.getSizes().getZ() + 1));
-        assertFalse(world.isPointIn(0, 0, -1));
+        assertFalse(world.isPointIn(originX + (radius + 1) * Chunk.SIDE_SIZE_X + 1, 0, originY));
+        assertFalse(world.isPointIn(originX - (radius + 1) * Chunk.SIDE_SIZE_X - 1, 0, originY));
+        assertFalse(world.isPointIn(originX, Chunk.SIDE_SIZE_Y + 1, originY));
+        assertFalse(world.isPointIn(originX, -1, originY));
+        assertFalse(world.isPointIn(originX, 0, originY + (radius + 1) * Chunk.SIDE_SIZE_Z + 1));
+        assertFalse(world.isPointIn(originX, 0, originY - (radius + 1) * Chunk.SIDE_SIZE_Z - 1));
+    }
+
+    World emptyWorld(int radius, int originX, int originY) {
+        List<Chunk> chunks = new LinkedList<>();
+
+        for (int x = originX - radius; x <= originX + radius; ++x) {
+            for (int y = originY - radius; y <= originY + radius; ++y) {
+                chunks.add(new Chunk(new ImmutableVec2i(x, y)));
+            }
+        }
+
+        return new World(chunks);
+    }
+
+    World emptyWorld(int radius) {
+        return emptyWorld(radius, 0, 0);
     }
 }

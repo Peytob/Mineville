@@ -18,10 +18,13 @@ public class Octree implements IBlockly {
     private Mesh mesh;
     private final ImmutableVec3i position;
 
+    private boolean updateMeshFlag;
+
     public Octree(ImmutableVec3i position) {
         this.root = new InnerNode(ROOT_SIDE_SIZE);
         this.mesh = null;
         this.position = position;
+        this.updateMeshFlag = true;
     }
 
     @Override
@@ -69,11 +72,19 @@ public class Octree implements IBlockly {
         this.mesh = mesh;
     }
 
+    public boolean isMeshShouldBeUpdated() {
+        return updateMeshFlag;
+    }
+
+    public void markMeshAsUpdated() {
+        updateMeshFlag = false;
+    }
+
     static abstract class AbstractNode implements IBlockly {
         public abstract boolean isEmpty();
     }
 
-    static class InnerNode extends AbstractNode {
+    class InnerNode extends AbstractNode {
         private final int size;
         private final AbstractNode[] childrens;
 
@@ -110,7 +121,6 @@ public class Octree implements IBlockly {
             int arrayIndex = toFlat3D(x / half, y / half, z / half, 2, 2);
 
             if (childrens[arrayIndex] != null) {
-
                 childrens[arrayIndex].removeBlock(innerX, innerY, innerZ);
 
                 if (childrens[arrayIndex].isEmpty()) {
@@ -152,16 +162,18 @@ public class Octree implements IBlockly {
         }
     }
 
-    static class LeafNode extends AbstractNode {
+    class LeafNode extends AbstractNode {
         private Block block;
 
         @Override
         public void setBlock(int x, int y, int z, Block block) {
+            updateMeshFlag = true;
             this.block = block;
         }
 
         @Override
         public void removeBlock(int x, int y, int z) {
+            updateMeshFlag = true;
             this.block = null;
         }
 

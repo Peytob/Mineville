@@ -5,6 +5,7 @@ import ru.peytob.mineville.controller.draw.CameraController;
 import ru.peytob.mineville.controller.game.Game;
 import ru.peytob.mineville.math.*;
 import ru.peytob.mineville.model.game.object.Block;
+import ru.peytob.mineville.model.repository.GameRegistry;
 import ru.peytob.mineville.view.input.KeyboardMouseInput;
 import ru.peytob.mineville.view.render.world.WorldDrawer;
 
@@ -18,7 +19,7 @@ public class RunningGameState implements IGameState {
         this.cursorPosition = new Vec2(game.getWorldDrawer().getWindowController().getCursorPosition());
 
         ImmutableVec2i windowSizes = game.getWorldDrawer().getWindowController().getWindowSizes();
-        this.cameraController = new CameraController(new Vec3(0, 0, -10 ), 0, (float) Math.toRadians(90),
+        this.cameraController = new CameraController(new Vec3(0, 50, 0 ), 0, (float) Math.toRadians(90),
                 (float) Math.toRadians(75), (float) windowSizes.getX() / (float) windowSizes.getY());
     }
 
@@ -84,6 +85,20 @@ public class RunningGameState implements IGameState {
 
     @Override
     public void onMouseClick(int button, int action, int mods) {
+        if (action == GLFW.GLFW_PRESS) {
+            if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+                try {
+                    System.out.println("Camera global position: " + cameraController.getPosition());
+                    ImmutableVec3 pos = cameraController.getPosition();
+                    Block block = GameRegistry.getInstance().getBlockRepository().get("mineville::stone");
+                    game.getWorld().setBlock((int) pos.getX(), (int) pos.getY(), (int) pos.getZ(), block);
+                }
+
+                 catch (Exception exp) {
+                    exp.printStackTrace();
+                 }
+            }
+        }
     }
 
     @Override

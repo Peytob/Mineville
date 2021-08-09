@@ -1,27 +1,27 @@
 package ru.peytob.mineville.model.game.world;
 
+import ru.peytob.mineville.math.ImmutableVec2i;
 import ru.peytob.mineville.math.ImmutableVec3i;
-import ru.peytob.mineville.math.Vec3i;
+import ru.peytob.mineville.math.Vec2i;
 import ru.peytob.mineville.model.game.object.Block;
 
-import static ru.peytob.mineville.math.CoordinatesUtils.toFlat2D;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public class World implements IBlockly {
-    private final Chunk[] chunks;
-    private final ImmutableVec3i sizes;
-    private final int worldSide;
+    static private final ImmutableVec3i SIZES = new ImmutableVec3i(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
 
-    public World(int sizes) {
-        this.chunks = new Chunk[sizes * sizes];
-        this.worldSide = sizes;
+    private final Map<ImmutableVec2i, Chunk> chunks;
 
-        for (int x = 0; x < worldSide; x++) {
-            for (int z = 0; z < worldSide; z++) {
-                setChunk(x, z, new Chunk(new ImmutableVec3i(x * Chunk.SIDE_SIZE_X, 0, z * Chunk.SIDE_SIZE_Z)));
-            }
-        }
-        this.sizes = new ImmutableVec3i(Chunk.SIDE_SIZE_X * worldSide, Chunk.SIDE_SIZE_Y,
-                Chunk.SIDE_SIZE_Z * worldSide);
+    public World() {
+        this.chunks = new HashMap<>();
+    }
+
+    public World(Collection<Chunk> chunks) {
+        this();
+        chunks.forEach(this::setChunk);
     }
 
     @Override
@@ -31,7 +31,11 @@ public class World implements IBlockly {
             int innerZ = z & (Chunk.SIDE_SIZE_Z - 1);
             int outerX = x >> Chunk.SIDE_SIZE_X_POWER_2;
             int outerZ = z >> Chunk.SIDE_SIZE_Z_POWER_2;
-            getChunk(outerX, outerZ).setBlock(innerX, y, innerZ, block);
+
+            Chunk chunk = getChunk(outerX, outerZ);
+            if (chunk != null) {
+                getChunk(outerX, outerZ).setBlock(innerX, y, innerZ, block);
+            }
         }
     }
 
@@ -42,7 +46,11 @@ public class World implements IBlockly {
             int innerZ = z & (Chunk.SIDE_SIZE_Z - 1);
             int outerX = x >> Chunk.SIDE_SIZE_X_POWER_2;
             int outerZ = z >> Chunk.SIDE_SIZE_Z_POWER_2;
-            getChunk(outerX, outerZ).removeBlock(innerX, y, innerZ);
+
+            Chunk chunk = getChunk(outerX, outerZ);
+            if (chunk != null) {
+                getChunk(outerX, outerZ).removeBlock(innerX, y, innerZ);
+            }
         }
     }
 
@@ -53,7 +61,10 @@ public class World implements IBlockly {
             int innerZ = z & (Chunk.SIDE_SIZE_Z - 1);
             int outerX = x >> Chunk.SIDE_SIZE_X_POWER_2;
             int outerZ = z >> Chunk.SIDE_SIZE_Z_POWER_2;
-            return getChunk(outerX, outerZ).getBlock(innerX, y, innerZ);
+            Chunk chunk = getChunk(outerX, outerZ);
+            if (chunk != null) {
+                return getChunk(outerX, outerZ).getBlock(innerX, y, innerZ);
+            }
         }
 
         return null;
@@ -61,26 +72,44 @@ public class World implements IBlockly {
 
     @Override
     public ImmutableVec3i getSizes() {
-        return sizes;
+        return SIZES;
     }
 
     @Override
     public boolean isPointIn(int x, int y, int z) {
-        return
-                x >= 0 && x < Chunk.SIDE_SIZE_X * worldSide &&
-                y >= 0 && y < Chunk.SIDE_SIZE_Y &&
-                z >= 0 && z < Chunk.SIDE_SIZE_Z * worldSide;
+        ImmutableVec2i gridPosition = new ImmutableVec2i(x >> Chunk.SIDE_SIZE_X_POWER_2, z >> Chunk.SIDE_SIZE_X_POWER_2);
+        Chunk chunk = getChunk(gridPosition);
+
+        int innerX = x & (Chunk.SIDE_SIZE_X - 1);
+        int innerZ = z & (Chunk.SIDE_SIZE_Z - 1);
+        return chunk != null && chunk.isPointIn(innerX, y, innerZ);
+    }
+
+    public void unloadChunk(int x, int y) {
+        unloadChunk(new Vec2i(x, y));
+    }
+
+    public void unloadChunk(ImmutableVec2i gridPosition) {
+        chunks.remove(gridPosition);
+    }
+
+    public int getLoadChunksCount() {
+        return chunks.size();
     }
 
     public Chunk getChunk(int x, int z) {
-        return chunks[toFlat2D(x, z, worldSide)];
+        return getChunk(new ImmutableVec2i(x, z));
     }
 
-    private void setChunk(int x, int z, Chunk chunk) {
-        chunks[toFlat2D(x, z, worldSide)] = chunk;
+    public Chunk getChunk(ImmutableVec2i gridPosition) {
+        return chunks.get(gridPosition);
     }
 
-    public int getWorldSide() {
-        return worldSide;
+    public Stream<Chunk> getChunkStream() {
+        return chunks.values().stream();
+    }
+
+    public void setChunk(Chunk chunk) {
+        chunks.put(chunk.getGridPosition(), chunk);
     }
 }
