@@ -15,7 +15,7 @@ import ru.peytob.mineville.view.render.world.WorldDrawer;
 
 public class Game {
     private IGameState state;
-    private final World world;
+    private final WorldController world;
     private final WorldDrawer worldDrawer;
     private boolean isRunning;
     private final ShadersPack currentShaders;
@@ -30,16 +30,7 @@ public class Game {
                 this.currentTextures);
 
         WorldGenerator generator = new TestGenerator(123, gameRegistry.getBlockRepository());
-        this.world = new World();
-
-        for (int x = -4; x < 4; ++x) {
-            for (int z = -4; z < 4; ++z) {
-                Chunk chunk = new Chunk(new ImmutableVec2i(x, z));
-                generator.generateChunk(chunk);
-                world.setChunk(chunk);
-            }
-        }
-
+        this.world = new WorldController(generator);
         setState(new RunningGameState(this));
     }
 
@@ -109,7 +100,7 @@ public class Game {
         return isRunning;
     }
 
-    public World getWorld() {
+    public WorldController getWorldController() {
         return world;
     }
 }

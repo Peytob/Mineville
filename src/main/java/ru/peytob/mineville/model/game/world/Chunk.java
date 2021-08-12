@@ -6,7 +6,6 @@ import ru.peytob.mineville.math.Vec3i;
 import ru.peytob.mineville.model.game.object.Block;
 
 public class Chunk implements IBlockly {
-
     protected static final int SIDE_SIZE_X_POWER_2 = Octree.ROOT_SIDE_SIZE_POWER_2;
     public static final int SIDE_SIZE_X = 1 << SIDE_SIZE_X_POWER_2;
     protected static final int SIDE_SIZE_Z_POWER_2 = Octree.ROOT_SIDE_SIZE_POWER_2;

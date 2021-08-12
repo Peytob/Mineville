@@ -5,6 +5,7 @@ import ru.peytob.mineville.controller.draw.CameraController;
 import ru.peytob.mineville.controller.game.Game;
 import ru.peytob.mineville.math.*;
 import ru.peytob.mineville.model.game.object.Block;
+import ru.peytob.mineville.model.game.world.World;
 import ru.peytob.mineville.model.repository.GameRegistry;
 import ru.peytob.mineville.view.input.KeyboardMouseInput;
 import ru.peytob.mineville.view.render.world.WorldDrawer;
@@ -26,6 +27,7 @@ public class RunningGameState implements IGameState {
     @Override
     public void onSet() {
         System.out.println("Set state: RunningGameState");
+        this.game.getWorldController().setLoadRadius(3);
     }
 
     @Override
@@ -52,7 +54,33 @@ public class RunningGameState implements IGameState {
         }
 
         cameraOffset.multiplication(speed);
+        int oldChunkGridX = (int) cameraController.getPosition().getX() / 16;
+        if (cameraController.getPosition().getX() < 0) {
+            oldChunkGridX -= 1;
+        }
+
+        int oldChunkGridZ = (int) cameraController.getPosition().getZ() / 16;
+        if (cameraController.getPosition().getZ() < 0) {
+            oldChunkGridZ -= 1;
+        }
+
         cameraController.move(cameraOffset);
+
+        int chunkGridX = (int) cameraController.getPosition().getX() / 16;
+        if (cameraController.getPosition().getX() < 0) {
+            chunkGridX -= 1;
+        }
+
+        int chunkGridZ = (int) cameraController.getPosition().getZ() / 16;
+        if (cameraController.getPosition().getZ() < 0) {
+            chunkGridZ -= 1;
+        }
+
+        if (chunkGridX != oldChunkGridX || chunkGridZ != oldChunkGridZ) {
+            ImmutableVec2i delta = new ImmutableVec2i(chunkGridX - oldChunkGridX, chunkGridZ - oldChunkGridZ);
+            System.out.println("Move: " + delta);
+            game.getWorldController().moveOrigin(delta);
+        }
     }
 
     @Override
@@ -71,7 +99,7 @@ public class RunningGameState implements IGameState {
         game.getCurrentShaders().getWorldShader().setViewMatrix(cameraController.computeView());
 
         final WorldDrawer drawer = game.getWorldDrawer();
-        drawer.draw(game.getWorld(), SpecialMatrix.IDENTITY);
+        drawer.draw(game.getWorldController().getWorld(), SpecialMatrix.IDENTITY);
     }
 
     @Override
@@ -89,9 +117,10 @@ public class RunningGameState implements IGameState {
             if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
                 try {
                     System.out.println("Camera global position: " + cameraController.getPosition());
+                    World world = game.getWorldController().getWorld();
                     ImmutableVec3 pos = cameraController.getPosition();
                     Block block = GameRegistry.getInstance().getBlockRepository().get("mineville::stone");
-                    game.getWorld().setBlock((int) pos.getX(), (int) pos.getY(), (int) pos.getZ(), block);
+                    world.setBlock((int) pos.getX(), (int) pos.getY(), (int) pos.getZ(), block);
                 }
 
                  catch (Exception exp) {

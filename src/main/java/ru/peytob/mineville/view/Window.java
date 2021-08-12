@@ -71,7 +71,7 @@ public class Window {
     }
 
     /**
-     * Checks window is open.
+     * Checks if the window should close.
      *
      * @return True, if window should close.
      */

@@ -3,6 +3,7 @@ package ru.peytob.mineville.model.game.object;
 import ru.peytob.mineville.model.graphic.block.BlockModel;
 import ru.peytob.mineville.model.graphic.block.BlockTexture;
 
+@Deprecated
 public class BlockBuilder {
     private Integer id;
     private BlockModel model;
