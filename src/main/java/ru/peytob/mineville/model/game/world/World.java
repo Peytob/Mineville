@@ -21,7 +21,7 @@ public class World implements IBlockly {
 
     public World(Collection<Chunk> chunks) {
         this();
-        chunks.forEach(this::setChunk);
+        chunks.forEach(this::loadChunk);
     }
 
     @Override
@@ -109,7 +109,11 @@ public class World implements IBlockly {
         return chunks.values().stream();
     }
 
-    public void setChunk(Chunk chunk) {
+    public void loadChunk(Chunk chunk) {
         chunks.put(chunk.getGridPosition(), chunk);
+    }
+
+    public void unloadAllChunks() {
+        chunks.clear();
     }
 }
