@@ -11,16 +11,20 @@ import static org.lwjgl.glfw.GLFW.glfwInit;
 
 /**
  * Application entry point.
- * Initializes all libraries used by the application.
+ * Runs all application layers subsequence.
  */
 public class Mineville {
     public static void main(String[] args) {
+        /* Layer 1: initializing libraries */
+
         if (!glfwInit()) {
-            System.out.println("GLFW initialization error.");
+            System.err.println("GLFW initialization error.");
             return;
         }
 
         WindowController windowController = new WindowController("Mineville", 800, 600);
+
+        /* Layer 2: loading all resources */
 
         GameResourcesLoadManager loadManager = new GameResourcesLoadManager(GameRegistry.getInstance().getModifier());
 
@@ -44,6 +48,8 @@ public class Mineville {
 
         loadManager.loadBlocks();
 
+        /* Layer 3: application main cycle */
+
         ApplicationController controller;
         try {
             controller = new ApplicationController(windowController);
@@ -54,6 +60,9 @@ public class Mineville {
 
         controller.setWindowCallbacks();
         controller.run();
+
+        /* Layer 4: free all resources! [but now its dont frees repository resources like shaders and other] */
+
         controller.destroy();
     }
 }

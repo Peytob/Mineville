@@ -1,10 +1,15 @@
 package ru.peytob.mineville.model.game.object;
 
+import ru.peytob.mineville.model.annotation.Immutable;
 import ru.peytob.mineville.model.graphic.block.BlockModel;
 import ru.peytob.mineville.model.graphic.block.BlockTexture;
 import ru.peytob.mineville.model.loader.base.BaseBlock;
 import ru.peytob.mineville.model.repository.AbstractRegistrable;
 
+/**
+ * Immutable class containing constant standard information about the block.
+ */
+@Immutable
 public class Block extends AbstractRegistrable {
     private final String unlocalizedName;
     private final BlockModel model;
