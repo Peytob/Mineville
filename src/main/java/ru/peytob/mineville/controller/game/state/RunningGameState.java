@@ -3,6 +3,7 @@ package ru.peytob.mineville.controller.game.state;
 import org.lwjgl.glfw.GLFW;
 import ru.peytob.mineville.controller.draw.CameraController;
 import ru.peytob.mineville.controller.game.Game;
+import ru.peytob.mineville.controller.game.WorldController;
 import ru.peytob.mineville.math.*;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.game.world.World;
@@ -27,7 +28,16 @@ public class RunningGameState implements IGameState {
     @Override
     public void onSet() {
         System.out.println("Set state: RunningGameState");
-        this.game.getWorldController().setLoadRadius(3);
+
+        WorldController world = game.getWorldController();
+        int radius = 5;
+        for (int x = -radius; x < radius; x++) {
+            for (int z = -radius; z < radius; z++) {
+                world.generateChunk(x, z);
+            }
+        }
+
+        System.out.println("Test world: " + world.getLoadChunksCount());
     }
 
     @Override
@@ -54,33 +64,7 @@ public class RunningGameState implements IGameState {
         }
 
         cameraOffset.multiplication(speed);
-        int oldChunkGridX = (int) cameraController.getPosition().getX() / 16;
-        if (cameraController.getPosition().getX() < 0) {
-            oldChunkGridX -= 1;
-        }
-
-        int oldChunkGridZ = (int) cameraController.getPosition().getZ() / 16;
-        if (cameraController.getPosition().getZ() < 0) {
-            oldChunkGridZ -= 1;
-        }
-
         cameraController.move(cameraOffset);
-
-        int chunkGridX = (int) cameraController.getPosition().getX() / 16;
-        if (cameraController.getPosition().getX() < 0) {
-            chunkGridX -= 1;
-        }
-
-        int chunkGridZ = (int) cameraController.getPosition().getZ() / 16;
-        if (cameraController.getPosition().getZ() < 0) {
-            chunkGridZ -= 1;
-        }
-
-        if (chunkGridX != oldChunkGridX || chunkGridZ != oldChunkGridZ) {
-            ImmutableVec2i delta = new ImmutableVec2i(chunkGridX - oldChunkGridX, chunkGridZ - oldChunkGridZ);
-            System.out.println("Move: " + delta);
-            game.getWorldController().moveOrigin(delta);
-        }
     }
 
     @Override
