@@ -76,4 +76,8 @@ public class CameraController {
     public ImmutableVec3 getRightVector() {
         return camera.getRight();
     }
+
+    public void setAspect(float aspect) {
+        this.aspect = aspect;
+    }
 }
