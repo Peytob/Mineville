@@ -8,10 +8,9 @@ class CollisionUtilsTest {
 
     @Test
     void isCollision() {
-        /**
-         * The first is located at a distance from the second and third. Third is located inside second.
-         * Fourth contains part of all other cubes, but not all of it.
-         */
+        // The first is located at a distance from the second and third. Third is located inside second.
+        // Fourth contains part of all other cubes, but not all of it.
+
         AABB first = new AABB(new Vec3(5.12f, 3.41f, 5), new Vec3(2, 1, 3));
         AABB second = new AABB(new Vec3(0f, 0f, 0f), new Vec3(1, 1, 1));
         AABB third = new AABB(new Vec3(0.25f, 0f, 0f), new Vec3(0.5f, 0.5f, 1));
