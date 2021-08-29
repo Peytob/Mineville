@@ -61,8 +61,12 @@ public class CameraController {
         camera.setRight(right);
     }
 
-    public void move(Vec3 offset) {
+    public void move(ImmutableVec3 offset) {
         camera.move(offset);
+    }
+
+    public void setPosition(ImmutableVec3 position) {
+        camera.setPosition(new Vec3(position));
     }
 
     public ImmutableVec3 getPosition() {

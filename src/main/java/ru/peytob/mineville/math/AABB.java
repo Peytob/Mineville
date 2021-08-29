@@ -28,6 +28,11 @@ public class AABB implements ICollisionBox {
     }
 
     @Override
+    public void setCenter(ImmutableVec3 newCenter) {
+        center.setX(newCenter.getX()).setY(newCenter.getY()).setZ(newCenter.getZ());
+    }
+
+    @Override
     public boolean checkCollision(ICollisionBox collisionBox) {
         if (collisionBox instanceof AABB) {
             return CollisionUtils.isCollision(this, (AABB) collisionBox);

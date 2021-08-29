@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CollisionUtilsTest {
 
     @Test
-    void isCollision() {
+    void collisionAABtoBAABB() {
         // The first is located at a distance from the second and third. Third is located inside second.
         // Fourth contains part of all other cubes, but not all of it.
 
