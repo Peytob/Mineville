@@ -17,12 +17,18 @@ public class TestGenerator extends WorldGenerator {
         Block grass = repository.get("mineville::grass");
         Block stone = repository.get("mineville::stone");
 
-        for (int y = 0; y < seaLevel; y++) {
-            for (int xz = 0; xz < Chunk.SIDE_SIZE_X; xz++) {
+        for (int y = 1; y < seaLevel; y++) {
+            for (int xz = 1; xz < Chunk.SIDE_SIZE_X; xz++) {
                 chunk.setBlock(xz, y, 0, grass);
                 chunk.setBlock(0, y, xz, grass);
                 chunk.setBlock(xz, y, Chunk.SIDE_SIZE_X - 1, grass);
                 chunk.setBlock(Chunk.SIDE_SIZE_X - 1, y, xz, grass);
+            }
+        }
+
+        for (int x = 0; x < Chunk.SIDE_SIZE_X; ++x) {
+            for (int z = 0; z < Chunk.SIDE_SIZE_Z; ++z) {
+                chunk.setBlock(x, 0, z, stone);
             }
         }
     }

@@ -4,9 +4,13 @@ public class AABB implements ICollisionBox {
     private final Vec3 center;
     private final Vec3 radius;
 
-    public AABB(Vec3 center, Vec3 radius) {
+    public AABB(Vec3 radius, Vec3 center) {
         this.center = center;
         this.radius = radius;
+    }
+
+    public AABB(Vec3 radius) {
+        this(radius, new Vec3());
     }
 
     public ImmutableVec3 getCenter() {
