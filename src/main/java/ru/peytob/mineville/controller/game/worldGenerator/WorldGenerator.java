@@ -1,5 +1,7 @@
 package ru.peytob.mineville.controller.game.worldGenerator;
 
+import ru.peytob.mineville.math.noise.FractalBrownianMotion;
+import ru.peytob.mineville.math.noise.Perlin2dNoise;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.game.world.Chunk;
 import ru.peytob.mineville.model.repository.Repository;

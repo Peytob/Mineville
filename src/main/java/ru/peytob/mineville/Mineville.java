@@ -2,6 +2,8 @@ package ru.peytob.mineville;
 
 import ru.peytob.mineville.controller.ApplicationController;
 import ru.peytob.mineville.controller.WindowController;
+import ru.peytob.mineville.math.ImmutableVec2;
+import ru.peytob.mineville.math.ImmutableVec2i;
 import ru.peytob.mineville.math.noise.FractalBrownianMotion;
 import ru.peytob.mineville.math.noise.Perlin2dNoise;
 import ru.peytob.mineville.model.builder.ImageBuilder;
@@ -22,22 +24,32 @@ public class Mineville {
     public static void main(String[] args) {
         /* Layer 0: Test stuff */
 
-        ImageBuilder imageBuilder = new ImageBuilder(1024 * 4, 1024 * 4);
+        ImmutableVec2i sizes = new ImmutableVec2i(2048, 2048);
+        float scale = 0.001f;
+
+        ImageBuilder imageBuilder = new ImageBuilder(sizes.getX(), sizes.getY());
 
         Perlin2dNoise perlinNoise = new Perlin2dNoise(15);
-        FractalBrownianMotion noise = new FractalBrownianMotion(perlinNoise, 8, 1f);
+        FractalBrownianMotion noise = new FractalBrownianMotion(perlinNoise, 10, 0.5f);
+        ImmutableVec2 offset = new ImmutableVec2(Integer.MAX_VALUE >> 6, Integer.MAX_VALUE >> 6);
+
         for (int x = 0; x < imageBuilder.getWidth(); x++) {
             for (int y = 0; y < imageBuilder.getHeight(); y++) {
-                float noiseColor = noise.getPoint(x * 0.01f, y * 0.01f);
+                float noiseColor = noise.getPoint(((offset.getX() + sizes.getX()) / 2.0f - x) * scale,
+                        ((offset.getY() + sizes.getY()) / 2.0f - y) * scale);
                 noiseColor += 1.0;
                 noiseColor /= 2.0;
+
+                if (noiseColor > 1.0f || noiseColor < 0.0f) {
+                    System.out.println(noiseColor);
+                }
                 byte noiseByte = (byte) Math.round(255 * noiseColor);
 
                 if (noiseColor < 0.45f) { // Water
                     imageBuilder.setPixel(x, y, (byte) 0, (byte) 0, noiseByte, (byte) 255);
                 }
 
-                else if (noiseColor < 0.47f) { // Sand
+                else if (noiseColor < 0.465f) { // Sand
                     imageBuilder.setPixel(x, y, noiseByte, noiseByte, (byte) 0, (byte) 255);
                 }
 
