@@ -3,7 +3,12 @@ package ru.peytob.mineville.controller.game.state;
 import org.lwjgl.glfw.GLFW;
 import ru.peytob.mineville.controller.draw.CameraController;
 import ru.peytob.mineville.controller.game.Game;
-import ru.peytob.mineville.math.*;
+import ru.peytob.mineville.controller.game.WorldController;
+import ru.peytob.mineville.controller.game.worldGenerator.TestGenerator;
+import ru.peytob.mineville.math.ImmutableVec2i;
+import ru.peytob.mineville.math.ImmutableVec3;
+import ru.peytob.mineville.math.SpecialMatrix;
+import ru.peytob.mineville.math.Vec3;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.game.world.World;
 import ru.peytob.mineville.model.repository.GameRegistry;
@@ -12,30 +17,35 @@ import ru.peytob.mineville.view.render.world.WorldDrawer;
 
 public class RunningGameState implements IGameState {
     private final Game game;
-    private final Vec2 cursorPosition;
+    private final WorldDrawer worldDrawer;
+    private final WorldController worldController;
     private final CameraController cameraController;
 
     public RunningGameState(Game game) {
         this.game = game;
-        this.cursorPosition = new Vec2(game.getWorldDrawer().getWindowController().getCursorPosition());
-
-        ImmutableVec2i windowSizes = game.getWorldDrawer().getWindowController().getWindowSizes();
+        this.worldDrawer = new WorldDrawer(game.getWindowController(), game.getCurrentShaders(),
+                game.getCurrentTextures());
+        this.worldController = new WorldController(new TestGenerator(3,
+                GameRegistry.getInstance().getBlockRepository()));
+        ImmutableVec2i windowSizes = game.getWindowController().getWindowSizes();
         this.cameraController = new CameraController(new Vec3(0, 50, 0 ), 0, (float) Math.toRadians(90),
                 (float) Math.toRadians(75), (float) windowSizes.getX() / (float) windowSizes.getY());
     }
 
     @Override
     public void onSet() {
-        System.out.println("Set state: RunningGameState");
-        this.game.getWorldController().setLoadRadius(3);
+        int radius = 10;
+        for (int x = -radius; x < radius; x++) {
+            for (int z = -radius; z < radius; z++) {
+                worldController.generateChunk(x, z);
+            }
+        }
     }
 
     @Override
-    public void handleInput() {
-        KeyboardMouseInput input = game.getWorldDrawer().getWindowController().getKeyboardMouseInput();
-
+    public void handleInput(KeyboardMouseInput input) {
         Vec3 cameraOffset = new Vec3(0 ,0, 0);
-        float speed = 0.15f;
+        float speed = 5.7f;
 
         if (input.isKeyPressed(GLFW.GLFW_KEY_W)) {
             cameraOffset.plus(cameraController.getFrontVector());
@@ -53,34 +63,8 @@ public class RunningGameState implements IGameState {
             cameraOffset.minus(cameraController.getFrontVector());
         }
 
-        cameraOffset.multiplication(speed);
-        int oldChunkGridX = (int) cameraController.getPosition().getX() / 16;
-        if (cameraController.getPosition().getX() < 0) {
-            oldChunkGridX -= 1;
-        }
-
-        int oldChunkGridZ = (int) cameraController.getPosition().getZ() / 16;
-        if (cameraController.getPosition().getZ() < 0) {
-            oldChunkGridZ -= 1;
-        }
-
+        cameraOffset.multiplication(speed * (float) game.getLastFrameTimeSeconds());
         cameraController.move(cameraOffset);
-
-        int chunkGridX = (int) cameraController.getPosition().getX() / 16;
-        if (cameraController.getPosition().getX() < 0) {
-            chunkGridX -= 1;
-        }
-
-        int chunkGridZ = (int) cameraController.getPosition().getZ() / 16;
-        if (cameraController.getPosition().getZ() < 0) {
-            chunkGridZ -= 1;
-        }
-
-        if (chunkGridX != oldChunkGridX || chunkGridZ != oldChunkGridZ) {
-            ImmutableVec2i delta = new ImmutableVec2i(chunkGridX - oldChunkGridX, chunkGridZ - oldChunkGridZ);
-            System.out.println("Move: " + delta);
-            game.getWorldController().moveOrigin(delta);
-        }
     }
 
     @Override
@@ -88,18 +72,14 @@ public class RunningGameState implements IGameState {
     }
 
     @Override
-    public void clear() {
-        game.getWorldDrawer().clear();
-    }
-
-    @Override
     public void draw() {
+        worldDrawer.clear();
+
         game.getCurrentShaders().getWorldShader().use();
         game.getCurrentShaders().getWorldShader().setProjectionMatrix(cameraController.computeProjection());
         game.getCurrentShaders().getWorldShader().setViewMatrix(cameraController.computeView());
 
-        final WorldDrawer drawer = game.getWorldDrawer();
-        drawer.draw(game.getWorldController().getWorld(), SpecialMatrix.IDENTITY);
+        worldDrawer.draw(worldController.getWorld(), SpecialMatrix.IDENTITY);
     }
 
     @Override
@@ -117,7 +97,7 @@ public class RunningGameState implements IGameState {
             if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
                 try {
                     System.out.println("Camera global position: " + cameraController.getPosition());
-                    World world = game.getWorldController().getWorld();
+                    World world = worldController.getWorld();
                     ImmutableVec3 pos = cameraController.getPosition();
                     Block block = GameRegistry.getInstance().getBlockRepository().get("mineville::stone");
                     world.setBlock((int) pos.getX(), (int) pos.getY(), (int) pos.getZ(), block);
@@ -131,16 +111,15 @@ public class RunningGameState implements IGameState {
     }
 
     @Override
-    public void onMouseMove(double newX, double newY) {
-        float dx = (float) newX - cursorPosition.getX();
-        float dy = (float) newY - cursorPosition.getY();
-        cursorPosition.setX((float) newX).setY((float) newY);
+    public void onMouseMove(double newX, double newY, double oldX, double oldY) {
+        float dx = (float) (newX - oldX);
+        float dy = (float) (newY - oldY);
 
         cameraController.lookAround(dx * 0.1f, -dy * 0.1f);
     }
 
     @Override
-    public void onKeyPress(int key, int scancode, int action, int mods) {
+    public void onKey(int key, int scancode, int action, int mods) {
         if (action == GLFW.GLFW_PRESS) {
             switch (key) {
                 case GLFW.GLFW_KEY_Q:
@@ -148,11 +127,7 @@ public class RunningGameState implements IGameState {
                     break;
 
                 case GLFW.GLFW_KEY_E:
-                    game.getWorldDrawer().changeDrawMode();
-                    break;
-
-                case GLFW.GLFW_KEY_TAB:
-                    game.setState(new ShowTextureGameState(game, game.getCurrentTextures().getBlockAtlasTexture()));
+                    worldDrawer.changeDrawMode();
                     break;
 
                 default:

@@ -1,13 +1,13 @@
 package ru.peytob.mineville.controller.game.state;
 
+import ru.peytob.mineville.view.input.KeyboardMouseInput;
+
 public interface IGameState {
     void onSet();
 
-    void handleInput();
+    void handleInput(KeyboardMouseInput input);
 
     void tick();
-
-    void clear();
 
     void draw();
 
@@ -17,9 +17,9 @@ public interface IGameState {
 
     void onMouseClick(int button, int action, int mods);
 
-    void onMouseMove(double newX, double newY);
+    void onMouseMove(double newX, double newY, double oldX, double oldY);
 
-    void onKeyPress(int key, int scancode, int action, int mods);
+    void onKey(int key, int scancode, int action, int mods);
 
     void onScroll(double xOffset, double yOffset);
 }

@@ -110,16 +110,6 @@ public class Vec3 extends ImmutableVec3 {
     }
 
     /**
-     * Computes scalar multiplication of this vector and other vector. Results will be saved in this object.
-     *
-     * @param right Right vector.
-     * @return Scalar multiplication of vectors.
-     */
-    public float scalarMultiplication(Vec3 right) {
-        return x * right.x + y * right.y + z * right.z;
-    }
-
-    /**
      * Computes normalized vector. Results will be saved in this object.
      *
      * @return This vector object (for chain calls).

@@ -83,6 +83,16 @@ public class ImmutableVec3 {
         return new Vec3i((int) x, (int) y, (int) z);
     }
 
+    /**
+     * Computes scalar multiplication of this vector and other vector.
+     *
+     * @param right Right vector.
+     * @return Scalar multiplication of vectors.
+     */
+    public float scalarMultiplication(ImmutableVec3 right) {
+        return x * right.x + y * right.y + z * right.z;
+    }
+
     @Override
     public String toString() {
         return "(" + x + ", " + y + ", " + z + ")";
