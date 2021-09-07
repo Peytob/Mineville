@@ -5,7 +5,10 @@ import ru.peytob.mineville.controller.draw.CameraController;
 import ru.peytob.mineville.controller.game.Game;
 import ru.peytob.mineville.controller.game.WorldController;
 import ru.peytob.mineville.controller.game.worldGenerator.TestGenerator;
-import ru.peytob.mineville.math.*;
+import ru.peytob.mineville.math.ImmutableVec2i;
+import ru.peytob.mineville.math.ImmutableVec3;
+import ru.peytob.mineville.math.SpecialMatrix;
+import ru.peytob.mineville.math.Vec3;
 import ru.peytob.mineville.model.game.object.Block;
 import ru.peytob.mineville.model.game.world.World;
 import ru.peytob.mineville.model.repository.GameRegistry;
@@ -22,7 +25,7 @@ public class RunningGameState implements IGameState {
         this.game = game;
         this.worldDrawer = new WorldDrawer(game.getWindowController(), game.getCurrentShaders(),
                 game.getCurrentTextures());
-        this.worldController = new WorldController(new TestGenerator(1,
+        this.worldController = new WorldController(new TestGenerator(3,
                 GameRegistry.getInstance().getBlockRepository()));
         ImmutableVec2i windowSizes = game.getWindowController().getWindowSizes();
         this.cameraController = new CameraController(new Vec3(0, 50, 0 ), 0, (float) Math.toRadians(90),
@@ -31,16 +34,12 @@ public class RunningGameState implements IGameState {
 
     @Override
     public void onSet() {
-        System.out.println("Set state: RunningGameState");
-
-        int radius = 5;
+        int radius = 10;
         for (int x = -radius; x < radius; x++) {
             for (int z = -radius; z < radius; z++) {
                 worldController.generateChunk(x, z);
             }
         }
-
-        System.out.println("Test world: " + worldController.getLoadChunksCount());
     }
 
     @Override
