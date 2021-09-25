@@ -5,6 +5,8 @@ import org.lwjgl.glfw.GLFWKeyCallbackI;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.glfw.GLFWScrollCallbackI;
 import org.lwjgl.system.MemoryStack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.peytob.mineville.math.Vec2;
 import ru.peytob.mineville.math.Vec2i;
 import ru.peytob.mineville.view.input.KeyboardMouseInput;
@@ -30,6 +32,10 @@ public class Window {
     private final KeyboardMouseInput keyboardMouseInput;
 
     public Window(String title, int width, int height) {
+        Logger logger = LoggerFactory.getLogger(Window.class);
+
+        logger.info("Window creating begin.");
+
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -42,6 +48,8 @@ public class Window {
             throw new RuntimeException("Window is not created.");
         }
 
+        logger.info("Window has been created successful.");
+
         glfwMakeContextCurrent(pointer);
 
         glfwSwapInterval(1);
@@ -50,14 +58,8 @@ public class Window {
 
         createCapabilities();
 
-        try (MemoryStack stack = MemoryStack.stackPush()) {
-            final IntBuffer w = stack.mallocInt(1);
-            final IntBuffer h = stack.mallocInt(1);
-            glfwGetFramebufferSize(pointer, w, h);
-            int contentWidth = w.get();
-            int contentHeight = h.get();
-            glViewport(0, 0, contentWidth, contentHeight);
-        }
+        Vec2i framebufferSize = getFramebufferSizes();
+        glViewport(0, 0, framebufferSize.getX(), framebufferSize.getY());
 
         this.keyboardMouseInput = new KeyboardMouseInput(this);
     }
@@ -66,8 +68,11 @@ public class Window {
      * Destroys window and free all resources.
      */
     public void destroy() {
+        Logger logger = LoggerFactory.getLogger(Logger.class);
+        logger.info("Window destroying.");
         glfwFreeCallbacks(pointer);
         glfwDestroyWindow(pointer);
+        logger.info("Window has been destroyed successful.");
     }
 
     /**
@@ -130,11 +135,28 @@ public class Window {
         }
     }
 
+    /**
+     * Returns sizes of this window.
+     * @return Sizes of window.
+     */
     public Vec2i getWindowSizes() {
         try (MemoryStack stack = MemoryStack.stackPush()) {
             final IntBuffer width = stack.mallocInt(1);
             final IntBuffer height = stack.mallocInt(1);
             glfwGetWindowSize(pointer, width, height);
+            return new Vec2i(width.get(0), height.get(0));
+        }
+    }
+
+    /**
+     * Return sizes of framebuffer for this window.
+     * @return Sizes of framebuffer.
+     */
+    public Vec2i getFramebufferSizes() {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            final IntBuffer width = stack.mallocInt(1);
+            final IntBuffer height = stack.mallocInt(1);
+            glfwGetFramebufferSize(pointer, width, height);
             return new Vec2i(width.get(0), height.get(0));
         }
     }

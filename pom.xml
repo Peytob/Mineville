@@ -20,6 +20,7 @@
         <lwjgl.version>3.2.3</lwjgl.version>
         <pngdecoder.version>1.0</pngdecoder.version>
         <gson.version>2.8.7</gson.version>
+        <slf4j.version>1.7.26</slf4j.version>
     </properties>
 
     <profiles>
@@ -185,6 +186,18 @@
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.12</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
     </dependencies>
 

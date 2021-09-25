@@ -59,7 +59,7 @@ public abstract class Entity extends AbstractRegistrable {
 
     public void setWorldPosition(ImmutableVec3 worldPosition) {
         this.worldPosition = new Vec3(worldPosition);
-        this.collisionBox.setCenter(worldPosition);
+        this.collisionBox.setCenter(new Vec3(worldPosition).plus(this.collisionBox.getRadius()));
     }
 
     public void moveWorldPosition(ImmutableVec3 delta) {
